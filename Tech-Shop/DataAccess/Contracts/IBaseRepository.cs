@@ -7,7 +7,7 @@ namespace DataAccess.Contracts
 
         T GetByID<T>(int id) where T : BaseEntity;
 
-        void Create<T>(T model) where T : BaseEntity;
+        int Create<T>(T model) where T : BaseEntity;
 
         void Update<T>(T model) where T : BaseEntity;
 
