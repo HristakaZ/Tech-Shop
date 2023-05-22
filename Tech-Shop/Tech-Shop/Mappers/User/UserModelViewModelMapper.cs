@@ -2,14 +2,14 @@
 using Tech_Shop.Roles;
 using Tech_Shop.ViewModels.User;
 
-namespace Tech_Shop.Mappers
+namespace Tech_Shop.Mappers.User
 {
     public static class UserModelViewModelMapper
     {
-        public static List<UserViewModel> MapUserModelToViewModel(IQueryable<User> users)
+        public static List<UserViewModel> MapUserModelToViewModel(IQueryable<DataStructure.Models.User> users)
         {
             List<UserViewModel> userViewModels = new List<UserViewModel>();
-            foreach (User user in users)
+            foreach (DataStructure.Models.User user in users)
             {
                 userViewModels.Add(new UserViewModel()
                 {
@@ -26,7 +26,7 @@ namespace Tech_Shop.Mappers
             return userViewModels;
         }
 
-        public static UserViewModel MapUserModelToViewModel(User user)
+        public static UserViewModel MapUserModelToViewModel(DataStructure.Models.User user)
         {
             return new UserViewModel()
             {
@@ -40,9 +40,9 @@ namespace Tech_Shop.Mappers
             };
         }
 
-        public static User MapUserRegisterViewModelToModel(UserRegisterViewModel userRegisterViewModel)
+        public static DataStructure.Models.User MapUserRegisterViewModelToModel(UserRegisterViewModel userRegisterViewModel)
         {
-            return new User()
+            return new DataStructure.Models.User()
             {
                 Email = userRegisterViewModel.Email,
                 Password = userRegisterViewModel.Password,

@@ -3,7 +3,7 @@ using DataStructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Tech_Shop.Mappers;
+using Tech_Shop.Mappers.User;
 using Tech_Shop.Roles;
 using Tech_Shop.Services.User.Contracts;
 using Tech_Shop.ViewModels.User;
@@ -25,7 +25,6 @@ namespace Tech_Shop.Controllers
             this.baseRepository = baseRepository;
             this.userService = userService;
             Configuration = configuration;
-
         }
 
         [HttpGet]
@@ -42,20 +41,21 @@ namespace Tech_Shop.Controllers
             return Ok(userViewModels);
         }
 
-        [HttpGet("{id}", Name = $"{nameof(GetByID)}")]
+        [HttpGet("{id}", Name = $"{nameof(GetUserByID)}")]
         [Authorize]
-        public IActionResult GetByID(int id)
+        public IActionResult GetUserByID(int id)
         {
             User user = baseRepository.GetByID<User>(id);
+            int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            bool isLoggedInUserAdmin = User.FindFirst(ClaimTypes.Role).Value == RoleConstants.AdminRole;
 
-            if (user == null)
+            if (user != null && (user.ID == loggedInUserId || isLoggedInUserAdmin))
             {
-                return NotFound("User was not found.");
+                UserViewModel userViewModel = UserModelViewModelMapper.MapUserModelToViewModel(user);
+                return Ok(userViewModel);
             }
 
-            UserViewModel userViewModel = UserModelViewModelMapper.MapUserModelToViewModel(user);
-
-            return Ok(userViewModel);
+            return NotFound("User was not found.");
         }
 
         [HttpPost]
@@ -65,7 +65,7 @@ namespace Tech_Shop.Controllers
             User user = UserModelViewModelMapper.MapUserRegisterViewModelToModel(userRegisterViewModel);
             user.Password = userService.HashPassword(user.Password);
             int ID = baseRepository.Create<User>(user);
-            Uri uri = new Uri(Url.Link($"{nameof(GetByID)}", new { Id = ID }));
+            Uri uri = new Uri(Url.Link($"{nameof(GetUserByID)}", new { Id = ID }));
 
             return Created(uri, ID.ToString());
         }
@@ -110,14 +110,15 @@ namespace Tech_Shop.Controllers
         public IActionResult Delete(int id)
         {
             User userToDelete = baseRepository.GetByID<User>(id);
-
-            if (userToDelete == null)
+            int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            bool isLoggedInUserAdmin = User.FindFirst(ClaimTypes.Role).Value == RoleConstants.AdminRole;
+            if (userToDelete != null && (userToDelete.ID == loggedInUserId || isLoggedInUserAdmin))
             {
-                return NotFound("User was not found.");
+                baseRepository.Delete<User>(userToDelete);
+                return Ok("User was deleted.");
             }
 
-            baseRepository.Delete<User>(userToDelete);
-            return Ok("User was deleted.");
+            return NotFound("User was not found.");
         }
     }
 }
