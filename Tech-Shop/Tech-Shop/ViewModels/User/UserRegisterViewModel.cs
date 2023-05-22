@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataStructure.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace DataStructure.Models
+namespace Tech_Shop.ViewModels.User
 {
-    public class User : BaseEntity
+    public class UserRegisterViewModel
     {
         [Required]
         [EmailAddress]
@@ -21,12 +22,5 @@ namespace DataStructure.Models
         [Required]
         [MaxLength(10)]
         public string PhoneNumber { get; set; }
-
-        [Required]
-        public bool IsAdmin { get; set; }
-
-        public virtual List<Order> Orders { get; set; } = new List<Order>();
-
-        public virtual List<Review> Reviews { get; set; } = new List<Review>();
     }
 }

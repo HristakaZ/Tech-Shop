@@ -2,7 +2,7 @@
 
 namespace Tech_Shop.ViewModels.User
 {
-    public class UserViewModel : BaseEntity
+    public class UserViewModel
     {
         public string Email { get; set; }
 

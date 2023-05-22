@@ -2,10 +2,7 @@
 using DataStructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Tech_Shop.Mappers;
 using Tech_Shop.Roles;
 using Tech_Shop.Services.User.Contracts;
@@ -32,7 +29,7 @@ namespace Tech_Shop.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult Get()
         {
             IQueryable<User> users = baseRepository.GetAll<User>();
@@ -40,7 +37,7 @@ namespace Tech_Shop.Controllers
             {
                 return NotFound("No users were found.");
             }
-            List<UserViewModel> userViewModels = UserModelToViewModelMapper.MapUserModelToViewModel(users);
+            List<UserViewModel> userViewModels = UserModelViewModelMapper.MapUserModelToViewModel(users);
 
             return Ok(userViewModels);
         }
@@ -56,14 +53,16 @@ namespace Tech_Shop.Controllers
                 return NotFound("User was not found.");
             }
 
-            UserViewModel userViewModel = UserModelToViewModelMapper.MapUserModelToViewModel(user);
+            UserViewModel userViewModel = UserModelViewModelMapper.MapUserModelToViewModel(user);
 
             return Ok(userViewModel);
         }
 
-        [HttpPost(Name = $"{nameof(Register)}")]
-        public IActionResult Register([FromBody] User user)
+        [HttpPost]
+        [Route($"{nameof(Register)}")]
+        public IActionResult Register([FromBody] UserRegisterViewModel userRegisterViewModel)
         {
+            User user = UserModelViewModelMapper.MapUserRegisterViewModelToModel(userRegisterViewModel);
             user.Password = userService.HashPassword(user.Password);
             int ID = baseRepository.Create<User>(user);
             Uri uri = new Uri(Url.Link($"{nameof(GetByID)}", new { Id = ID }));
@@ -71,39 +70,19 @@ namespace Tech_Shop.Controllers
             return Created(uri, ID.ToString());
         }
 
-        [HttpPost(Name = $"{nameof(Login)}")]
-        public IActionResult Login([FromBody] User user)
+        [HttpPost]
+        [Route($"{nameof(Login)}")]
+        public IActionResult Login([FromBody] UserLoginViewModel userLoginViewModel)
         {
-            string hashedPassword = userService.HashPassword(user.Password);
-            User userFromDb = baseRepository.GetAll<User>().FirstOrDefault(x => x.Email == user.Email && x.Password == hashedPassword);
+            string hashedPassword = userService.HashPassword(userLoginViewModel.Password);
+            User userFromDb = baseRepository.GetAll<User>().FirstOrDefault(x => x.Email == userLoginViewModel.Email && x.Password == hashedPassword);
             if (userFromDb == null)
             {
                 return NotFound("Wrong username or password.");
             }
 
-            string secret = Configuration.GetSection("JWTConfiguration:secret").Value;
-            string issuer = Configuration.GetSection("JWTConfiguration:issuer").Value;
-            string audience = Configuration.GetSection("JWTConfiguration:audience").Value;
+            string tokenString = userService.CreateToken(userFromDb);
 
-            SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-            SigningCredentials signInCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, userFromDb.ID.ToString()),
-                new Claim(ClaimTypes.Name, userFromDb.Email),
-                new Claim(ClaimTypes.Role, userFromDb.IsAdmin ? RoleConstants.AdminRole : RoleConstants.UserRole)
-            };
-
-            JwtSecurityToken tokenOptions = new JwtSecurityToken
-                            (
-                                issuer: issuer,
-                                audience: audience,
-                                claims: claims,
-                                expires: DateTime.Now.AddMinutes(30),
-                                signingCredentials: signInCredentials
-                            );
-            string tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return Ok(new { Token = tokenString });
         }
 

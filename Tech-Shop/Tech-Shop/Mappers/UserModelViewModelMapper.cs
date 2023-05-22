@@ -4,7 +4,7 @@ using Tech_Shop.ViewModels.User;
 
 namespace Tech_Shop.Mappers
 {
-    public static class UserModelToViewModelMapper
+    public static class UserModelViewModelMapper
     {
         public static List<UserViewModel> MapUserModelToViewModel(IQueryable<User> users)
         {
@@ -13,7 +13,6 @@ namespace Tech_Shop.Mappers
             {
                 userViewModels.Add(new UserViewModel()
                 {
-                    ID = user.ID,
                     Name = user.Name,
                     Address = user.Address,
                     Email = user.Email,
@@ -31,7 +30,6 @@ namespace Tech_Shop.Mappers
         {
             return new UserViewModel()
             {
-                ID = user.ID,
                 Address = user.Address,
                 Email = user.Email,
                 Name = user.Name,
@@ -39,6 +37,18 @@ namespace Tech_Shop.Mappers
                 PhoneNumber = user.PhoneNumber,
                 Reviews = user.Reviews,
                 Role = user.IsAdmin ? RoleConstants.AdminRole : RoleConstants.UserRole
+            };
+        }
+
+        public static User MapUserRegisterViewModelToModel(UserRegisterViewModel userRegisterViewModel)
+        {
+            return new User()
+            {
+                Email = userRegisterViewModel.Email,
+                Password = userRegisterViewModel.Password,
+                Name = userRegisterViewModel.Name,
+                Address = userRegisterViewModel.Address,
+                PhoneNumber = userRegisterViewModel.PhoneNumber
             };
         }
     }

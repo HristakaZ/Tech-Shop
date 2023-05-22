@@ -26,7 +26,6 @@ namespace DataAccess.Repositories
         {
             this.applicationDbContext.Add<T>(model);
             this.applicationDbContext.SaveChanges();
-            this.applicationDbContext.Entry<T>(model).GetDatabaseValues();
 
             return model.ID;
         }
