@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataStructure.Models
+namespace Tech_Shop.ViewModels.Product
 {
-    public class Product : BaseEntity
+    public class CreateProductViewModel
     {
         [Required]
         public string Name { get; set; }
@@ -15,11 +15,7 @@ namespace DataStructure.Models
         [Required]
         public decimal Price { get; set; }
 
-        public virtual List<Order> Orders { get; set; } = new List<Order>();
-
         [Required]
-        public virtual Category Category { get; set; } = new Category();
-
-        public virtual List<Review> Reviews { get; set; } = new List<Review>();
+        public int CategoryID { get; set; }
     }
 }

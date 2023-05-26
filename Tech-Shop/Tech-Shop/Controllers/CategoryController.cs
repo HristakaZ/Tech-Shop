@@ -31,7 +31,8 @@ namespace Tech_Shop.Controllers
                 return NotFound("No categories were found.");
             }
 
-            return Ok(categories);
+            List<CategoryViewModel> categoryViewModels = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(categories);
+            return Ok(categoryViewModels);
         }
 
         [HttpGet("{id}", Name = $"{nameof(GetCategoryByID)}")]
@@ -44,7 +45,8 @@ namespace Tech_Shop.Controllers
                 return NotFound("Category was not found.");
             }
 
-            return Ok(category);
+            CategoryViewModel categoryViewModel = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(category);
+            return Ok(categoryViewModel);
         }
 
         [HttpPost]

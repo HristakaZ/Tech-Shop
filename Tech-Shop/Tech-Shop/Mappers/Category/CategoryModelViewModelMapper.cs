@@ -1,4 +1,6 @@
-﻿using Tech_Shop.ViewModels.Category;
+﻿using Tech_Shop.Mappers.Product;
+using Tech_Shop.ViewModels.Category;
+using Tech_Shop.ViewModels.Product;
 
 namespace Tech_Shop.Mappers.Category
 {
@@ -9,6 +11,31 @@ namespace Tech_Shop.Mappers.Category
             return new DataStructure.Models.Category()
             {
                 Name = createCategoryViewModel.Name
+            };
+        }
+
+        public static List<CategoryViewModel> MapCategoryToCategoryViewModel(IQueryable<DataStructure.Models.Category> categories)
+        {
+            List<CategoryViewModel> categoryViewModels = new List<CategoryViewModel>();
+
+            foreach (DataStructure.Models.Category category in categories)
+            {
+                categoryViewModels.Add(new CategoryViewModel()
+                {
+                    ID = category.ID,
+                    Name = category.Name
+                });
+            }
+
+            return categoryViewModels;
+        }
+
+        public static CategoryViewModel MapCategoryToCategoryViewModel(DataStructure.Models.Category category)
+        {
+            return new CategoryViewModel()
+            {
+                ID = category.ID,
+                Name = category.Name
             };
         }
     }
