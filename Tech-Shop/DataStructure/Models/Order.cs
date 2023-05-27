@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataStructure.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace DataStructure.Models
 {
@@ -6,6 +7,9 @@ namespace DataStructure.Models
     {
         [Required]
         public string Address { get; set; }
+
+        [Required]
+        public OrderStatus Status { get; set; }
 
         [Required]
         public virtual List<Product> Products { get; set; } = new List<Product>();

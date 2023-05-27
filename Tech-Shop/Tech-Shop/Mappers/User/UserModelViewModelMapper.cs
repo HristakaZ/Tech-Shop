@@ -1,4 +1,5 @@
 ﻿using DataStructure.Models;
+using Tech_Shop.Mappers.Order;
 using Tech_Shop.Roles;
 using Tech_Shop.ViewModels.User;
 
@@ -16,7 +17,7 @@ namespace Tech_Shop.Mappers.User
                     Name = user.Name,
                     Address = user.Address,
                     Email = user.Email,
-                    Orders = user.Orders,
+                    Orders = OrderModelViewModelMapper.MapOrderModelToViewModel(user.Orders.AsQueryable()),
                     PhoneNumber = user.PhoneNumber,
                     Reviews = user.Reviews,
                     Role = user.IsAdmin ? RoleConstants.AdminRole : RoleConstants.UserRole
@@ -33,7 +34,7 @@ namespace Tech_Shop.Mappers.User
                 Address = user.Address,
                 Email = user.Email,
                 Name = user.Name,
-                Orders = user.Orders,
+                Orders = OrderModelViewModelMapper.MapOrderModelToViewModel(user.Orders.AsQueryable()),
                 PhoneNumber = user.PhoneNumber,
                 Reviews = user.Reviews,
                 Role = user.IsAdmin ? RoleConstants.AdminRole : RoleConstants.UserRole

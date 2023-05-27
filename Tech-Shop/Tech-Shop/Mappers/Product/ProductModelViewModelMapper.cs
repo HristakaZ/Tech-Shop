@@ -41,7 +41,6 @@ namespace Tech_Shop.Mappers.Product
                     Price = product.Price,
                     Quantity = product.Quantity,
                     Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
-                    Orders = product.Orders,
                     Reviews = product.Reviews
                 });
             }
@@ -58,7 +57,6 @@ namespace Tech_Shop.Mappers.Product
                 Price = product.Price,
                 Quantity = product.Quantity,
                 Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
-                Orders = product.Orders,
                 Reviews = product.Reviews
             };
         }
