@@ -7,8 +7,7 @@ namespace DataStructure.Models
         public string? Comment { get; set; }
 
         [Required]
-        [MinLength(0)]
-        [MaxLength(5)]
+        [Range(1, 5)]
         public int Rating { get; set; }
 
         [Required]

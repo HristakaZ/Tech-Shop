@@ -8,8 +8,8 @@ namespace Tech_Shop.ViewModels.Order
     {
         public string Address { get; set; }
 
-        public OrderStatus Status { get; set; }
+        public string Status { get; set; }
 
-        public virtual List<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
+        public virtual List<string> Products { get; set; } = new List<string>();
     }
 }

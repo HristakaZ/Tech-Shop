@@ -1,4 +1,5 @@
 ﻿using Tech_Shop.Mappers.Category;
+using Tech_Shop.Mappers.Review;
 using Tech_Shop.ViewModels.Product;
 
 namespace Tech_Shop.Mappers.Product
@@ -41,7 +42,7 @@ namespace Tech_Shop.Mappers.Product
                     Price = product.Price,
                     Quantity = product.Quantity,
                     Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
-                    Reviews = product.Reviews
+                    Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
                 });
             }
 
@@ -57,7 +58,7 @@ namespace Tech_Shop.Mappers.Product
                 Price = product.Price,
                 Quantity = product.Quantity,
                 Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
-                Reviews = product.Reviews
+                Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
             };
         }
     }

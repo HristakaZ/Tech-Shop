@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Tech_Shop.ViewModels.Category;
+using Tech_Shop.ViewModels.Review;
 
 namespace Tech_Shop.ViewModels.Product
 {
@@ -16,6 +17,6 @@ namespace Tech_Shop.ViewModels.Product
 
         public CategoryViewModel Category { get; set; } = new CategoryViewModel();
 
-        public List<Review> Reviews { get; set; } = new List<Review>(); //TO DO: might want to change to ReviewViewModel not to get the circular dependency loop
+        public List<ReviewViewModel> Reviews { get; set; } = new List<ReviewViewModel>();
     }
 }

@@ -16,8 +16,8 @@ namespace Tech_Shop.Mappers.Order
                 {
                     ID = order.ID,
                     Address = order.Address,
-                    Status = order.Status,
-                    Products = ProductModelViewModelMapper.MapProductToProductViewModel(order.Products.AsQueryable())
+                    Status = order.Status.ToString(),
+                    Products = order.Products.Select(x => x.Name).ToList()
                 });
             }
 
@@ -30,8 +30,8 @@ namespace Tech_Shop.Mappers.Order
             {
                 ID = order.ID,
                 Address = order.Address,
-                Status = order.Status,
-                Products = ProductModelViewModelMapper.MapProductToProductViewModel(order.Products.AsQueryable())
+                Status = order.Status.ToString(),
+                Products = order.Products.Select(x => x.Name).ToList()
             };
         }
 

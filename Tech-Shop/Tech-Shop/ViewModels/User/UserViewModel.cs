@@ -1,5 +1,6 @@
 ﻿using DataStructure.Models;
 using Tech_Shop.ViewModels.Order;
+using Tech_Shop.ViewModels.Review;
 
 namespace Tech_Shop.ViewModels.User
 {
@@ -15,8 +16,6 @@ namespace Tech_Shop.ViewModels.User
 
         public string Role { get; set; }
 
-        public virtual List<OrderViewModel> Orders { get; set; } = new List<OrderViewModel>();
-
-        public virtual List<Review> Reviews { get; set; } = new List<Review>();
+        public List<OrderViewModel> Orders { get; set; } = new List<OrderViewModel>();
     }
 }
