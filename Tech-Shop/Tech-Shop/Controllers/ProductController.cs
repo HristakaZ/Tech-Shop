@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Tech_Shop.Mappers.Product;
 using Tech_Shop.Roles;
+using Tech_Shop.Services.Shared.Contracts;
 using Tech_Shop.ViewModels.Product;
 
 namespace Tech_Shop.Controllers
@@ -14,9 +15,12 @@ namespace Tech_Shop.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IBaseRepository baseRepository;
-        public ProductController(IBaseRepository baseRepository)
+        private readonly IImageUploadService imageUploadService;
+        public ProductController(IBaseRepository baseRepository,
+            IImageUploadService imageUploadService)
         {
             this.baseRepository = baseRepository;
+            this.imageUploadService = imageUploadService;
         }
 
         [HttpGet]
@@ -49,7 +53,7 @@ namespace Tech_Shop.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleConstants.AdminRole)]
-        public IActionResult Post([FromBody] CreateProductViewModel createProductViewModel)
+        public async Task<IActionResult> Post([FromForm] CreateProductViewModel createProductViewModel)
         {
             Category category = baseRepository.GetByID<Category>(createProductViewModel.CategoryID);
 
@@ -58,7 +62,19 @@ namespace Tech_Shop.Controllers
                 return NotFound("Category of product was not found.");
             }
 
-            Product product = ProductModelViewModelMapper.MapCreateProductViewModelToModel(createProductViewModel, category);
+            string? imagePath = null;
+            if (createProductViewModel.Photo != null)
+            {
+                if (!imageUploadService.IsFileExtensionValid(createProductViewModel.Photo))
+                {
+                    return BadRequest("No valid file extension was found.");
+                }
+
+                imagePath = await imageUploadService.UploadImageAsync(createProductViewModel.Photo);
+            }
+
+            Product product = ProductModelViewModelMapper.MapCreateProductViewModelToModel(createProductViewModel, category,
+                imagePath);
             int ID = baseRepository.Create<Product>(product);
             Uri uri = new Uri(Url.Link($"{nameof(GetProductByID)}", new { Id = ID }));
 
@@ -67,7 +83,7 @@ namespace Tech_Shop.Controllers
 
         [HttpPut]
         [Authorize(Roles = RoleConstants.AdminRole)]
-        public IActionResult Put(int id, [FromBody] UpdateProductViewModel updateProductViewModel)
+        public async Task<IActionResult> Put(int id, [FromForm] UpdateProductViewModel updateProductViewModel)
         {
             Product product = baseRepository.GetByID<Product>(id);
             if (product == null)
@@ -82,7 +98,19 @@ namespace Tech_Shop.Controllers
                 return NotFound("Category of product was not found.");
             }
 
-            product = ProductModelViewModelMapper.MapUpdateProductViewModelToModel(product, updateProductViewModel, category);
+            string? imagePath = null;
+            if (updateProductViewModel.Photo != null)
+            {
+                if (!imageUploadService.IsFileExtensionValid(updateProductViewModel.Photo))
+                {
+                    return BadRequest("No valid file extension was found.");
+                }
+
+                imagePath = await imageUploadService.UploadImageAsync(updateProductViewModel.Photo);
+            }
+
+            product = ProductModelViewModelMapper.MapUpdateProductViewModelToModel(product, updateProductViewModel, category,
+                imagePath);
             baseRepository.Update<Product>(product);
 
             return Ok("Product's info was successfully updated.");

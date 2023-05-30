@@ -15,6 +15,8 @@ namespace Tech_Shop.ViewModels.Product
         [Required]
         public decimal Price { get; set; }
 
+        public IFormFile? Photo { get; set; }
+
         [Required]
         public int CategoryID { get; set; }
     }

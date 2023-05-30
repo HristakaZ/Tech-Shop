@@ -7,24 +7,28 @@ namespace Tech_Shop.Mappers.Product
     public static class ProductModelViewModelMapper
     {
         public static DataStructure.Models.Product MapCreateProductViewModelToModel(CreateProductViewModel createProductViewModel,
-            DataStructure.Models.Category category)
+            DataStructure.Models.Category category,
+            string? imagePath)
         {
             return new DataStructure.Models.Product
             {
                 Name = createProductViewModel.Name,
                 Price = createProductViewModel.Price,
                 Quantity = createProductViewModel.Quantity,
+                ImagePath = imagePath,
                 Category = category
             };
         }
 
         public static DataStructure.Models.Product MapUpdateProductViewModelToModel(DataStructure.Models.Product product,
             UpdateProductViewModel updateProductViewModel,
-            DataStructure.Models.Category category)
+            DataStructure.Models.Category category,
+            string? imagePath)
         {
             product.Name = updateProductViewModel.Name;
             product.Price = updateProductViewModel.Price;
             product.Quantity = updateProductViewModel.Quantity;
+            product.ImagePath = imagePath;
             product.Category = category;
 
             return product;
@@ -41,6 +45,7 @@ namespace Tech_Shop.Mappers.Product
                     Name = product.Name,
                     Price = product.Price,
                     Quantity = product.Quantity,
+                    ImagePath = product.ImagePath,
                     Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
                     Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
                 });
@@ -57,6 +62,7 @@ namespace Tech_Shop.Mappers.Product
                 Name = product.Name,
                 Price = product.Price,
                 Quantity = product.Quantity,
+                ImagePath = product.ImagePath,
                 Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
                 Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
             };

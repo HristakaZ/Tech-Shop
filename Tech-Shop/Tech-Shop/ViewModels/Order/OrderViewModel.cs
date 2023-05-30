@@ -10,6 +10,6 @@ namespace Tech_Shop.ViewModels.Order
 
         public string Status { get; set; }
 
-        public virtual List<string> Products { get; set; } = new List<string>();
+        public List<string> Products { get; set; } = new List<string>();
     }
 }

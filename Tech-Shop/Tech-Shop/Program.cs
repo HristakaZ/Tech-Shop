@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Tech_Shop.Services.Shared;
+using Tech_Shop.Services.Shared.Contracts;
 using Tech_Shop.Services.User;
 using Tech_Shop.Services.User.Contracts;
 
@@ -72,8 +74,10 @@ namespace Tech_Shop
             });
             builder.Services.AddScoped<IBaseRepository, BaseRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
 
             var app = builder.Build();
+            app.UseStaticFiles();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -15,6 +15,8 @@ namespace DataStructure.Models
         [Required]
         public decimal Price { get; set; }
 
+        public string? ImagePath { get; set; }
+
         public virtual List<Order> Orders { get; set; } = new List<Order>();
 
         [Required]

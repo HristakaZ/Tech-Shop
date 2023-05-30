@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace Tech_Shop.ViewModels.Product
@@ -14,6 +15,8 @@ namespace Tech_Shop.ViewModels.Product
         [Precision(18, 2)]
         [Required]
         public decimal Price { get; set; }
+
+        public IFormFile? Photo { get; set; }
 
         [Required]
         public int CategoryID { get; set; }
