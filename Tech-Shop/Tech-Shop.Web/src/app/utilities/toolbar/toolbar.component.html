@@ -1,0 +1,29 @@
+<div class="toolbar" role="banner">
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <button mat-icon-button>
+          <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+          <span></span>
+        </button>
+          <h1>{{title}}</h1>
+        <span class="menu-spacer"></span>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+          <!-- <a href="{{baseUrl}}"><img src="{{relativeGameLogoUrl}}" alt="Game Logo Image" width="13%" height="90%"></a> -->
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-sidenav-container>
+    <mat-sidenav #sidenav>
+      <mat-nav-list>
+        <!-- <a mat-list-item [routerLink]="'/game-studios'" (click)="sidenav.toggle()">Game Studios</a>
+        <a mat-list-item [routerLink]="'/games'" (click)="sidenav.toggle()">Games</a> -->
+        <a mat-list-item [routerLink]="'/'" (click)="sidenav.toggle()">Add links here</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div style="height: 85vh;">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  </div>
