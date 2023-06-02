@@ -1,0 +1,74 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()" style="margin-left: 1%">
+
+    <div>
+        <h1>Register</h1>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the user's email</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
+        <span class="validationError" *ngIf="email.errors?.['required'] && (email.dirty || email.touched)">
+            Email is required.
+        </span>
+        <span class="validationError" *ngIf="email.errors?.['email'] && (email.dirty || email.touched)">
+            The entered email should be a valid email address.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the user's password</mat-label>
+            <input matInput formControlName="password" type="password">
+        </mat-form-field>
+        <span class="validationError" *ngIf="password.errors?.['required'] && (password.dirty || password.touched)">
+            Password is required.
+        </span>
+        <span class="validationError" *ngIf="password.errors?.['pattern'] && (password.dirty || password.touched)">
+            The password must contain 1 number, 1 lowercase letter, 1 uppercase letter and 1 special character and must be at least 8 characters long.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the user's name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        <span class="validationError" *ngIf="name.errors?.['required'] && (name.dirty || name.touched)">
+            Name is required.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the user's address</mat-label>
+            <input matInput formControlName="address">
+        </mat-form-field>
+        <span class="validationError" *ngIf="address.errors?.['required'] && (address.dirty || address.touched)">
+            Address is required.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the user's phone number</mat-label>
+            <input matInput formControlName="phoneNumber">
+        </mat-form-field>
+        <span class="validationError" *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)">
+            Phone number is required.
+        </span>
+        <span class="validationError" *ngIf="phoneNumber.errors?.['maxlength'] && (phoneNumber.dirty || phoneNumber.touched)">
+            Phone number should have a maximum of 10 characters.
+        </span>
+    </div>
+
+    <div>
+        <button mat-stroked-button color="accent" type="submit">Register</button>
+        <br>
+        <br>
+    </div>
+    <div>
+        <app-back-button></app-back-button>
+    </div>
+<form>

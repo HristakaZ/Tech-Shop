@@ -21,13 +21,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { LogoutComponent } from './user/logout/logout.component';
 import { AuthenticationAuthorizationService } from './user/services/authentication-authorization.service';
 import { AuthenticationAuthorizationGuard } from './user/guards/authentication-authorization.guard';
+import { RegisterComponent } from './user/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
     BackButtonComponent,
     ToolbarComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

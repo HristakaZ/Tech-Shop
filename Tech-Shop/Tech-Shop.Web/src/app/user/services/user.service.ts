@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { LoginModel } from '../login/login.model';
 import { Observable } from 'rxjs';
+import { RegisterModel } from '../register/register.model';
 
 @Injectable()
 export class UserService {
@@ -17,5 +18,9 @@ export class UserService {
 
   public $logout(): void {
     localStorage.removeItem('token');
+  }
+
+  public $register(registerModel: RegisterModel): Observable<Object> {
+    return this.httpClient.post(`${this.baseUrl}/api/User/Register`, registerModel);
   }
 }
