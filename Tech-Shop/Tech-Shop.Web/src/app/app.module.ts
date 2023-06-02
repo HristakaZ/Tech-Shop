@@ -19,6 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { LogoutComponent } from './user/logout/logout.component';
+import { AuthenticationAuthorizationService } from './user/services/authentication-authorization.service';
+import { AuthenticationAuthorizationGuard } from './user/guards/authentication-authorization.guard';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +45,9 @@ import { LogoutComponent } from './user/logout/logout.component';
     MatButtonModule
   ],
   providers: [
-    UserService
+    UserService,
+    AuthenticationAuthorizationService,
+    AuthenticationAuthorizationGuard
   ],
   bootstrap: [AppComponent]
 })
