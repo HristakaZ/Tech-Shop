@@ -33,23 +33,26 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    debugger;
     let loginModel: LoginModel = new LoginModel(this.loginForm.value.email, this.loginForm.value.password);
     let token: Token;
-    this.subscription = this.userService.$login(loginModel).subscribe((response) => {
-      token = response as Token;
-      localStorage.setItem('token', token.token);
-      this.loginSnackBar.open('Successfully logged in!', 'X', {
-        duration: 3000
-      });
-      //this.router.navigateByUrl('products');
-    },
-    (errorResponse) => {
-      this.loginSnackBar.open(errorResponse.error, 'X');
+    this.subscription = this.userService.$login(loginModel).subscribe({
+      next: (response) => {
+        token = response as Token;
+        localStorage.setItem('token', token.token);
+        this.loginSnackBar.open('Successfully logged in!', 'X', {
+          duration: 3000
+          //this.router.navigateByUrl('products');
+        });
+      },
+      error: (errorResponse) => {
+        this.loginSnackBar.open(errorResponse.error, 'X');
+      }
     });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

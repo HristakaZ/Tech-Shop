@@ -18,12 +18,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { LogoutComponent } from './user/logout/logout.component';
 @NgModule({
   declarations: [
     AppComponent,
     BackButtonComponent,
     ToolbarComponent,
-    LoginComponent
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
