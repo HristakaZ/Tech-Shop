@@ -6,11 +6,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './back-button.component.html',
   styleUrls: ['./back-button.component.css']
 })
-export class BackButtonComponent implements OnInit {
+export class BackButtonComponent {
 
   constructor(private location: Location) { }
 
-  ngOnInit(): void {
+  redirect(): void {
     this.location.back();
   }
 
