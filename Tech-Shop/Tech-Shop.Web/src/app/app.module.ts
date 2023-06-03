@@ -24,6 +24,7 @@ import { AuthenticationAuthorizationGuard } from './user/guards/authentication-a
 import { RegisterComponent } from './user/register/register.component';
 import { GetAllUsersComponent } from './user/get-all-users/get-all-users.component';
 import { MatTableModule } from '@angular/material/table';
+import { UpdateUserComponent } from './user/update-user/update-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +33,8 @@ import { MatTableModule } from '@angular/material/table';
     LoginComponent,
     LogoutComponent,
     RegisterComponent,
-    GetAllUsersComponent
+    GetAllUsersComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,

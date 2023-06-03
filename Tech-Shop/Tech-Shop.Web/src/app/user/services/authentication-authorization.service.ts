@@ -22,4 +22,13 @@ export class AuthenticationAuthorizationService {
 
     return false;
   }
+
+  public $isCurrentUser(token: string, id: number): boolean {
+    let decodedToken: any = jwt_decode(token!);
+    if (parseInt(decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']) === id) {
+      return true;
+    }
+
+    return false;
+  }
 }

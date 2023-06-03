@@ -5,6 +5,7 @@ import { LoginModel } from '../login/login.model';
 import { Observable } from 'rxjs';
 import { RegisterModel } from '../register/register.model';
 import { User } from '../get-all-users/user.model';
+import { UpdateUserModel } from '../update-user/update-user.model';
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,23 @@ export class UserService {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
+    });
+  }
+
+  public $getById(id: number): Observable<User> {
+    return this.httpClient.get<User>(`${this.baseUrl}/api/User/${id}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    });
+  }
+
+  public $update(id: number, updateUserModel: UpdateUserModel): Observable<Object> {
+    return this.httpClient.put(`${this.baseUrl}/api/User/${id}`, updateUserModel, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }),
+      responseType: 'text'
     });
   }
 }
