@@ -15,6 +15,7 @@ namespace Tech_Shop.Mappers.User
             {
                 userViewModels.Add(new UserViewModel()
                 {
+                    ID = user.ID,
                     Name = user.Name,
                     Address = user.Address,
                     Email = user.Email,
@@ -31,6 +32,7 @@ namespace Tech_Shop.Mappers.User
         {
             return new UserViewModel()
             {
+                ID = user.ID,
                 Address = user.Address,
                 Email = user.Email,
                 Name = user.Name,

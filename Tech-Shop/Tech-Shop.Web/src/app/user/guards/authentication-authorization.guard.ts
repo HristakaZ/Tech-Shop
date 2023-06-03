@@ -11,7 +11,6 @@ export class AuthenticationAuthorizationGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      debugger;
       let token: string | null = localStorage.getItem('token');
       if(this.authenticationAuthorizationService.$isUserLoggedIn(token)) {
         let role: string = route.data['role'];

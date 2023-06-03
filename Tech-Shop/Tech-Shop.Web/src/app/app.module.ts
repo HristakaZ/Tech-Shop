@@ -22,6 +22,8 @@ import { LogoutComponent } from './user/logout/logout.component';
 import { AuthenticationAuthorizationService } from './user/services/authentication-authorization.service';
 import { AuthenticationAuthorizationGuard } from './user/guards/authentication-authorization.guard';
 import { RegisterComponent } from './user/register/register.component';
+import { GetAllUsersComponent } from './user/get-all-users/get-all-users.component';
+import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,8 @@ import { RegisterComponent } from './user/register/register.component';
     ToolbarComponent,
     LoginComponent,
     LogoutComponent,
-    RegisterComponent
+    RegisterComponent,
+    GetAllUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ import { RegisterComponent } from './user/register/register.component';
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule
   ],
   providers: [
     UserService,

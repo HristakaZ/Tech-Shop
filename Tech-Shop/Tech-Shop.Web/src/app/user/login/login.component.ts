@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { LoginModel } from './login.model';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { Token } from './token.model';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   subscription!: Subscription;
 

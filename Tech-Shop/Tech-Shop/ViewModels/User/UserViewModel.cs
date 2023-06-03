@@ -4,7 +4,7 @@ using Tech_Shop.ViewModels.Review;
 
 namespace Tech_Shop.ViewModels.User
 {
-    public class UserViewModel
+    public class UserViewModel : BaseEntity
     {
         public string Email { get; set; }
 

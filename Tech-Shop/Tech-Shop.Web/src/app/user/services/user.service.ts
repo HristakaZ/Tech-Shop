@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { LoginModel } from '../login/login.model';
 import { Observable } from 'rxjs';
 import { RegisterModel } from '../register/register.model';
+import { User } from '../get-all-users/user.model';
 
 @Injectable()
 export class UserService {
@@ -22,5 +23,13 @@ export class UserService {
 
   public $register(registerModel: RegisterModel): Observable<Object> {
     return this.httpClient.post(`${this.baseUrl}/api/User/Register`, registerModel);
+  }
+
+  public $getAll(): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${this.baseUrl}/api/User`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    });
   }
 }
