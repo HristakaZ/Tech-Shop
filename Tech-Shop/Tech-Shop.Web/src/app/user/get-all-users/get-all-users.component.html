@@ -32,7 +32,7 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let user">
             <div>
-                <button mat-raised-button [routerLink]="'/user/update/' + user.id">Update User</button>
+                <button mat-raised-button [routerLink]="'/user/update/' + user.id" *ngIf="user.id == loggedInUserId">Update User</button>
             </div>
         </td>
     </ng-container>
