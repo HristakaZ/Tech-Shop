@@ -5,6 +5,12 @@
     </div>
 
     <div>
+        <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
+            <input matInput formControlName="id">
+        </mat-form-field>
+    </div>
+
+    <div>
         <mat-form-field appearance="fill">
             <mat-label>Enter the user's email</mat-label>
             <input matInput formControlName="email">
@@ -42,14 +48,16 @@
             <mat-label>Enter the user's Phone number</mat-label>
             <input matInput formControlName="phoneNumber">
         </mat-form-field>
-        <span class="validationError" *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)">
+        <span class="validationError"
+            *ngIf="phoneNumber.errors?.['required'] && (phoneNumber.dirty || phoneNumber.touched)">
             Phone number is required.
         </span>
-        <span class="validationError" *ngIf="phoneNumber.errors?.['maxlength'] && (phoneNumber.dirty || phoneNumber.touched)">
+        <span class="validationError"
+            *ngIf="phoneNumber.errors?.['maxlength'] && (phoneNumber.dirty || phoneNumber.touched)">
             Phone number should have a maximum of 10 characters.
         </span>
     </div>
-    
+
     <div>
         <button mat-stroked-button color="accent" type="submit">Update</button>
         <br>

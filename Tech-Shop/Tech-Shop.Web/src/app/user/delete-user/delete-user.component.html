@@ -1,0 +1,27 @@
+<form [formGroup]="deleteUserForm" (ngSubmit)="deleteUser()">
+    <h1>Are you sure you want to delete this user?</h1>
+    <div *ngIf="!isIdInputHidden">
+        <mat-form-field appearance="fill">
+            <input matInput formControlName="id">
+        </mat-form-field>
+    </div>
+
+    <ng-container>
+        <h2>Email: {{user.email}}</h2>
+        <h2>Name: {{user.name}}</h2>
+        <h2>Address: {{user.address}}</h2>
+        <h2>Phone number: {{user.phoneNumber}}</h2>
+        <h2>Role: {{user.role}}</h2>
+    </ng-container>
+
+    <div>
+        <button mat-stroked-button color="accent" type="submit">Delete</button>
+        <br>
+        <br>
+    </div>
+
+    <div>
+        <app-back-button></app-back-button>
+    </div>
+
+</form>

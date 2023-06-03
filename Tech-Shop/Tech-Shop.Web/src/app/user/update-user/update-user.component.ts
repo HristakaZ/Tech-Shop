@@ -18,6 +18,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   public updateUserModel!: UpdateUserModel;
   id: number = parseInt(this.router.url.substring(this.router.url.lastIndexOf('/') + 1));
+  isIdInputHidden: boolean = true;
 
   get email(): AbstractControl {
     return this.updateUserForm.get('email')!;
@@ -46,6 +47,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
     }
 
     this.updateUserForm = new FormGroup({
+      id: new FormControl(''),
       email: new FormControl('', [
         Validators.required,
         Validators.email
@@ -65,6 +67,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.userService.$getById(this.id).subscribe((user) => {
       this.updateUserModel = user;
       this.updateUserForm.setValue({
+        id: this.id,
         email: this.updateUserModel.email,
         name: this.updateUserModel.name,
         address: this.updateUserModel.address,
@@ -74,14 +77,13 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
   }
 
   updateUser(): void {
-    debugger;
     if (!this.updateUserForm.invalid) {
       this.updateUserModel.email = this.updateUserForm.value.email;
       this.updateUserModel.name = this.updateUserForm.value.name;
       this.updateUserModel.address = this.updateUserForm.value.address;
       this.updateUserModel.phoneNumber = this.updateUserForm.value.phoneNumber;
 
-      this.subscriptions.push(this.userService.$update(this.id, this.updateUserModel).subscribe({
+      this.subscriptions.push(this.userService.$update(this.updateUserForm.value.id, this.updateUserModel).subscribe({
         next: (response) => {
           this.updateUserSnackBar.open(response.toString(), 'X', {
             duration: 3000
@@ -99,8 +101,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    debugger;
-    if (this.subscriptions.length !== 0) {
+    if (this.subscriptions.length > 0) {
       this.subscriptions.forEach((subscription) => {
         subscription.unsubscribe();
       });

@@ -25,6 +25,7 @@ import { RegisterComponent } from './user/register/register.component';
 import { GetAllUsersComponent } from './user/get-all-users/get-all-users.component';
 import { MatTableModule } from '@angular/material/table';
 import { UpdateUserComponent } from './user/update-user/update-user.component';
+import { DeleteUserComponent } from './user/delete-user/delete-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,8 @@ import { UpdateUserComponent } from './user/update-user/update-user.component';
     LogoutComponent,
     RegisterComponent,
     GetAllUsersComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    DeleteUserComponent
   ],
   imports: [
     BrowserModule,

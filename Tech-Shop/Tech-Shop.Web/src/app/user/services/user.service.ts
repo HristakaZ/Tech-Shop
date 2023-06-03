@@ -50,4 +50,13 @@ export class UserService {
       responseType: 'text'
     });
   }
+
+  public $delete(id: number): Observable<Object> {
+    return this.httpClient.delete(`${this.baseUrl}/api/User/${id}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }),
+      responseType: 'text'
+    });
+  }
 }
