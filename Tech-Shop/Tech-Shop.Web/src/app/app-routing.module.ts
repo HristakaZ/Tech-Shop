@@ -8,6 +8,7 @@ import { RegisterComponent } from './user/register/register.component';
 import { GetAllUsersComponent } from './user/get-all-users/get-all-users.component';
 import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { DeleteUserComponent } from './user/delete-user/delete-user.component';
+import { GetAllCategoriesComponent } from './category/get-all-categories/get-all-categories.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'user/register', component: RegisterComponent },
   { path: 'user/getall', component: GetAllUsersComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role : RoleConstants.adminRole} },
   { path: 'user/update/:id', component: UpdateUserComponent, canActivate: [AuthenticationAuthorizationGuard] },
-  { path: 'user/delete/:id', component: DeleteUserComponent, canActivate: [AuthenticationAuthorizationGuard] } 
+  { path: 'user/delete/:id', component: DeleteUserComponent, canActivate: [AuthenticationAuthorizationGuard] },
+  { path: 'category/getall', component: GetAllCategoriesComponent, canActivate: [AuthenticationAuthorizationGuard] } 
 ];
 
 @NgModule({

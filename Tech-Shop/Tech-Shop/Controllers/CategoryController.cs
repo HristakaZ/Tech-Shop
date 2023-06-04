@@ -60,7 +60,7 @@ namespace Tech_Shop.Controllers
             return Created(uri, ID.ToString());
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult Put(int id, [FromBody] UpdateCategoryViewModel updateCategoryViewModel)
         {
@@ -75,7 +75,7 @@ namespace Tech_Shop.Controllers
             return NotFound("Category was not found.");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult Delete(int id)
         {

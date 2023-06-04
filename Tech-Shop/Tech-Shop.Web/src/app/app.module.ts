@@ -26,6 +26,8 @@ import { GetAllUsersComponent } from './user/get-all-users/get-all-users.compone
 import { MatTableModule } from '@angular/material/table';
 import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { DeleteUserComponent } from './user/delete-user/delete-user.component';
+import { GetAllCategoriesComponent } from './category/get-all-categories/get-all-categories.component';
+import { CategoryService } from './category/services/category.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,8 @@ import { DeleteUserComponent } from './user/delete-user/delete-user.component';
     RegisterComponent,
     GetAllUsersComponent,
     UpdateUserComponent,
-    DeleteUserComponent
+    DeleteUserComponent,
+    GetAllCategoriesComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ import { DeleteUserComponent } from './user/delete-user/delete-user.component';
   providers: [
     UserService,
     AuthenticationAuthorizationService,
-    AuthenticationAuthorizationGuard
+    AuthenticationAuthorizationGuard,
+    CategoryService
   ],
   bootstrap: [AppComponent]
 })

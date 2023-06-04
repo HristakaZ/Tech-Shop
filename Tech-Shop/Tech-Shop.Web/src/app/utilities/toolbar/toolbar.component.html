@@ -30,6 +30,10 @@
           *ngIf="decodedToken">
           Delete Profile
         </a>
+        <a mat-list-item [routerLink]="'/category/getall/'" (click)="sidenav.toggle()"
+          *ngIf="decodedToken">
+          Get All Categories
+        </a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

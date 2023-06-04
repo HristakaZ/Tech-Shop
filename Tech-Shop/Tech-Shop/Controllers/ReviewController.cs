@@ -68,7 +68,7 @@ namespace Tech_Shop.Controllers
             return Created(uri, ID.ToString());
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = RoleConstants.UserRole)]
         public IActionResult Put(int id, [FromBody] UpdateReviewViewModel updateReviewViewModel)
         {
@@ -96,7 +96,7 @@ namespace Tech_Shop.Controllers
             return Ok("Review's info was successfully updated.");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles = RoleConstants.UserRole)]
         public IActionResult Delete(int id)
         {

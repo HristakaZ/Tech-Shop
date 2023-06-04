@@ -81,7 +81,7 @@ namespace Tech_Shop.Controllers
             return Created(uri, ID.ToString());
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = RoleConstants.AdminRole)]
         public async Task<IActionResult> Put(int id, [FromForm] UpdateProductViewModel updateProductViewModel)
         {
@@ -116,7 +116,7 @@ namespace Tech_Shop.Controllers
             return Ok("Product's info was successfully updated.");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult Delete(int id)
         {

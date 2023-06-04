@@ -125,7 +125,7 @@ namespace Tech_Shop.Controllers
             return Ok("Order was finished.");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles = RoleConstants.UserRole)]
         public IActionResult Cancel(int id)
         {
