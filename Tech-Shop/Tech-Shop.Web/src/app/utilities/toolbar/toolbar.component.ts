@@ -11,6 +11,7 @@ export class ToolbarComponent implements OnInit, DoCheck {
   userRole!: string;
   decodedToken: any;
   email!: string;
+  userId!: number;
 
   constructor() {
   }
@@ -19,12 +20,14 @@ export class ToolbarComponent implements OnInit, DoCheck {
     this.decodedToken = this.decodeToken();
     this.setUserRole();
     this.setEmail();
+    this.setUserId();
   }
 
   ngDoCheck(): void {
     this.decodedToken = this.decodeToken();
     this.setUserRole();
     this.setEmail();
+    this.setUserId();
   }
 
   decodeToken(): any {
@@ -48,6 +51,15 @@ export class ToolbarComponent implements OnInit, DoCheck {
     }
     else {
       this.email = "";
+    }
+  }
+
+  setUserId(): void {
+    if(localStorage.getItem('token')) {
+      this.userId = parseInt(this.decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
+    }
+    else {
+      this.userId = 0;
     }
   }
 

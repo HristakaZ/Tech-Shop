@@ -51,10 +51,8 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
         this.deleteUserSnackBar.open(response.toString(), 'X', {
           duration: 3000
         });
-        debugger;
         if(this.isCurrentUser) {
-          localStorage.removeItem('token');
-          this.router.navigateByUrl('user/register');
+          this.router.navigateByUrl('user/logout');
         }
         else {
           this.router.navigateByUrl('user/getall');
