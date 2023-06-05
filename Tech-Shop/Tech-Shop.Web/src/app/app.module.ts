@@ -28,6 +28,9 @@ import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { DeleteUserComponent } from './user/delete-user/delete-user.component';
 import { GetAllCategoriesComponent } from './category/get-all-categories/get-all-categories.component';
 import { CategoryService } from './category/services/category.service';
+import { UpdateCategoryComponent } from './category/update-category/update-category.component';
+import { CreateCategoryComponent } from './category/create-category/create-category.component';
+import { DeleteCategoryComponent } from './category/delete-category/delete-category.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +42,10 @@ import { CategoryService } from './category/services/category.service';
     GetAllUsersComponent,
     UpdateUserComponent,
     DeleteUserComponent,
-    GetAllCategoriesComponent
+    GetAllCategoriesComponent,
+    UpdateCategoryComponent,
+    CreateCategoryComponent,
+    DeleteCategoryComponent
   ],
   imports: [
     BrowserModule,

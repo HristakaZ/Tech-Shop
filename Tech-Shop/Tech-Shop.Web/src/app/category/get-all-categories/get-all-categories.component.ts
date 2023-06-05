@@ -30,7 +30,6 @@ export class GetAllCategoriesComponent implements OnInit, OnDestroy {
   }
 
   setUserRole(): void {
-    debugger;
     if (localStorage.getItem('token')) {
       let decodedToken: any = jwt_decode(localStorage.getItem('token')!);
       this.userRole = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];

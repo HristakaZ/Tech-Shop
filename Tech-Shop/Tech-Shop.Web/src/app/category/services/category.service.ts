@@ -27,7 +27,7 @@ export class CategoryService {
   }
 
   public $create(category: Category): Observable<Object> {
-    return this.httpClient.post(`${this.baseUrl}/api/Category`, {
+    return this.httpClient.post(`${this.baseUrl}/api/Category`, category, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),

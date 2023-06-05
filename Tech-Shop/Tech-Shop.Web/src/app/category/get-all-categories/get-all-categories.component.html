@@ -1,9 +1,16 @@
 <div>
-    <h1 class="centerInlineElement">Categories</h1>
+    <h1>Categories</h1>
+    <button mat-raised-button [routerLink]="'/category/create'" *ngIf="userRole === 'Administrator'"
+        style="margin-left: 1%;">
+        Create Category
+    </button>
+    <br *ngIf="userRole === 'Administrator'">
+    <br *ngIf="userRole === 'Administrator'">
 </div>
 
+
 <table mat-table [dataSource]="categories" class="mat-elevation-z8">
-    
+
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let category">{{category.name}}</td>
@@ -13,7 +20,8 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let category">
             <div>
-                <button mat-raised-button [routerLink]="'/category/update/' + category.id" *ngIf="userRole === 'Administrator'">Update Category</button>
+                <button mat-raised-button [routerLink]="'/category/update/' + category.id"
+                    *ngIf="userRole === 'Administrator'">Update Category</button>
             </div>
         </td>
     </ng-container>
@@ -22,7 +30,8 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let category">
             <div>
-                <button mat-raised-button [routerLink]="'/category/delete/' + category.id" *ngIf="userRole === 'Administrator'">Delete Category</button>
+                <button mat-raised-button [routerLink]="'/category/delete/' + category.id"
+                    *ngIf="userRole === 'Administrator'">Delete Category</button>
             </div>
         </td>
     </ng-container>

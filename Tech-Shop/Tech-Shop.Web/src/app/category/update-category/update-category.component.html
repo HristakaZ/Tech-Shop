@@ -1,0 +1,32 @@
+<form [formGroup]="updateCategoryForm" (ngSubmit)="updateCategory()">
+
+    <div>
+        <h1>Update the category</h1>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
+            <input matInput formControlName="id">
+        </mat-form-field>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the category's name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        <span class="validationError" *ngIf="name.errors?.['required'] && (name.dirty || name.touched)">
+            Name is required.
+        </span>
+    </div>
+    
+    <div>
+        <button mat-stroked-button color="accent" type="submit">Update</button>
+        <br>
+        <br>
+    </div>
+    <div>
+        <app-back-button></app-back-button>
+    </div>
+
+</form>

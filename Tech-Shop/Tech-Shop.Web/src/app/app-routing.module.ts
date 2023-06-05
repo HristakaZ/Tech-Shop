@@ -9,6 +9,9 @@ import { GetAllUsersComponent } from './user/get-all-users/get-all-users.compone
 import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { DeleteUserComponent } from './user/delete-user/delete-user.component';
 import { GetAllCategoriesComponent } from './category/get-all-categories/get-all-categories.component';
+import { CreateCategoryComponent } from './category/create-category/create-category.component';
+import { UpdateCategoryComponent } from './category/update-category/update-category.component';
+import { DeleteCategoryComponent } from './category/delete-category/delete-category.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -18,7 +21,10 @@ const routes: Routes = [
   { path: 'user/getall', component: GetAllUsersComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role : RoleConstants.adminRole} },
   { path: 'user/update/:id', component: UpdateUserComponent, canActivate: [AuthenticationAuthorizationGuard] },
   { path: 'user/delete/:id', component: DeleteUserComponent, canActivate: [AuthenticationAuthorizationGuard] },
-  { path: 'category/getall', component: GetAllCategoriesComponent, canActivate: [AuthenticationAuthorizationGuard] } 
+  { path: 'category/getall', component: GetAllCategoriesComponent, canActivate: [AuthenticationAuthorizationGuard] },
+  { path: 'category/create', component: CreateCategoryComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role : RoleConstants.adminRole } },
+  { path: 'category/update/:id', component: UpdateCategoryComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role : RoleConstants.adminRole } },
+  { path: 'category/delete/:id', component: DeleteCategoryComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role : RoleConstants.adminRole } },
 ];
 
 @NgModule({

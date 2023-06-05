@@ -27,7 +27,6 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
     private authenticationAuthorizationService: AuthenticationAuthorizationService) { }
 
   ngOnInit(): void {
-    debugger;
     if (!this.isCurrentUser
       && !this.authenticationAuthorizationService.$isUserEligible(localStorage.getItem('token')!, RoleConstants.adminRole)) {
       this.router.navigateByUrl('user/login'); //TO DO: change to a different url afterwards

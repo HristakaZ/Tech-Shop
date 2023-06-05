@@ -61,7 +61,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   register(): void {
-    debugger;
     if (!this.registerForm.invalid) {
       let registerModel: RegisterModel = new RegisterModel(
         this.registerForm.value.email,
@@ -89,7 +88,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    debugger;
     if(this.subscription) {
       this.subscription.unsubscribe();
     }
