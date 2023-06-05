@@ -1,0 +1,108 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { ProductService } from '../services/product.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Product } from '../product.model';
+import { CreateProductModel } from './create-product.model';
+import { Category } from 'src/app/category/category.model';
+import { CategoryService } from 'src/app/category/services/category.service';
+
+@Component({
+  selector: 'app-create-product',
+  templateUrl: './create-product.component.html',
+  styleUrls: ['./create-product.component.css']
+})
+export class CreateProductComponent implements OnInit, OnDestroy {
+  createProductForm!: FormGroup;
+  subscriptions: Subscription[] = [];
+  categories!: Category[];
+  selectedFile?: File;
+
+  get name(): AbstractControl {
+    return this.createProductForm.get('name')!;
+  }
+
+  get quantity(): AbstractControl {
+    return this.createProductForm.get('quantity')!;
+  }
+
+  get price(): AbstractControl {
+    return this.createProductForm.get('price')!;
+  }
+
+  get categoryID(): AbstractControl {
+    return this.createProductForm.get('categoryID')!;
+  }
+
+  get photo(): AbstractControl {
+    return this.createProductForm.get('photo')!;
+  }
+
+  constructor(private productService: ProductService,
+    private categoryService: CategoryService,
+    private createProductSnackBar: MatSnackBar,
+    private router: Router) { }
+
+  ngOnInit(): void {
+    this.createProductForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required
+      ]),
+      quantity: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^[0-9]*$")
+      ]),
+      price: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^[0-9]+(.[0-9]{0,2})?$")
+      ]),
+      categoryID: new FormControl('', [
+        Validators.required
+      ])
+    });
+
+    this.categoryService.$getAll().subscribe((categories) => {
+      this.categories = categories;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions.length > 0) {
+      this.subscriptions.forEach((subscription) => {
+        subscription.unsubscribe();
+      });
+    }
+  }
+
+  createProduct(): void {
+    debugger;
+    if (!this.createProductForm.invalid) {
+      let createProductModel: CreateProductModel = new CreateProductModel(
+        this.createProductForm.value.name,
+        this.createProductForm.value.quantity,
+        this.createProductForm.value.price,
+        this.createProductForm.value.categoryID,
+        this.selectedFile);
+      this.subscriptions.push(this.productService.$create(createProductModel).subscribe({
+        next: (response) => {
+          this.createProductSnackBar.open('The product was successfully created.', 'X', {
+            duration: 3000
+          });
+          this.router.navigateByUrl('product/getall');
+        },
+        error: (errorResponse) => {
+          this.createProductSnackBar.open('There was an unexpected error while creating the product!', 'X');
+        }
+      }));
+    }
+    else {
+      this.createProductSnackBar.open('There were validation errors while creating the product!', 'X');
+    }
+  }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] ?? null;
+  }
+}

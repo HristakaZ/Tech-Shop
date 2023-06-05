@@ -33,6 +33,8 @@ import { CreateCategoryComponent } from './category/create-category/create-categ
 import { DeleteCategoryComponent } from './category/delete-category/delete-category.component';
 import { ProductService } from './product/services/product.service';
 import { GetAllProductsComponent } from './product/get-all-products/get-all-products.component';
+import { CreateProductComponent } from './product/create-product/create-product.component';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +50,8 @@ import { GetAllProductsComponent } from './product/get-all-products/get-all-prod
     UpdateCategoryComponent,
     CreateCategoryComponent,
     DeleteCategoryComponent,
-    GetAllProductsComponent
+    GetAllProductsComponent,
+    CreateProductComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ import { GetAllProductsComponent } from './product/get-all-products/get-all-prod
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule
   ],
   providers: [
     UserService,

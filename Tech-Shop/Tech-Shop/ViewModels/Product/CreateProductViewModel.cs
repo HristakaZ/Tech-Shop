@@ -13,6 +13,7 @@ namespace Tech_Shop.ViewModels.Product
         public int Quantity { get; set; }
 
         [Precision(18, 2)]
+        [RegularExpression("^[0-9]+(.[0-9]{0,2})?$", ErrorMessage = "The price must be a number/decimal number with , or . as separators.")]
         [Required]
         public decimal Price { get; set; }
 

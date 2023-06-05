@@ -1,0 +1,71 @@
+<form [formGroup]="createProductForm" (ngSubmit)="createProduct()" style="margin-left: 1%">
+
+    <div>
+        <h1>Create Product</h1>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the product's name</mat-label>
+            <input matInput formControlName="name">
+        </mat-form-field>
+        <span class="validationError" *ngIf="name.errors?.['required'] && (name.dirty || name.touched)">
+            Name is required.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the product's quantity</mat-label>
+            <input matInput formControlName="quantity">
+        </mat-form-field>
+        <span class="validationError" *ngIf="quantity.errors?.['required'] && (quantity.dirty || quantity.touched)">
+            Quantity is required.
+        </span>
+        <span class="validationError" *ngIf="quantity.errors?.['pattern'] && (quantity.dirty || quantity.touched)">
+            The quantity should be a number.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the product's price</mat-label>
+            <input matInput formControlName="price">
+        </mat-form-field>
+        <span class="validationError" *ngIf="price.errors?.['required'] && (price.dirty || price.touched)">
+            Price is required.
+        </span>
+        <span class="validationError" *ngIf="price.errors?.['pattern'] && (price.dirty || price.touched)">
+            The price should be a number or a decimal number.
+        </span>
+    </div>
+
+    <div>
+        <mat-form-field appearance="fill">
+            <mat-label>Enter the category of the product</mat-label>
+            <mat-select formControlName="categoryID">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                    {{category.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <span class="validationError"
+            *ngIf="categoryID.errors?.['required'] && (categoryID.dirty || categoryID.touched)">
+            Category is required.
+        </span>
+    </div>
+    <button type="button" mat-raised-button (click)="fileInput.click()">Choose Photo(optional)</button>
+    <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+    <span class="file-name" *ngIf="selectedFile">{{selectedFile.name}}</span>
+    <br>
+    <br>
+
+    <div>
+        <button mat-stroked-button color="accent" type="submit">Create</button>
+        <br>
+        <br>
+    </div>
+    <div>
+        <app-back-button></app-back-button>
+    </div>
+    <form>

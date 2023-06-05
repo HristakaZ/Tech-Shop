@@ -47,7 +47,6 @@ export class CreateCategoryComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl('category/getall');
         },
         error: (errorResponse) => {
-          console.log(errorResponse);
           this.createCategorySnackBar.open('There was an unexpected error while creating the category!', 'X');
         }
       });

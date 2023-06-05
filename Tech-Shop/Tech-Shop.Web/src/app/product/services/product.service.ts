@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { Product } from '../product.model';
 import { Observable } from 'rxjs';
+import { CreateProductModel } from '../create-product/create-product.model';
 
 @Injectable()
 export class ProductService {
@@ -26,11 +27,16 @@ export class ProductService {
     });
   }
 
-  public $create(product: Product): Observable<Object> {
-    return this.httpClient.post(`${this.baseUrl}/api/Product`, product, {
+  public $create(createProductModel: CreateProductModel): Observable<Object> {
+    let formData: FormData = new FormData();
+    formData.append('name', createProductModel.name);
+    formData.append('quantity', createProductModel.quantity.toString());
+    formData.append('price', createProductModel.price.toString());
+    formData.append('categoryID', createProductModel.categoryID.toString());
+    formData.append('photo', createProductModel.photo as Blob);
+    return this.httpClient.post(`${this.baseUrl}/api/Product`, formData, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'enctype': 'multipart/form-data'
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
       responseType: 'text'
     });

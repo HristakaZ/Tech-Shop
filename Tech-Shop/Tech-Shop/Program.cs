@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Tech_Shop.ModelBinders;
 using Tech_Shop.Services.Shared;
 using Tech_Shop.Services.Shared.Contracts;
 using Tech_Shop.Services.User;
@@ -20,7 +21,10 @@ namespace Tech_Shop
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new InvariantDecimalModelBinderProvider());
+            });
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

@@ -30,7 +30,6 @@ export class GetAllUsersComponent implements OnInit, OnDestroy {
 
   getLoggedInUserId(): number {
     let decodedToken: any = jwt_decode(localStorage.getItem('token')!);
-    console.log(decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
     return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
   }
 }

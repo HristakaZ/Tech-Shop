@@ -26,7 +26,6 @@ export class GetAllProductsComponent implements OnInit, OnDestroy {
           product.imagePath = this.baseUrl + '/' + product.imagePath;
         }
       });
-      console.log(this.products);
     });
     this.setUserRole();
   }
