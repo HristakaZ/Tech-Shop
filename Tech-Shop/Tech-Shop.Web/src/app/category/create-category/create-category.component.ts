@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Category } from '../get-all-categories/category.model';
+import { Category } from '../category.model';
 
 @Component({
   selector: 'app-create-category',
@@ -44,6 +44,7 @@ export class CreateCategoryComponent implements OnInit, OnDestroy {
           this.createCategorySnackBar.open('The category was successfully created.', 'X', {
             duration: 3000
           });
+          this.router.navigateByUrl('category/getall');
         },
         error: (errorResponse) => {
           console.log(errorResponse);

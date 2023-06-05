@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Category } from '../get-all-categories/category.model';
+import { Category } from '../category.model';
 
 @Injectable()
 export class CategoryService {

@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Category } from './category.model';
+import { Category } from '../category.model';
 import { CategoryService } from '../services/category.service';
 import jwt_decode from 'jwt-decode';
 

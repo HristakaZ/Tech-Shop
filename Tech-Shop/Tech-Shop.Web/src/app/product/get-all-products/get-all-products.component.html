@@ -1,0 +1,67 @@
+<div>
+    <h1>Products</h1>
+    <button mat-raised-button [routerLink]="'/product/create'" *ngIf="userRole === 'Administrator'"
+        style="margin-left: 1%;">
+        Create Product
+    </button>
+    <br *ngIf="userRole === 'Administrator'">
+    <br *ngIf="userRole === 'Administrator'">
+</div>
+
+
+<table mat-table [dataSource]="products" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let product">
+            <a mat-list-item [routerLink]="'/product/getById/' + product.id">{{product.name}}</a>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Quantity</th>
+        <td mat-cell *matCellDef="let product">{{product.quantity}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef style="margin-left: 15%">Price</th>
+        <td mat-cell *matCellDef="let product">{{product.price}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="imagePath">
+        <th mat-header-cell *matHeaderCellDef>Image</th>
+        <td mat-cell *matCellDef="let product">
+            <a mat-list-item [routerLink]="'/product/getById/' + product.id"><img src={{product.imagePath}}
+                    alt="No photo provided.">
+            </a>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let product">{{product.category.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="updateButton">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let product">
+            <div>
+                <button mat-raised-button [routerLink]="'/product/update/' + product.id"
+                    *ngIf="userRole === 'Administrator'">Update Product</button>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deleteButton">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let product">
+            <div>
+                <button mat-raised-button [routerLink]="'/product/delete/' + product.id"
+                    *ngIf="userRole === 'Administrator'">Delete Product</button>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+</table>

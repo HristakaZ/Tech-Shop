@@ -31,6 +31,8 @@ import { CategoryService } from './category/services/category.service';
 import { UpdateCategoryComponent } from './category/update-category/update-category.component';
 import { CreateCategoryComponent } from './category/create-category/create-category.component';
 import { DeleteCategoryComponent } from './category/delete-category/delete-category.component';
+import { ProductService } from './product/services/product.service';
+import { GetAllProductsComponent } from './product/get-all-products/get-all-products.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +47,8 @@ import { DeleteCategoryComponent } from './category/delete-category/delete-categ
     GetAllCategoriesComponent,
     UpdateCategoryComponent,
     CreateCategoryComponent,
-    DeleteCategoryComponent
+    DeleteCategoryComponent,
+    GetAllProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +70,8 @@ import { DeleteCategoryComponent } from './category/delete-category/delete-categ
     UserService,
     AuthenticationAuthorizationService,
     AuthenticationAuthorizationGuard,
-    CategoryService
+    CategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })
