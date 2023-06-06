@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
-import { Product } from '../product.model';
+import { Product } from '../get-all-products/product.model';
 import { Observable } from 'rxjs';
 import { CreateProductModel } from '../create-product/create-product.model';
+import { UpdateProductModel } from '../update-product/update-product.model';
 
 @Injectable()
 export class ProductService {
@@ -42,11 +43,16 @@ export class ProductService {
     });
   }
 
-  public $update(id: number, product: Product): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/api/Product/${id}`, product, {
+  public $update(id: number, updateProductModel: UpdateProductModel): Observable<Object> {
+    let formData: FormData = new FormData();
+    formData.append('name', updateProductModel.name);
+    formData.append('quantity', updateProductModel.quantity.toString());
+    formData.append('price', updateProductModel.price.toString());
+    formData.append('categoryID', updateProductModel.categoryID.toString());
+    formData.append('photo', updateProductModel.photo as Blob);
+    return this.httpClient.put(`${this.baseUrl}/api/Product/${id}`, formData, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        'enctype': 'multipart/form-data'
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
       responseType: 'text'
     });

@@ -5,7 +5,8 @@ export class Product {
     name!: string;
     quantity!: number;
     price!: number;
-    imagePath?: string;
+    imagePath!: string;
+    photo?: File;
     category!: Category;
     //TO DO: afterwards add reviews
 }

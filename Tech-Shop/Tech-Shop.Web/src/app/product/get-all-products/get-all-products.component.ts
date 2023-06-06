@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Product } from '../product.model';
+import { Product } from './product.model';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import jwt_decode from 'jwt-decode';
@@ -21,11 +21,6 @@ export class GetAllProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.productService.$getAll().subscribe((products) => {
       this.products = products;
-      this.products.forEach((product) => {
-        if(product.imagePath) {
-          product.imagePath = this.baseUrl + '/' + product.imagePath;
-        }
-      });
     });
     this.setUserRole();
   }

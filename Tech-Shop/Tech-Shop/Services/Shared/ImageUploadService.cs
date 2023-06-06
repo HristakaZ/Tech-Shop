@@ -14,11 +14,14 @@ namespace Tech_Shop.Services.Shared
 
         public async Task<string> UploadImageAsync(IFormFile file)
         {
-            string relativeImagePath = Path.Combine("images/", file.FileName);
-            string absoluteImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/", file.FileName);
-            using (FileStream fileStream = new FileStream(absoluteImagePath, FileMode.Create))
+            string relativeImagePath = file.FileName.Contains(@"images\") ? file.FileName : Path.Combine(@"images\", file.FileName);
+            string absoluteImagePath = Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot\images\", Path.GetFileName(file.FileName));
+            if (!File.Exists(absoluteImagePath))
             {
-                await file.CopyToAsync(fileStream);
+                using (FileStream fileStream = new FileStream(absoluteImagePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
             }
 
             return relativeImagePath;

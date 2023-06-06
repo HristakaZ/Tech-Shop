@@ -27,7 +27,6 @@ export class UpdateCategoryComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-
     this.updateCategoryForm = new FormGroup({
       id: new FormControl(''),
       name: new FormControl('', [

@@ -15,6 +15,8 @@ namespace Tech_Shop.ViewModels.Product
         [Precision(18, 2)]
         public decimal Price { get; set; }
 
+        public IFormFile? Photo { get; set; }
+
         public string? ImagePath { get; set; }
 
         public CategoryViewModel Category { get; set; } = new CategoryViewModel();

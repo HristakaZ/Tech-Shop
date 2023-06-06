@@ -35,6 +35,7 @@ import { ProductService } from './product/services/product.service';
 import { GetAllProductsComponent } from './product/get-all-products/get-all-products.component';
 import { CreateProductComponent } from './product/create-product/create-product.component';
 import { MatSelectModule } from '@angular/material/select';
+import { UpdateProductComponent } from './product/update-product/update-product.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +52,8 @@ import { MatSelectModule } from '@angular/material/select';
     CreateCategoryComponent,
     DeleteCategoryComponent,
     GetAllProductsComponent,
-    CreateProductComponent
+    CreateProductComponent,
+    UpdateProductComponent
   ],
   imports: [
     BrowserModule,

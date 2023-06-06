@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Product } from '../product.model';
+import { Product } from '../get-all-products/product.model';
 import { CreateProductModel } from './create-product.model';
 import { Category } from 'src/app/category/category.model';
 import { CategoryService } from 'src/app/category/services/category.service';
@@ -19,6 +19,7 @@ export class CreateProductComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   categories!: Category[];
   selectedFile?: File;
+  url?: string | ArrayBuffer | null | undefined;
 
   get name(): AbstractControl {
     return this.createProductForm.get('name')!;
@@ -85,6 +86,7 @@ export class CreateProductComponent implements OnInit, OnDestroy {
         this.createProductForm.value.price,
         this.createProductForm.value.categoryID,
         this.selectedFile);
+        console.log(this.selectedFile);
       this.subscriptions.push(this.productService.$create(createProductModel).subscribe({
         next: (response) => {
           this.createProductSnackBar.open('The product was successfully created.', 'X', {
@@ -104,5 +106,13 @@ export class CreateProductComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] ?? null;
+
+    if (this.selectedFile) {
+      let reader: FileReader = new FileReader();
+      reader.readAsDataURL(this.selectedFile);
+      reader.onload = (event) => {
+        this.url = event.target?.result;
+      };
+    }
   }
 }

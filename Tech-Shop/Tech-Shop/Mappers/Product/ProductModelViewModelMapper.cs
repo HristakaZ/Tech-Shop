@@ -1,4 +1,5 @@
-﻿using Tech_Shop.Mappers.Category;
+﻿using Tech_Shop.Helpers;
+using Tech_Shop.Mappers.Category;
 using Tech_Shop.Mappers.Review;
 using Tech_Shop.ViewModels.Product;
 
@@ -34,7 +35,7 @@ namespace Tech_Shop.Mappers.Product
             return product;
         }
 
-        public static List<ProductViewModel> MapProductToProductViewModel(IQueryable<DataStructure.Models.Product> products)
+        public static List<ProductViewModel> MapProductToProductViewModel(IQueryable<DataStructure.Models.Product> products, string basePublicUrl)
         {
             List<ProductViewModel> productViewModels = new List<ProductViewModel>();
             foreach (DataStructure.Models.Product product in products)
@@ -46,6 +47,7 @@ namespace Tech_Shop.Mappers.Product
                     Price = product.Price,
                     Quantity = product.Quantity,
                     ImagePath = product.ImagePath,
+                    Photo = ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl),
                     Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
                     Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
                 });
@@ -54,7 +56,7 @@ namespace Tech_Shop.Mappers.Product
             return productViewModels;
         }
 
-        public static ProductViewModel MapProductToProductViewModel(DataStructure.Models.Product product)
+        public static ProductViewModel MapProductToProductViewModel(DataStructure.Models.Product product, string basePublicUrl)
         {
             return new ProductViewModel()
             {
@@ -63,6 +65,7 @@ namespace Tech_Shop.Mappers.Product
                 Price = product.Price,
                 Quantity = product.Quantity,
                 ImagePath = product.ImagePath,
+                Photo = ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl),
                 Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
                 Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
             };

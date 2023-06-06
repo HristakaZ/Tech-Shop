@@ -33,7 +33,8 @@ namespace Tech_Shop.Controllers
                 return NotFound("No products were found.");
             }
 
-            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products);
+            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products,
+                 $"{Request.Scheme}://{Request.Host.Value}/");
             return Ok(productViewModels);
         }
 
@@ -47,7 +48,8 @@ namespace Tech_Shop.Controllers
                 return NotFound("Product was not found.");
             }
 
-            ProductViewModel productViewModel = ProductModelViewModelMapper.MapProductToProductViewModel(product);
+            ProductViewModel productViewModel = ProductModelViewModelMapper.MapProductToProductViewModel(product,
+                $"{Request.Scheme}://{Request.Host.Value}/");
             return Ok(productViewModel);
         }
 
