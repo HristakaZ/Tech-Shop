@@ -43,7 +43,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.authenticationAuthorizationService.$isCurrentUser(localStorage.getItem('token')!, this.id)) {
-      this.router.navigateByUrl('user/login'); //TO DO: change to a different url afterwards
+      this.router.navigateByUrl('product/getall');
     }
 
     this.updateUserForm = new FormGroup({

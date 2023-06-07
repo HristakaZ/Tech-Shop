@@ -1,4 +1,5 @@
 import { Category } from "src/app/category/category.model";
+import { Review } from "src/app/review/review.model";
 
 export class Product {
     id!: number;
@@ -7,6 +8,7 @@ export class Product {
     price!: number;
     imagePath!: string;
     photo?: File;
-    category!: Category;
+    category: Category = new Category();
+    reviews: Review[] = [];
     //TO DO: afterwards add reviews
 }

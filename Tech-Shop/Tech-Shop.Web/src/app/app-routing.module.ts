@@ -15,6 +15,8 @@ import { DeleteCategoryComponent } from './category/delete-category/delete-categ
 import { GetAllProductsComponent } from './product/get-all-products/get-all-products.component';
 import { CreateProductComponent } from './product/create-product/create-product.component';
 import { UpdateProductComponent } from './product/update-product/update-product.component';
+import { DeleteProductComponent } from './product/delete-product/delete-product.component';
+import { GetProductByIdComponent } from './product/get-product-by-id/get-product-by-id.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -30,7 +32,9 @@ const routes: Routes = [
   { path: 'category/delete/:id', component: DeleteCategoryComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role : RoleConstants.adminRole } },
   { path: 'product/getall', component: GetAllProductsComponent, canActivate: [AuthenticationAuthorizationGuard] },
   { path: 'product/create', component: CreateProductComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
-  { path: 'product/update/:id', component: UpdateProductComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } }
+  { path: 'product/update/:id', component: UpdateProductComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
+  { path: 'product/delete/:id', component: DeleteProductComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
+  { path: 'product/getById/:id', component: GetProductByIdComponent, canActivate: [AuthenticationAuthorizationGuard] }
 ];
 
 @NgModule({

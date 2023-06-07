@@ -23,7 +23,6 @@ export class DeleteCategoryComponent implements OnInit {
     private deleteCategorySnackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-
     this.deleteCategoryForm = new FormGroup({
       id: new FormControl('')
     });

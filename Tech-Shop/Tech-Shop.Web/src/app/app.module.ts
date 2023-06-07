@@ -36,6 +36,9 @@ import { GetAllProductsComponent } from './product/get-all-products/get-all-prod
 import { CreateProductComponent } from './product/create-product/create-product.component';
 import { MatSelectModule } from '@angular/material/select';
 import { UpdateProductComponent } from './product/update-product/update-product.component';
+import { DeleteProductComponent } from './product/delete-product/delete-product.component';
+import { GetProductByIdComponent } from './product/get-product-by-id/get-product-by-id.component';
+import { ReviewService } from './review/services/review.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +56,9 @@ import { UpdateProductComponent } from './product/update-product/update-product.
     DeleteCategoryComponent,
     GetAllProductsComponent,
     CreateProductComponent,
-    UpdateProductComponent
+    UpdateProductComponent,
+    DeleteProductComponent,
+    GetProductByIdComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +82,8 @@ import { UpdateProductComponent } from './product/update-product/update-product.
     AuthenticationAuthorizationService,
     AuthenticationAuthorizationGuard,
     CategoryService,
-    ProductService
+    ProductService,
+    ReviewService
   ],
   bootstrap: [AppComponent]
 })

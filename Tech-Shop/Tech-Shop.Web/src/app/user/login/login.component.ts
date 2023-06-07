@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.setItem('token', token.token);
         this.loginSnackBar.open('Successfully logged in!', 'X', {
           duration: 3000
-          //this.router.navigateByUrl('products');
         });
+        this.router.navigateByUrl('product/getall');
       },
       error: (errorResponse) => {
         this.loginSnackBar.open(errorResponse.error, 'X');

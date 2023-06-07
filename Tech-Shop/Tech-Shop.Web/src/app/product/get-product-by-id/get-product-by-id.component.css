@@ -1,0 +1,22 @@
+body{
+    width:100%;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+
+img {
+    width: 20%;
+    height: 20%;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-header-cell {
+    text-align: center;
+}
+
+.mat-cell {
+    text-align: center;
+}

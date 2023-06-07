@@ -29,7 +29,7 @@ export class DeleteUserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (!this.isCurrentUser
       && !this.authenticationAuthorizationService.$isUserEligible(localStorage.getItem('token')!, RoleConstants.adminRole)) {
-      this.router.navigateByUrl('user/login'); //TO DO: change to a different url afterwards
+      this.router.navigateByUrl('product/getall'); //TO DO: change to a different url afterwards
     }
 
     this.deleteUserForm = new FormGroup({

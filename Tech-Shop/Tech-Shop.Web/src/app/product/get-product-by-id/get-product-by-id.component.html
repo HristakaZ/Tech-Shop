@@ -1,0 +1,77 @@
+<div *ngIf="!isIdInputHidden">
+    <mat-form-field appearance="fill">
+        <input matInput formControlName="id">
+    </mat-form-field>
+</div>
+
+<div style="margin-left: 3%; margin-top: 3%;">
+    <h1>Product</h1>
+    <h2>Name: {{product.name}}</h2>
+    <h2>Quantity: {{product.quantity}}</h2>
+    <h2>Price: {{product.price}}</h2>
+    <div class="imageContainer"><img [src]="product.photo?.name" alt="No photo provided."></div>
+    <h2>Category: {{product.category.name}}</h2>
+</div>
+
+<br>
+<br>
+<br>
+<div >
+    <h1 style="text-align: center;" *ngIf="product.reviews.length > 0">Reviews</h1>
+    <h4 style="text-align: center;" *ngIf="product.reviews.length == 0">There are no reviews for this product.</h4>
+    <table mat-table [dataSource]="product.reviews" class="mat-elevation-z8" *ngIf="product.reviews.length > 0">
+        <ng-container matColumnDef="createButton">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let review">
+                <div>
+                    <button mat-raised-button [routerLink]="'/review/create'" *ngIf="userRole === 'User'">Leave a
+                        review</button>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef>User</th>
+            <td mat-cell *matCellDef="let review">{{review.user.email}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rating">
+            <th mat-header-cell *matHeaderCellDef>Rating</th>
+            <td mat-cell *matCellDef="let review">{{review.rating}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+            <th mat-header-cell *matHeaderCellDef>Comment</th>
+            <td mat-cell *matCellDef="let review">{{review.comment}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="updateButton">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let review">
+                <div>
+                    <button mat-raised-button [routerLink]="'/review/update/' + review.id"
+                        *ngIf="userRole === 'User'">Update Review</button>
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deleteButton">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let review">
+                <div>
+                    <button mat-raised-button [routerLink]="'/review/delete/' + review.id"
+                        *ngIf="userRole === 'User'">Delete Review</button>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+    </table>
+</div>
+
+<br>
+<br>
+<div>
+    <app-back-button style="margin-left: 1%;"></app-back-button>
+</div>
