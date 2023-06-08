@@ -39,6 +39,13 @@ import { UpdateProductComponent } from './product/update-product/update-product.
 import { DeleteProductComponent } from './product/delete-product/delete-product.component';
 import { GetProductByIdComponent } from './product/get-product-by-id/get-product-by-id.component';
 import { ReviewService } from './review/services/review.service';
+import { CreateReviewComponent } from './review/create-review/create-review.component';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { CreateReviewDialogComponent } from './review/create-review/dialog/create-review-dialog/create-review-dialog.component';
+import { UpdateReviewComponent } from './review/update-review/update-review.component';
+import { UpdateReviewDialogComponent } from './review/update-review/dialog/update-review-dialog/update-review-dialog.component';
+import { DeleteReviewComponent } from './review/delete-review/delete-review.component';
+import { DeleteReviewDialogComponent } from './review/delete-review/dialog/delete-review-dialog/delete-review-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +65,13 @@ import { ReviewService } from './review/services/review.service';
     CreateProductComponent,
     UpdateProductComponent,
     DeleteProductComponent,
-    GetProductByIdComponent
+    GetProductByIdComponent,
+    CreateReviewComponent,
+    CreateReviewDialogComponent,
+    UpdateReviewComponent,
+    UpdateReviewDialogComponent,
+    DeleteReviewComponent,
+    DeleteReviewDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +88,8 @@ import { ReviewService } from './review/services/review.service';
     MatFormFieldModule,
     MatButtonModule,
     MatTableModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
   ],
   providers: [
     UserService,
@@ -83,7 +97,9 @@ import { ReviewService } from './review/services/review.service';
     AuthenticationAuthorizationGuard,
     CategoryService,
     ProductService,
-    ReviewService
+    ReviewService,
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }
   ],
   bootstrap: [AppComponent]
 })

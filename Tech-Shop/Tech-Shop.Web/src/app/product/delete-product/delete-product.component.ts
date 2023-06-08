@@ -30,7 +30,6 @@ export class DeleteProductComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.productService.$getById(this.id).subscribe((product) => {
       this.product = product;
-      console.log(this.product);
       this.deleteProductForm.setValue({
         id: this.product.id
       });

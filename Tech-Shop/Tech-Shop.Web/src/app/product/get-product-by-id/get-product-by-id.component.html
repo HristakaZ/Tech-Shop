@@ -16,19 +16,11 @@
 <br>
 <br>
 <br>
-<div >
+<div>
     <h1 style="text-align: center;" *ngIf="product.reviews.length > 0">Reviews</h1>
     <h4 style="text-align: center;" *ngIf="product.reviews.length == 0">There are no reviews for this product.</h4>
+    <app-create-review [productID]="product.id" *ngIf="userRole === 'User'"></app-create-review>
     <table mat-table [dataSource]="product.reviews" class="mat-elevation-z8" *ngIf="product.reviews.length > 0">
-        <ng-container matColumnDef="createButton">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let review">
-                <div>
-                    <button mat-raised-button [routerLink]="'/review/create'" *ngIf="userRole === 'User'">Leave a
-                        review</button>
-                </div>
-            </td>
-        </ng-container>
 
         <ng-container matColumnDef="user">
             <th mat-header-cell *matHeaderCellDef>User</th>
@@ -49,8 +41,9 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let review">
                 <div>
-                    <button mat-raised-button [routerLink]="'/review/update/' + review.id"
-                        *ngIf="userRole === 'User'">Update Review</button>
+                    <app-update-review *ngIf="userRole === 'User' && userId === review.user.id" [id]="review.id"
+                        [productID]="product.id">
+                    </app-update-review>
                 </div>
             </td>
         </ng-container>
@@ -59,8 +52,8 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let review">
                 <div>
-                    <button mat-raised-button [routerLink]="'/review/delete/' + review.id"
-                        *ngIf="userRole === 'User'">Delete Review</button>
+                    <app-delete-review [id]="review.id" *ngIf="userRole === 'User' && userId === review.user.id">
+                    </app-delete-review>
                 </div>
             </td>
         </ng-container>

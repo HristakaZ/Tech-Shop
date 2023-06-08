@@ -84,7 +84,6 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
 
   updateProduct(): void {
     if (!this.updateProductForm.invalid) {
-      debugger;
       let updateProductModel: UpdateProductModel = new UpdateProductModel(
         this.updateProductForm.value.name,
         this.updateProductForm.value.quantity,
@@ -92,7 +91,6 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
         this.updateProductForm.value.categoryID,
         this.selectedFile
       );
-      console.log(this.product.photo);
 
       if (!this.selectedFile) {
         updateProductModel.photo = this.product.photo;

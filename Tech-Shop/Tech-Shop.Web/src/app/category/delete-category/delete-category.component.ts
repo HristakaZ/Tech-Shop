@@ -36,7 +36,6 @@ export class DeleteCategoryComponent implements OnInit {
   }
 
   deleteCategory(): void {
-    debugger;
     this.subscriptions.push(this.categoryService.$delete(this.deleteCategoryForm.value.id).subscribe({
       next: (response) => {
         this.deleteCategorySnackBar.open(response.toString(), 'X', {

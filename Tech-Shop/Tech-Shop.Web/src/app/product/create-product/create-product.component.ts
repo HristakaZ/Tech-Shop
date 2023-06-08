@@ -78,7 +78,6 @@ export class CreateProductComponent implements OnInit, OnDestroy {
   }
 
   createProduct(): void {
-    debugger;
     if (!this.createProductForm.invalid) {
       let createProductModel: CreateProductModel = new CreateProductModel(
         this.createProductForm.value.name,
@@ -86,7 +85,6 @@ export class CreateProductComponent implements OnInit, OnDestroy {
         this.createProductForm.value.price,
         this.createProductForm.value.categoryID,
         this.selectedFile);
-        console.log(this.selectedFile);
       this.subscriptions.push(this.productService.$create(createProductModel).subscribe({
         next: (response) => {
           this.createProductSnackBar.open('The product was successfully created.', 'X', {
