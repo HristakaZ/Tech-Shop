@@ -38,6 +38,22 @@ namespace Tech_Shop.Controllers
             return Ok(productViewModels);
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route($"{nameof(GetProductsByIDs)}")]
+        public IActionResult GetProductsByIDs(List<int> productIDs)
+        {
+            IQueryable<Product> products = this.baseRepository.GetAll<Product>(x => productIDs.Any(y => x.ID == y));
+            if (products.Count() == 0)
+            {
+                return NotFound("No products were found.");
+            }
+
+            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products,
+                 $"{Request.Scheme}://{Request.Host.Value}/");
+            return Ok(productViewModels);
+        }
+
         [HttpGet("{id}", Name = $"{nameof(GetProductByID)}")]
         [Authorize]
         public IActionResult GetProductByID(int id)

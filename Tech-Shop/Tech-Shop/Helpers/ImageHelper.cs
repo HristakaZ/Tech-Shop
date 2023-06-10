@@ -13,13 +13,9 @@ namespace Tech_Shop.Helpers
                 string publicPath = Path.Combine(basePublicUrl, imagePath);
                 using (FileStream stream = File.OpenRead(absolutePath))
                 {
-                    string contentDisposition = $"form-data; name=\"photo\"; filename=\"{Path.GetFileName(stream.Name)}\"";
-                    string contentType = $"image/{Path.GetExtension(stream.Name).Replace(".", "")}";
                     formFile = new FormFile(stream, 0, stream.Length, publicPath, Path.GetFileName(stream.Name))
                     {
-                        Headers = new HeaderDictionary()/*,
-                        ContentDisposition = contentDisposition,
-                        ContentType = contentType*/
+                        Headers = new HeaderDictionary()
                     };
                 }
             }

@@ -23,22 +23,22 @@ namespace Tech_Shop.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = RoleConstants.UserRole)]
+        [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult Get()
         {
-            int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            IQueryable<Order> orders = baseRepository.GetAll<Order>().Where(x => x.User.ID == loggedInUserId);
+            IQueryable<Order> orders = baseRepository.GetAll<Order>();
             if (orders.Count() == 0)
             {
                 return NotFound("No orders were found.");
             }
 
-            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders);
+            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders,
+                $"{Request.Scheme}://{Request.Host.Value}/");
             return Ok(orderViewModels);
         }
 
         [HttpGet("{id}", Name = $"{nameof(GetOrderByID)}")]
-        [Authorize(Roles = RoleConstants.UserRole)]
+        [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult GetOrderByID(int id)
         {
             Order order = baseRepository.GetByID<Order>(id);
@@ -47,22 +47,25 @@ namespace Tech_Shop.Controllers
                 return NotFound("Order was not found.");
             }
 
-            OrderViewModel orderViewModel = OrderModelViewModelMapper.MapOrderModelToViewModel(order);
+            OrderViewModel orderViewModel = OrderModelViewModelMapper.MapOrderModelToViewModel(order,
+                $"{Request.Scheme}://{Request.Host.Value}/");
             return Ok(orderViewModel);
         }
 
         [HttpGet]
-        [Authorize(Roles = RoleConstants.AdminRole)]
-        [Route($"{nameof(GetUsersOrders)}")]
-        public IActionResult GetUsersOrders()
+        [Authorize(Roles = RoleConstants.UserRole)]
+        [Route($"{nameof(GetLoggedInUserOrders)}")]
+        public IActionResult GetLoggedInUserOrders()
         {
-            IQueryable<Order> orders = baseRepository.GetAll<Order>();
+            int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            IQueryable<Order> orders = baseRepository.GetAll<Order>(x => x.User.ID == loggedInUserId);
             if (orders.Count() == 0)
             {
                 return NotFound("No orders were found.");
             }
 
-            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders);
+            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders,
+                $"{Request.Scheme}://{Request.Host.Value}/");
             return Ok(orderViewModels);
         }
 
@@ -70,7 +73,7 @@ namespace Tech_Shop.Controllers
         [Authorize(Roles = RoleConstants.UserRole)]
         public IActionResult Post([FromBody] CreateOrderViewModel createOrderViewModel)
         {
-            List<Product> productsForOrder = baseRepository.GetAll<Product>().Where(x => createOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
+            List<Product> productsForOrder = baseRepository.GetAll<Product>(x => createOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
             if (productsForOrder.Count == 0)
             {
                 return NotFound("No products for ordering were found.");

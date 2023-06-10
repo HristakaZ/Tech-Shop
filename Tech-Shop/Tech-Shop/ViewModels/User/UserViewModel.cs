@@ -15,7 +15,5 @@ namespace Tech_Shop.ViewModels.User
         public string PhoneNumber { get; set; }
 
         public string Role { get; set; }
-
-        public List<OrderViewModel> Orders { get; set; } = new List<OrderViewModel>();
     }
 }

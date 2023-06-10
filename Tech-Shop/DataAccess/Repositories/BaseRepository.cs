@@ -1,5 +1,6 @@
 ﻿using DataAccess.Contracts;
 using DataStructure.Models;
+using System.Linq.Expressions;
 
 namespace DataAccess.Repositories
 {
@@ -12,8 +13,13 @@ namespace DataAccess.Repositories
             this.applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<T> GetAll<T>() where T : BaseEntity
+        public IQueryable<T> GetAll<T>(Expression<Func<T, bool>>? filter = null) where T : BaseEntity
         {
+            if (filter != null)
+            {
+                return this.applicationDbContext.Set<T>().Where(filter);
+            }
+
             return this.applicationDbContext.Set<T>();
         }
 

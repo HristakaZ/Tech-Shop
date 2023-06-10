@@ -19,7 +19,6 @@ namespace Tech_Shop.Mappers.User
                     Name = user.Name,
                     Address = user.Address,
                     Email = user.Email,
-                    Orders = OrderModelViewModelMapper.MapOrderModelToViewModel(user.Orders.AsQueryable()),
                     PhoneNumber = user.PhoneNumber,
                     Role = user.IsAdmin ? RoleConstants.AdminRole : RoleConstants.UserRole
                 });
@@ -36,7 +35,6 @@ namespace Tech_Shop.Mappers.User
                 Address = user.Address,
                 Email = user.Email,
                 Name = user.Name,
-                Orders = OrderModelViewModelMapper.MapOrderModelToViewModel(user.Orders.AsQueryable()),
                 PhoneNumber = user.PhoneNumber,
                 Role = user.IsAdmin ? RoleConstants.AdminRole : RoleConstants.UserRole
             };

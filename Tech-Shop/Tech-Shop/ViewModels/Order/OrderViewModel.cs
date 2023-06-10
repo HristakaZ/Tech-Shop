@@ -1,5 +1,6 @@
 ﻿using DataStructure.Enums;
 using DataStructure.Models;
+using Tech_Shop.Mappers.Product;
 using Tech_Shop.ViewModels.Product;
 
 namespace Tech_Shop.ViewModels.Order
@@ -10,6 +11,6 @@ namespace Tech_Shop.ViewModels.Order
 
         public string Status { get; set; }
 
-        public List<string> Products { get; set; } = new List<string>();
+        public List<ProductPhotoViewModel> Products { get; set; } = new List<ProductPhotoViewModel>();
     }
 }
