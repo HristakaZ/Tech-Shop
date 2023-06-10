@@ -7,40 +7,36 @@
             </mat-form-field>
         </div>
 
-            <div>
-                <mat-form-field appearance="fill">
-                    <mat-label>Enter the review's rating</mat-label>
-                    <input matInput formControlName="rating">
-                </mat-form-field>
-                <span class="validationError" *ngIf="rating.errors?.['required'] && (rating.dirty || rating.touched)">
-                    Rating is required.
-                </span>
-                <span class="validationError" *ngIf="rating.errors?.['min'] && (rating.dirty || rating.touched)">
-                    Rating must have a minimum value of 1.
-                </span>
-                <span class="validationError" *ngIf="rating.errors?.['max'] && (rating.dirty || rating.touched)">
-                    Rating must have a maximum value of 5.
-                </span>
-                <span class="validationError" *ngIf="rating.errors?.['pattern'] && (rating.dirty || rating.touched)">
-                    Rating must be a number.
-                </span>
-            </div>
-        
-            <div>
-                <mat-form-field appearance="fill">
-                    <mat-label>Enter the review's comment</mat-label>
-                    <input matInput formControlName="comment">
-                </mat-form-field>
-            </div>
-        
-            <div>
-                <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
-                    <input matInput formControlName="productID">
-                </mat-form-field>
-            </div>
-        </mat-dialog-content>
-        <mat-dialog-actions align="end">
-            <button mat-button mat-dialog-close>Cancel</button>
-            <button mat-stroked-button color="accent" type="submit">Update</button>
-        </mat-dialog-actions>
-    </form>
+        <div>
+            <mat-label>Enter the review's rating</mat-label>
+            <br>
+            <br>
+            <ngb-rating [max]="5" [readonly]="false" formControlName="rating" matInput>
+                <ng-template let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100" [class.bad]="index <= 5">&#9733;</span>
+                </ng-template>
+            </ngb-rating>
+            <br>
+            <span class="validationError" *ngIf="rating.errors?.['required'] && (rating.dirty || rating.touched)">
+                Rating is required.
+            </span>
+        </div>
+
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Enter the review's comment</mat-label>
+                <input matInput formControlName="comment">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
+                <input matInput formControlName="productID">
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-stroked-button color="accent" type="submit">Update</button>
+    </mat-dialog-actions>
+</form>

@@ -3,16 +3,22 @@
     <mat-dialog-content class="mat-typography">
         <ng-container>
             <h2>Comment: {{review.comment}}</h2>
-            <h2>Rating: {{review.rating}}</h2>
+            <h2>Rating:
+                <ngb-rating [max]="5" [readonly]="true" [(rate)]="review.rating">
+                    <ng-template let-fill="fill" let-index="index">
+                        <span class="star" [class.filled]="fill === 100" [class.bad]="index <= 5">&#9733;</span>
+                    </ng-template>
+                </ngb-rating>
+            </h2>
         </ng-container>
         <div>
             <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
                 <input matInput formControlName="id">
             </mat-form-field>
         </div>
-        </mat-dialog-content>
-        <mat-dialog-actions align="end">
-            <button mat-button mat-dialog-close>Cancel</button>
-            <button mat-stroked-button color="accent" type="submit">Delete</button>
-        </mat-dialog-actions>
-    </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-stroked-button color="accent" type="submit">Delete</button>
+    </mat-dialog-actions>
+</form>

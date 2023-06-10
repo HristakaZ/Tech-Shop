@@ -1,0 +1,17 @@
+ngb-rating {
+    background: white;
+    outline: none !important;
+}
+
+.star {
+    font-size: 40px;
+    color: #b0c4de;
+}
+
+.bad {
+    color: rgb(196, 196, 191);
+}
+
+.filled.bad {
+    color: rgb(110, 226, 120);
+}

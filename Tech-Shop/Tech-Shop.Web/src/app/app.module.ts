@@ -46,6 +46,8 @@ import { UpdateReviewComponent } from './review/update-review/update-review.comp
 import { UpdateReviewDialogComponent } from './review/update-review/dialog/update-review-dialog/update-review-dialog.component';
 import { DeleteReviewComponent } from './review/delete-review/delete-review.component';
 import { DeleteReviewDialogComponent } from './review/delete-review/dialog/delete-review-dialog/delete-review-dialog.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +91,8 @@ import { DeleteReviewDialogComponent } from './review/delete-review/dialog/delet
     MatButtonModule,
     MatTableModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    NgbModule
   ],
   providers: [
     UserService,

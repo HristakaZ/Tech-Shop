@@ -36,10 +36,7 @@ export class CreateReviewDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createReviewForm = new FormGroup({
       rating: new FormControl('', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(5),
-        Validators.pattern("[0-9]+")
+        Validators.required
       ]),
       comment: new FormControl(''),
       productID: new FormControl('')

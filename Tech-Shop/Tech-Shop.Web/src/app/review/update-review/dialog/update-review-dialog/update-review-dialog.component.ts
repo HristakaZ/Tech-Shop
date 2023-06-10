@@ -43,10 +43,7 @@ export class UpdateReviewDialogComponent implements OnInit, OnDestroy {
     this.updateReviewForm = new FormGroup({
       id: new FormControl(''),
       rating: new FormControl('', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(5),
-        Validators.pattern("[0-9]+")
+        Validators.required
       ]),
       comment: new FormControl(''),
       productID: new FormControl('')

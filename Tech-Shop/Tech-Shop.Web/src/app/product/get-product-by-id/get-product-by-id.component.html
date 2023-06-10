@@ -29,7 +29,13 @@
 
         <ng-container matColumnDef="rating">
             <th mat-header-cell *matHeaderCellDef>Rating</th>
-            <td mat-cell *matCellDef="let review">{{review.rating}}</td>
+            <td mat-cell *matCellDef="let review">
+                <ngb-rating [max]="5" [readonly]="true" [(rate)]="review.rating">
+                    <ng-template let-fill="fill" let-index="index">
+                        <span class="star" [class.filled]="fill === 100" [class.bad]="index <= 5">&#9733;</span>
+                    </ng-template>
+                </ngb-rating>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="comment">
