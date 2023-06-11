@@ -1,6 +1,6 @@
+import { ApproveOrderDialogComponent } from './order/approve/dialog/approve-order-dialog/approve-order-dialog.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BackButtonComponent } from './utilities/back-button/back-button.component';
@@ -47,6 +47,9 @@ import { UpdateReviewDialogComponent } from './review/update-review/dialog/updat
 import { DeleteReviewComponent } from './review/delete-review/delete-review.component';
 import { DeleteReviewDialogComponent } from './review/delete-review/dialog/delete-review-dialog/delete-review-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GetAllOrdersComponent } from './order/get-all-orders/get-all-orders.component';
+import { OrderService } from './order/services/order.service';
+import { FinishOrderDialogComponent } from './order/finish/dialog/finish-order-dialog/finish-order-dialog.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +76,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     UpdateReviewComponent,
     UpdateReviewDialogComponent,
     DeleteReviewComponent,
-    DeleteReviewDialogComponent
+    DeleteReviewDialogComponent,
+    GetAllOrdersComponent,
+    ApproveOrderDialogComponent,
+    FinishOrderDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -101,6 +107,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CategoryService,
     ProductService,
     ReviewService,
+    OrderService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} }
   ],

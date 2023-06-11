@@ -5,5 +5,4 @@ export class User {
     address!: string;
     phoneNumber!: string;
     role!: string;
-    //TO DO: add later when you complete the orders orders!: Order[];
 }

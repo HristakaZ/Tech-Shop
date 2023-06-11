@@ -2,6 +2,7 @@
 using Tech_Shop.Helpers;
 using Tech_Shop.Mappers.Product;
 using Tech_Shop.ViewModels.Order;
+using Tech_Shop.ViewModels.User;
 
 namespace Tech_Shop.Mappers.Order
 {
@@ -19,8 +20,8 @@ namespace Tech_Shop.Mappers.Order
                     productPhotoViewModels.Add(new ProductPhotoViewModel()
                     {
                         ProductName = product.Name,
-                        Photo = !string.IsNullOrEmpty(product.ImagePath) ? ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl)
-                                                                         : null
+                        Photo = ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl),
+                        ImagePath = product.ImagePath
                     });
                 }
                 orderViewModels.Add(new OrderViewModel
@@ -28,7 +29,13 @@ namespace Tech_Shop.Mappers.Order
                     ID = order.ID,
                     Address = order.Address,
                     Status = order.Status.ToString(),
-                    Products = productPhotoViewModels
+                    Products = productPhotoViewModels,
+                    User = new UserViewModel()
+                    {
+                        Email = order.User.Email,
+                        Name = order.User.Name,
+                        PhoneNumber = order.User.PhoneNumber
+                    }
                 });
                 productPhotoViewModels = new List<ProductPhotoViewModel>();
             }
@@ -45,8 +52,8 @@ namespace Tech_Shop.Mappers.Order
                 productPhotoViewModels.Add(new ProductPhotoViewModel()
                 {
                     ProductName = product.Name,
-                    Photo = !string.IsNullOrEmpty(product.ImagePath) ? ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl)
-                                                                     : null
+                    Photo = ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl),
+                    ImagePath = product.ImagePath
                 });
             }
             return new OrderViewModel()
@@ -54,7 +61,13 @@ namespace Tech_Shop.Mappers.Order
                 ID = order.ID,
                 Address = order.Address,
                 Status = order.Status.ToString(),
-                Products = productPhotoViewModels
+                Products = productPhotoViewModels,
+                User = new UserViewModel()
+                {
+                    Email = order.User.Email,
+                    Name = order.User.Name,
+                    PhoneNumber = order.User.PhoneNumber
+                }
             };
         }
 

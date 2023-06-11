@@ -5,5 +5,7 @@
         public string ProductName { get; set; }
 
         public IFormFile? Photo { get; set; }
+
+        public string? ImagePath { get; set; }
     }
 }

@@ -73,8 +73,10 @@ namespace Tech_Shop.Controllers
         [Authorize(Roles = RoleConstants.UserRole)]
         public IActionResult Post([FromBody] CreateOrderViewModel createOrderViewModel)
         {
-            List<Product> productsForOrder = baseRepository.GetAll<Product>(x => createOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
-            if (productsForOrder.Count == 0)
+            List<Product> productsForOrder = baseRepository.GetAll<Product>(
+                x => createOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
+            List<Product> productsOutOfStock = productsForOrder.Where(x => x.Quantity == 0).ToList();
+            if (productsForOrder.Count == 0 || productsOutOfStock.Count > 0)
             {
                 return NotFound("No products for ordering were found.");
             }
@@ -91,7 +93,7 @@ namespace Tech_Shop.Controllers
         [HttpPost]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Approve)}")]
-        public IActionResult Approve(int id)
+        public IActionResult Approve([FromBody] int id)
         {
             Order order = baseRepository.GetByID<Order>(id);
 
@@ -100,15 +102,19 @@ namespace Tech_Shop.Controllers
                 return NotFound("Order was not found.");
             }
 
-            order.Status = OrderStatus.Approved;
-            baseRepository.Update<Order>(order);
+            if (order.Status == OrderStatus.Initiated)
+            {
+                order.Status = OrderStatus.Approved;
+                baseRepository.Update<Order>(order);
+            }
+
             return Ok("Order was approved.");
         }
 
         [HttpPost]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Finish)}")]
-        public IActionResult Finish(int id)
+        public IActionResult Finish([FromBody] int id)
         {
             Order order = baseRepository.GetByID<Order>(id);
 
@@ -117,14 +123,17 @@ namespace Tech_Shop.Controllers
                 return NotFound("Order was not found.");
             }
 
-            foreach (Product productInOrder in order.Products)
+            if (order.Status == OrderStatus.Approved)
             {
-                productInOrder.Quantity--;
-                baseRepository.Update<Product>(productInOrder);
+                foreach (Product productInOrder in order.Products)
+                {
+                    productInOrder.Quantity--;
+                    baseRepository.Update<Product>(productInOrder);
+                }
+                order.Status = OrderStatus.Finished;
+                baseRepository.Update<Order>(order);
             }
 
-            order.Status = OrderStatus.Finished;
-            baseRepository.Update<Order>(order);
             return Ok("Order was finished.");
         }
 

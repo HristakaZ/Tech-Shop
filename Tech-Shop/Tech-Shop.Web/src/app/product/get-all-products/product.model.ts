@@ -10,5 +10,4 @@ export class Product {
     photo?: File;
     category: Category = new Category();
     reviews: Review[] = [];
-    //TO DO: afterwards add reviews
 }
