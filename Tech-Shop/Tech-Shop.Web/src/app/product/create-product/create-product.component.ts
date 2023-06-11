@@ -18,7 +18,7 @@ export class CreateProductComponent implements OnInit, OnDestroy {
   createProductForm!: FormGroup;
   subscriptions: Subscription[] = [];
   categories!: Category[];
-  selectedFile?: File;
+  selectedFile?: File | null;
   url?: string | ArrayBuffer | null | undefined;
 
   get name(): AbstractControl {
@@ -61,7 +61,8 @@ export class CreateProductComponent implements OnInit, OnDestroy {
       ]),
       categoryID: new FormControl('', [
         Validators.required
-      ])
+      ]),
+      photo: new FormControl('')
     });
 
     this.categoryService.$getAll().subscribe((categories) => {
@@ -78,6 +79,10 @@ export class CreateProductComponent implements OnInit, OnDestroy {
   }
 
   createProduct(): void {
+    if (!this.selectedFile) {
+      this.createProductForm.controls['photo'].setErrors(null);
+    }
+
     if (!this.createProductForm.invalid) {
       let createProductModel: CreateProductModel = new CreateProductModel(
         this.createProductForm.value.name,
@@ -104,13 +109,33 @@ export class CreateProductComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] ?? null;
-
     if (this.selectedFile) {
-      let reader: FileReader = new FileReader();
-      reader.readAsDataURL(this.selectedFile);
-      reader.onload = (event) => {
-        this.url = event.target?.result;
-      };
+      if (this.isFileTypeValid(this.selectedFile.type)) {
+        let reader: FileReader = new FileReader();
+        reader.readAsDataURL(this.selectedFile);
+        reader.onload = (event) => {
+          this.url = event.target?.result;
+        };
+        this.createProductForm.controls['photo'].setErrors(null);
+      }
+      else {
+        this.createProductForm.controls['photo'].setErrors({ 'incorrect': true });
+        this.url = null;
+        this.selectedFile = null;
+      }
     }
+    else {
+      this.createProductForm.controls['photo'].setErrors(null);
+      this.url = null;
+    }
+  }
+
+  isFileTypeValid(fileType: string): Boolean {
+    let allowedFileTypes: string[] = ['image/jpg', 'image/jpeg', 'image/png'];
+    if (allowedFileTypes.find(allowedFileType => allowedFileType === fileType)) {
+      return true;
+    }
+
+    return false;
   }
 }

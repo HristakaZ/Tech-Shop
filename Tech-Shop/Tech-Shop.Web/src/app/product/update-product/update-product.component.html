@@ -60,15 +60,22 @@
             Category is required.
         </span>
     </div>
-    <img [src]="url" alt="No photo provided.">
-    <br>
-    <br>
-    <button type="button" mat-raised-button (click)="fileInput.click()">Choose Photo(optional)</button>
-    <input hidden (change)="onFileSelected($event)" #fileInput type="file">
-    <span class="file-name" *ngIf="selectedFile">{{selectedFile.name}}</span>
-    <br>
-    <br>
-    
+
+    <div>
+        <img [src]="url" alt="No photo provided.">
+        <br>
+        <br>
+        <button type="button" mat-raised-button (click)="fileInput.click()">Choose Photo(optional)</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+        <span class="file-name" *ngIf="selectedFile && !photo.errors?.['incorrect']">{{selectedFile.name}}</span>
+        <br>
+        <br>
+        <span class="validationError" *ngIf="photo.errors?.['incorrect']">
+            Photo does not have a valid file extension.
+            The valid file extensions are ".jpg", ".jpeg" and ".png".
+        </span>
+    </div>
+
     <div>
         <button mat-stroked-button color="accent" type="submit">Update</button>
         <br>

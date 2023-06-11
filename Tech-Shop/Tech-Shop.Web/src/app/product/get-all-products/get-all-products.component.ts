@@ -15,7 +15,6 @@ export class GetAllProductsComponent implements OnInit, OnDestroy {
   public columnsToDisplay = ['name', 'quantity', 'price', 'imagePath', 'category', 'updateButton', 'deleteButton'];
   subscription!: Subscription;
   userRole!: string;
-  baseUrl = apiConfig.baseUrl;
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {

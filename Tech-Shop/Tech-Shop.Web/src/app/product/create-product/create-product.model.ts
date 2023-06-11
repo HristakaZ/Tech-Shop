@@ -3,7 +3,7 @@ export class CreateProductModel {
         quantity: number,
         price: number,
         categoryID: number,
-        photo?: File) {
+        photo?: File | null) {
             this.name = name;
             this.quantity = quantity;
             this.price = price;
@@ -14,5 +14,5 @@ export class CreateProductModel {
     quantity!: number;
     price!: number;
     categoryID!: number;
-    photo?: File;
+    photo?: File | null;
 }
