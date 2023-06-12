@@ -28,7 +28,7 @@ namespace Tech_Shop.Mappers.Order
                 {
                     ID = order.ID,
                     Address = order.Address,
-                    Status = order.Status.ToString(),
+                    Status = order.Status.ToString().Replace('_', ' '),
                     Products = productPhotoViewModels,
                     User = new UserViewModel()
                     {
@@ -60,7 +60,7 @@ namespace Tech_Shop.Mappers.Order
             {
                 ID = order.ID,
                 Address = order.Address,
-                Status = order.Status.ToString(),
+                Status = order.Status.ToString().Replace('_', ' '),
                 Products = productPhotoViewModels,
                 User = new UserViewModel()
                 {

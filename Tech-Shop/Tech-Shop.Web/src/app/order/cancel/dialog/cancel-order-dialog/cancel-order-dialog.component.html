@@ -1,6 +1,6 @@
-<form [formGroup]="approveOrderForm" (ngSubmit)="approveOrder()">
-    <h2 mat-dialog-title>Approve order</h2>
-    <h3>Are you sure you want to approve this order?</h3>
+<form [formGroup]="cancelOrderForm" (ngSubmit)="cancelOrder()">
+    <h2 mat-dialog-title>Cancel order</h2>
+    <h3>Are you sure you want to cancel this order?</h3>
     <mat-dialog-content class="mat-typography">
         <div>
             <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
@@ -10,6 +10,6 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Close</button>
-        <button mat-stroked-button color="accent" type="submit">Approve</button>
+        <button mat-stroked-button color="accent" type="submit">Cancel</button>
     </mat-dialog-actions>
 </form>

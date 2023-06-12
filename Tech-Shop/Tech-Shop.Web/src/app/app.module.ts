@@ -50,6 +50,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GetAllOrdersComponent } from './order/get-all-orders/get-all-orders.component';
 import { OrderService } from './order/services/order.service';
 import { FinishOrderDialogComponent } from './order/finish/dialog/finish-order-dialog/finish-order-dialog.component';
+import { MyOrdersComponent } from './order/my-orders/my-orders.component';
+import { CancelOrderDialogComponent } from './order/cancel/dialog/cancel-order-dialog/cancel-order-dialog.component';
+import { ReturnOrderDialogComponent } from './order/return/dialog/return-order-dialog/return-order-dialog.component';
+import { ApproveReturnDialogComponent } from './order/return/dialog/approve-return-dialog/approve-return-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +83,11 @@ import { FinishOrderDialogComponent } from './order/finish/dialog/finish-order-d
     DeleteReviewDialogComponent,
     GetAllOrdersComponent,
     ApproveOrderDialogComponent,
-    FinishOrderDialogComponent
+    FinishOrderDialogComponent,
+    MyOrdersComponent,
+    CancelOrderDialogComponent,
+    ReturnOrderDialogComponent,
+    ApproveReturnDialogComponent
   ],
   imports: [
     BrowserModule,

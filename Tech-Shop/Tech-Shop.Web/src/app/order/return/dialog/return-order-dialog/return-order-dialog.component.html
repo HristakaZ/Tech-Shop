@@ -1,0 +1,25 @@
+<form [formGroup]="returnOrderForm" (ngSubmit)="returnOrder()">
+    <h2 mat-dialog-title>Return order</h2>
+    <h3>Are you sure you want to return this order?</h3>
+    <mat-dialog-content class="mat-typography">
+        <div>
+            <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
+                <input matInput formControlName="id">
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Enter the address of return</mat-label>
+                <input matInput formControlName="address">
+            </mat-form-field>
+            <span class="validationError" *ngIf="address.errors?.['required'] && (address.dirty || address.touched)">
+                Address is required.
+            </span>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Close</button>
+        <button mat-stroked-button color="accent" type="submit">Return</button>
+    </mat-dialog-actions>
+</form>

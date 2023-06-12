@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,7 +10,7 @@ import { OrderService } from 'src/app/order/services/order.service';
   templateUrl: './approve-order-dialog.component.html',
   styleUrls: ['./approve-order-dialog.component.css']
 })
-export class ApproveOrderDialogComponent implements OnInit {
+export class ApproveOrderDialogComponent implements OnInit, OnDestroy {
   approveOrderForm!: FormGroup;
   isIdInputHidden: boolean = true;
   subscription!: Subscription;

@@ -38,7 +38,7 @@ namespace Tech_Shop.Controllers
         }
 
         [HttpGet("{id}", Name = $"{nameof(GetOrderByID)}")]
-        [Authorize(Roles = RoleConstants.AdminRole)]
+        [Authorize]
         public IActionResult GetOrderByID(int id)
         {
             Order order = baseRepository.GetByID<Order>(id);
@@ -90,7 +90,7 @@ namespace Tech_Shop.Controllers
             return Created(uri, ID.ToString());
         }
 
-        [HttpPost]
+        [HttpPut]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Approve)}")]
         public IActionResult Approve([FromBody] int id)
@@ -111,7 +111,7 @@ namespace Tech_Shop.Controllers
             return Ok("Order was approved.");
         }
 
-        [HttpPost]
+        [HttpPut]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Finish)}")]
         public IActionResult Finish([FromBody] int id)
@@ -137,9 +137,10 @@ namespace Tech_Shop.Controllers
             return Ok("Order was finished.");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize(Roles = RoleConstants.UserRole)]
-        public IActionResult Cancel(int id)
+        [Route($"{nameof(Cancel)}")]
+        public IActionResult Cancel([FromBody] int id)
         {
             Order orderToCancel = baseRepository.GetByID<Order>(id);
 
@@ -151,17 +152,60 @@ namespace Tech_Shop.Controllers
                 return NotFound("Order was not found.");
             }
 
-            if (orderToCancel.Status == OrderStatus.Finished)
+            if (orderToCancel.Status != OrderStatus.Finished)
             {
-                foreach (Product productInOrder in orderToCancel.Products)
+                baseRepository.Delete<Order>(orderToCancel);
+            }
+
+            return Ok("Order was cancelled.");
+        }
+
+        [HttpPut]
+        [Authorize(Roles = RoleConstants.UserRole)]
+        [Route($"{nameof(RequestReturn)}")]
+        public IActionResult RequestReturn([FromBody] ReturnOrderViewModel returnOrderViewModel)
+        {
+            Order orderToReturn = baseRepository.GetByID<Order>(returnOrderViewModel.ID);
+
+            if (orderToReturn == null)
+            {
+                return NotFound("Order was not found.");
+            }
+
+            if (orderToReturn.Status == OrderStatus.Finished)
+            {
+                orderToReturn.Address = returnOrderViewModel.Address;
+                orderToReturn.Status = OrderStatus.Awaiting_Return;
+                baseRepository.Update<Order>(orderToReturn);
+            }
+
+            return Ok("Order is awaiting return.");
+        }
+
+        [HttpPut]
+        [Authorize(Roles = RoleConstants.AdminRole)]
+        [Route($"{nameof(Return)}")]
+        public IActionResult Return([FromBody] int id)
+        {
+            Order orderToReturn = baseRepository.GetByID<Order>(id);
+
+            if (orderToReturn == null)
+            {
+                return NotFound("Order was not found.");
+            }
+
+            if (orderToReturn.Status == OrderStatus.Awaiting_Return)
+            {
+                foreach (Product productInOrder in orderToReturn.Products)
                 {
                     productInOrder.Quantity++;
                     baseRepository.Update<Product>(productInOrder);
                 }
+                orderToReturn.Status = OrderStatus.Returned;
+                baseRepository.Update<Order>(orderToReturn);
             }
 
-            baseRepository.Delete<Order>(orderToCancel);
-            return Ok("Order was cancelled.");
+            return Ok("Order is returned.");
         }
     }
 }

@@ -26,6 +26,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService, private loginSnackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
+    if (localStorage.getItem('token')) {
+      this.router.navigateByUrl('product/getall');
+    }
+
     this.loginForm = new FormGroup({
       email: new FormControl(''),
       password: new FormControl('')
@@ -51,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.subscription) {
+    if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }

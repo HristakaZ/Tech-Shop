@@ -1,4 +1,5 @@
 ﻿using DataAccess.Contracts;
+using DataStructure.Enums;
 using DataStructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -141,7 +142,7 @@ namespace Tech_Shop.Controllers
             Product product = baseRepository.GetByID<Product>(id);
             if (product == null)
             {
-                return NotFound("Product was not found");
+                return NotFound("Product was not found.");
             }
 
             baseRepository.Delete<Product>(product);

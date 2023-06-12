@@ -1,5 +1,5 @@
 <div>
-    <h1>Orders</h1>
+    <h1>My Orders</h1>
 </div>
 
 <table mat-table [dataSource]="orders" class="mat-elevation-z8">
@@ -44,16 +44,13 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let order">
             <div>
-                <button mat-raised-button *ngIf="order.status === 'Initiated'"
-                    (click)="openApproveOrderDialog(order.id)">
-                    Approve Order
+                <button mat-raised-button *ngIf="order.status === 'Initiated' || order.status === 'Approved'"
+                    (click)="openCancelOrderDialog(order.id)">
+                    Cancel Order
                 </button>
-                <button mat-raised-button *ngIf="order.status === 'Approved'" (click)="openFinishOrderDialog(order.id)">
-                    Finish Order
-                </button>
-                <button mat-raised-button *ngIf="order.status === 'Awaiting Return'"
-                    (click)="openApproveReturnOfOrderDialog(order.id)">
-                    Approve Return
+                <button mat-raised-button *ngIf="order.status === 'Finished'"
+                    (click)="openReturnOrderDialog(order.id)">
+                    Return Order
                 </button>
             </div>
         </td>
