@@ -54,6 +54,7 @@ import { MyOrdersComponent } from './order/my-orders/my-orders.component';
 import { CancelOrderDialogComponent } from './order/cancel/dialog/cancel-order-dialog/cancel-order-dialog.component';
 import { ReturnOrderDialogComponent } from './order/return/dialog/return-order-dialog/return-order-dialog.component';
 import { ApproveReturnDialogComponent } from './order/return/dialog/approve-return-dialog/approve-return-dialog.component';
+import { PlaceOrderComponent } from './order/place-order/place-order.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { ApproveReturnDialogComponent } from './order/return/dialog/approve-retu
     MyOrdersComponent,
     CancelOrderDialogComponent,
     ReturnOrderDialogComponent,
-    ApproveReturnDialogComponent
+    ApproveReturnDialogComponent,
+    PlaceOrderComponent
   ],
   imports: [
     BrowserModule,

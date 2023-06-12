@@ -19,6 +19,7 @@ import { DeleteProductComponent } from './product/delete-product/delete-product.
 import { GetProductByIdComponent } from './product/get-product-by-id/get-product-by-id.component';
 import { GetAllOrdersComponent } from './order/get-all-orders/get-all-orders.component';
 import { MyOrdersComponent } from './order/my-orders/my-orders.component';
+import { PlaceOrderComponent } from './order/place-order/place-order.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -38,7 +39,8 @@ const routes: Routes = [
   { path: 'product/delete/:id', component: DeleteProductComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
   { path: 'product/getById/:id', component: GetProductByIdComponent, canActivate: [AuthenticationAuthorizationGuard] },
   { path: 'order/getall', component: GetAllOrdersComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
-  { path: 'order/myorders', component: MyOrdersComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.userRole } }
+  { path: 'order/myorders', component: MyOrdersComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.userRole } },
+  { path: 'order/placeorder', component: PlaceOrderComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.userRole } }
 ];
 
 @NgModule({

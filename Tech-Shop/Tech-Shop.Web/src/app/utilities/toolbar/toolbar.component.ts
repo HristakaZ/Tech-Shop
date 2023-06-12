@@ -12,6 +12,7 @@ export class ToolbarComponent implements OnInit, DoCheck {
   decodedToken: any;
   email!: string;
   userId!: number;
+  cartProductCount?: number;
 
   constructor() {
   }
@@ -21,6 +22,7 @@ export class ToolbarComponent implements OnInit, DoCheck {
     this.setUserRole();
     this.setEmail();
     this.setUserId();
+    this.setCartProductCount();
   }
 
   ngDoCheck(): void {
@@ -28,10 +30,11 @@ export class ToolbarComponent implements OnInit, DoCheck {
     this.setUserRole();
     this.setEmail();
     this.setUserId();
+    this.setCartProductCount();
   }
 
   decodeToken(): any {
-    if(localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
       return jwt_decode(localStorage.getItem('token')!);
     }
   }
@@ -55,7 +58,7 @@ export class ToolbarComponent implements OnInit, DoCheck {
   }
 
   setUserId(): void {
-    if(localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
       this.userId = parseInt(this.decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
     }
     else {
@@ -63,4 +66,10 @@ export class ToolbarComponent implements OnInit, DoCheck {
     }
   }
 
+  setCartProductCount(): void {
+    if (localStorage.getItem('productIDs')!) {
+      let productIds: number[] = JSON.parse(localStorage.getItem('productIDs')!);
+      this.cartProductCount = productIds.length;
+    }
+  }
 }

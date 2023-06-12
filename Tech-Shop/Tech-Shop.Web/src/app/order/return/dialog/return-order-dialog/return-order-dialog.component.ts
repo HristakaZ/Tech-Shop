@@ -52,7 +52,6 @@ export class ReturnOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   returnOrder(): void {
-    debugger;
     if (!this.returnOrderForm.invalid) {
       let returnOrderModel: ReturnOrderModel = new ReturnOrderModel(this.returnOrderForm.value.id,
         this.returnOrderForm.value.address);

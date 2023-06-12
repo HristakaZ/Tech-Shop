@@ -2,7 +2,7 @@
 
 namespace Tech_Shop.ViewModels.Order
 {
-    public class CreateOrderViewModel
+    public class PlaceOrderViewModel
     {
         [Required]
         public string Address { get; set; }

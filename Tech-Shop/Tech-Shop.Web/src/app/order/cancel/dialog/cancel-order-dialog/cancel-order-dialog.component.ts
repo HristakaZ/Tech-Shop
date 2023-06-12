@@ -25,7 +25,6 @@ export class CancelOrderDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    debugger;
     console.log(this.data);
     this.cancelOrderForm = new FormGroup({
       id: new FormControl('')
@@ -37,7 +36,6 @@ export class CancelOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   cancelOrder(): void {
-    debugger;
     if (!this.cancelOrderForm.invalid) {
       this.subscription = this.orderService.$cancel(this.cancelOrderForm.value.id).subscribe({
         next: (response) => {

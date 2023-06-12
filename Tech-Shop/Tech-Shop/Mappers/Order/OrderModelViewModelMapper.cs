@@ -71,13 +71,13 @@ namespace Tech_Shop.Mappers.Order
             };
         }
 
-        public static DataStructure.Models.Order MapCreateOrderViewModelToModel(CreateOrderViewModel createOrderViewModel,
+        public static DataStructure.Models.Order MapPlaceOrderViewModelToModel(PlaceOrderViewModel placeOrderViewModel,
             List<DataStructure.Models.Product> productsForOrder,
             DataStructure.Models.User userForOrder)
         {
             return new DataStructure.Models.Order()
             {
-                Address = createOrderViewModel.Address,
+                Address = placeOrderViewModel.Address,
                 Products = productsForOrder,
                 Status = OrderStatus.Initiated,
                 User = userForOrder

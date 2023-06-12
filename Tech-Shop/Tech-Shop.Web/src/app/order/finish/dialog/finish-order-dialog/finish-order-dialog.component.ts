@@ -25,7 +25,6 @@ export class FinishOrderDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    debugger;
     console.log(this.data);
     this.finishOrderForm = new FormGroup({
       id: new FormControl('')
@@ -37,7 +36,6 @@ export class FinishOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   finishOrder(): void {
-    debugger;
     if (!this.finishOrderForm.invalid) {
       this.subscription = this.orderService.$finish(this.finishOrderForm.value.id).subscribe({
         next: (response) => {

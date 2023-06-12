@@ -25,7 +25,6 @@ export class ApproveOrderDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
-    debugger;
     console.log(this.data);
     this.approveOrderForm = new FormGroup({
       id: new FormControl('')
@@ -37,7 +36,6 @@ export class ApproveOrderDialogComponent implements OnInit, OnDestroy {
   }
 
   approveOrder(): void {
-    debugger;
     if (!this.approveOrderForm.invalid) {
       this.subscription = this.orderService.$approve(this.approveOrderForm.value.id).subscribe({
         next: (response) => {

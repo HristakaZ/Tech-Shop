@@ -33,7 +33,6 @@ export class MyOrdersComponent implements OnInit {
   }
 
   openCancelOrderDialog(orderID: number) {
-    debugger;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       orderID: orderID
@@ -42,7 +41,6 @@ export class MyOrdersComponent implements OnInit {
   }
 
   openReturnOrderDialog(orderID: number) {
-    debugger;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       orderID: orderID

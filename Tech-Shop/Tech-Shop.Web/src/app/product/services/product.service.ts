@@ -28,6 +28,14 @@ export class ProductService {
     });
   }
 
+  public $getByIds(productIDs: number[]): Observable<Product[]> {
+    return this.httpClient.post<Product[]>(`${this.baseUrl}/api/Product/GetProductsByIDs`, productIDs, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    });
+  }
+
   public $create(createProductModel: CreateProductModel): Observable<Object> {
     let formData: FormData = new FormData();
     formData.append('name', createProductModel.name);

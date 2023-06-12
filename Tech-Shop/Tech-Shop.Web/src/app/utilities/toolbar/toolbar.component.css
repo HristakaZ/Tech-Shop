@@ -1,0 +1,13 @@
+html, body {
+    vertical-align: middle;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#shoppingCart {
+    color: red;
+    transform: scale(1.3);
+}

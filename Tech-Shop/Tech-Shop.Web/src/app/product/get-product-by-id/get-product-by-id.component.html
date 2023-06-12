@@ -14,6 +14,20 @@
     <h2>Price: {{product.price}}</h2>
     <div class="imageContainer"><img [src]="product.photo?.name" alt="No photo provided."></div>
     <h2>Category: {{product.category.name}}</h2>
+
+    <ng-container matColumnDef="addToCartButton">
+        <div>
+            <div *ngIf="userRole === 'User'">
+                <button mat-raised-button (click)="addToCart(product.id)" *ngIf="product.quantity > 0" disabled="false">
+                    Add To Cart
+                </button>
+                <button mat-raised-button (click)="addToCart(product.id)" *ngIf="product.quantity === 0"
+                    disabled="true">
+                    Add To Cart
+                </button>
+            </div>
+        </div>
+    </ng-container>
 </div>
 
 <br>

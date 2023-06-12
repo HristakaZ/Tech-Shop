@@ -71,10 +71,11 @@ namespace Tech_Shop.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleConstants.UserRole)]
-        public IActionResult Post([FromBody] CreateOrderViewModel createOrderViewModel)
+        [Route($"{nameof(Place)}")]
+        public IActionResult Place([FromBody] PlaceOrderViewModel placeOrderViewModel)
         {
             List<Product> productsForOrder = baseRepository.GetAll<Product>(
-                x => createOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
+                x => placeOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
             List<Product> productsOutOfStock = productsForOrder.Where(x => x.Quantity == 0).ToList();
             if (productsForOrder.Count == 0 || productsOutOfStock.Count > 0)
             {
@@ -82,7 +83,7 @@ namespace Tech_Shop.Controllers
             }
             int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             User userForOrder = baseRepository.GetByID<User>(loggedInUserId);
-            Order order = OrderModelViewModelMapper.MapCreateOrderViewModelToModel(createOrderViewModel, productsForOrder, userForOrder);
+            Order order = OrderModelViewModelMapper.MapPlaceOrderViewModelToModel(placeOrderViewModel, productsForOrder, userForOrder);
 
             int ID = baseRepository.Create<Order>(order);
             Uri uri = new Uri(Url.Link($"{nameof(GetOrderByID)}", new { Id = ID }));
@@ -90,7 +91,7 @@ namespace Tech_Shop.Controllers
             return Created(uri, ID.ToString());
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Approve)}")]
         public IActionResult Approve([FromBody] int id)
@@ -111,7 +112,7 @@ namespace Tech_Shop.Controllers
             return Ok("Order was approved.");
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Finish)}")]
         public IActionResult Finish([FromBody] int id)
@@ -160,7 +161,7 @@ namespace Tech_Shop.Controllers
             return Ok("Order was cancelled.");
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Authorize(Roles = RoleConstants.UserRole)]
         [Route($"{nameof(RequestReturn)}")]
         public IActionResult RequestReturn([FromBody] ReturnOrderViewModel returnOrderViewModel)
@@ -182,7 +183,7 @@ namespace Tech_Shop.Controllers
             return Ok("Order is awaiting return.");
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Authorize(Roles = RoleConstants.AdminRole)]
         [Route($"{nameof(Return)}")]
         public IActionResult Return([FromBody] int id)

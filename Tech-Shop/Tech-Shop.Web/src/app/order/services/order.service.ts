@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Order } from '../get-all-orders/order.model';
 import { Observable, Subject, tap } from 'rxjs';
 import { ReturnOrderModel } from '../return/dialog/return-order-dialog/return-order.model';
+import { PlaceOrderModel } from '../place-order/place-order.model';
 
 @Injectable()
 export class OrderService {
@@ -37,7 +38,7 @@ export class OrderService {
   }
 
   public $approve(id: number): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/api/Order/Approve`, id, {
+    return this.httpClient.patch(`${this.baseUrl}/api/Order/Approve`, id, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
@@ -48,7 +49,7 @@ export class OrderService {
   };
 
   public $finish(id: number): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/api/Order/Finish`, id, {
+    return this.httpClient.patch(`${this.baseUrl}/api/Order/Finish`, id, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
@@ -71,7 +72,7 @@ export class OrderService {
   };
 
   public $requestReturn(returnOrderModel: ReturnOrderModel): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/api/Order/RequestReturn`, returnOrderModel, {
+    return this.httpClient.patch(`${this.baseUrl}/api/Order/RequestReturn`, returnOrderModel, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
@@ -82,7 +83,7 @@ export class OrderService {
   };
 
   public $return(id: number): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/api/Order/Return`, id, {
+    return this.httpClient.patch(`${this.baseUrl}/api/Order/Return`, id, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
@@ -92,44 +93,12 @@ export class OrderService {
     }));
   };
 
-  // public $create(createProductModel: CreateProductModel): Observable<Object> {
-  //   let formData: FormData = new FormData();
-  //   formData.append('name', createProductModel.name);
-  //   formData.append('quantity', createProductModel.quantity.toString());
-  //   formData.append('price', createProductModel.price.toString());
-  //   formData.append('categoryID', createProductModel.categoryID.toString());
-  //   formData.append('photo', createProductModel.photo as Blob);
-  //   return this.httpClient.post(`${this.baseUrl}/api/Product`, formData, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-  //     }),
-  //     responseType: 'text'
-  //   });
-  // }
-
-  // public $update(id: number, updateProductModel: UpdateProductModel): Observable<Object> {
-  //   let formData: FormData = new FormData();
-  //   formData.append('name', updateProductModel.name);
-  //   formData.append('quantity', updateProductModel.quantity.toString());
-  //   formData.append('price', updateProductModel.price.toString());
-  //   formData.append('categoryID', updateProductModel.categoryID.toString());
-  //   formData.append('photo', updateProductModel.photo as Blob);
-  //   return this.httpClient.put(`${this.baseUrl}/api/Product/${id}`, formData, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-  //     }),
-  //     responseType: 'text'
-  //   });
-  // }
-
-  // public $delete(id: number): Observable<Object> {
-  //   return this.httpClient.delete(`${this.baseUrl}/api/Product/${id}`, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-  //     }),
-  //     responseType: 'text'
-  //   });
-  // }
-
-  //TO DO: add the other endpoints for the order component from the .net order controller
+  public $place(placeOrderModel: PlaceOrderModel): Observable<Object> {
+    return this.httpClient.post(`${this.baseUrl}/api/Order/Place`, placeOrderModel, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }),
+      responseType: 'text'
+    });
+  }
 }

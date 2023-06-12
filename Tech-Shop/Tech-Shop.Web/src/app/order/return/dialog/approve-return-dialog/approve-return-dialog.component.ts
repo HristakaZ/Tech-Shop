@@ -41,7 +41,6 @@ export class ApproveReturnDialogComponent implements OnInit, OnDestroy {
   }
 
   approveReturnOfOrder(): void {
-    debugger;
     if (!this.approveReturnOfOrderForm.invalid) {
       this.subscriptions.push(this.orderService.$return(this.order.id).subscribe({
         next: (response) => {

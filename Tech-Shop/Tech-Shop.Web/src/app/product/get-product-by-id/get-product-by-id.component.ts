@@ -5,6 +5,7 @@ import { ProductService } from '../services/product.service';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { ReviewService } from 'src/app/review/services/review.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-get-product-by-id',
@@ -20,8 +21,9 @@ export class GetProductByIdComponent implements OnInit, OnDestroy {
   userId!: number;
   public columnsToDisplay = ['user', 'rating', 'comment', 'updateButton', 'deleteButton'];
   constructor(private productService: ProductService,
-     private router: Router,
-     private reviewService: ReviewService) { }
+    private router: Router,
+    private reviewService: ReviewService,
+    private addToCartSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getProductById();
@@ -43,7 +45,7 @@ export class GetProductByIdComponent implements OnInit, OnDestroy {
   }
 
   setUserId(): void {
-    if(localStorage.getItem('token')) {
+    if (localStorage.getItem('token')) {
       let decodedToken: any = jwt_decode(localStorage.getItem('token')!);
       this.userId = parseInt(decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
     }
@@ -56,6 +58,20 @@ export class GetProductByIdComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.productService.$getById(this.id).subscribe((product) => {
       this.product = product;
     }));
+  }
+
+  addToCart(id: number): void {
+    let productIDs: number[] = JSON.parse(localStorage.getItem('productIDs')!);
+    if (productIDs) {
+      productIDs.push(id);
+      localStorage.setItem('productIDs', JSON.stringify(productIDs));
+    }
+    else {
+      localStorage.setItem('productIDs', JSON.stringify([id]));
+    }
+    this.addToCartSnackBar.open('Successfully added product to cart!', 'X', {
+      duration: 3000
+    });
   }
 
   ngOnDestroy(): void {
