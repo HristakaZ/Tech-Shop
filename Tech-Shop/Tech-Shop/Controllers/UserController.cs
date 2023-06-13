@@ -120,5 +120,29 @@ namespace Tech_Shop.Controllers
 
             return NotFound("User was not found.");
         }
+
+        [HttpPatch]
+        [Authorize]
+        [Route($"{nameof(ChangePassword)}")]
+        public IActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+        {
+            int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            User user = this.baseRepository.GetByID<User>(loggedInUserId);
+            if (userService.HashPassword(changePasswordViewModel.OldPassword) != user.Password)
+            {
+                return BadRequest("The old password is incorrect.");
+            }
+
+            if (changePasswordViewModel.NewPassword != changePasswordViewModel.ConfirmNewPassword)
+            {
+                return BadRequest("New password and confirm new password do not match.");
+            }
+
+            string newPassword = userService.HashPassword(changePasswordViewModel.NewPassword);
+            user.Password = newPassword;
+            this.baseRepository.Update<User>(user);
+
+            return Ok("User's password change was successful.");
+        }
     }
 }

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { RegisterModel } from '../register/register.model';
 import { User } from '../get-all-users/user.model';
 import { UpdateUserModel } from '../update-user/update-user.model';
+import { ChangePasswordModel } from '../change-password/change-password.model';
 
 @Injectable()
 export class UserService {
@@ -53,6 +54,15 @@ export class UserService {
 
   public $delete(id: number): Observable<Object> {
     return this.httpClient.delete(`${this.baseUrl}/api/User/${id}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }),
+      responseType: 'text'
+    });
+  }
+
+  public $changePassword(changePasswordModel: ChangePasswordModel): Observable<Object> {
+    return this.httpClient.patch(`${this.baseUrl}/api/User/ChangePassword`, changePasswordModel, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),

@@ -20,6 +20,7 @@ import { GetProductByIdComponent } from './product/get-product-by-id/get-product
 import { GetAllOrdersComponent } from './order/get-all-orders/get-all-orders.component';
 import { MyOrdersComponent } from './order/my-orders/my-orders.component';
 import { PlaceOrderComponent } from './order/place-order/place-order.component';
+import { ChangePasswordComponent } from './user/change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'user/getall', component: GetAllUsersComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
   { path: 'user/update/:id', component: UpdateUserComponent, canActivate: [AuthenticationAuthorizationGuard] },
   { path: 'user/delete/:id', component: DeleteUserComponent, canActivate: [AuthenticationAuthorizationGuard] },
+  { path: 'user/changepassword', component: ChangePasswordComponent, canActivate: [AuthenticationAuthorizationGuard] },
   { path: 'category/getall', component: GetAllCategoriesComponent, canActivate: [AuthenticationAuthorizationGuard] },
   { path: 'category/create', component: CreateCategoryComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },
   { path: 'category/update/:id', component: UpdateCategoryComponent, canActivate: [AuthenticationAuthorizationGuard], data: { role: RoleConstants.adminRole } },

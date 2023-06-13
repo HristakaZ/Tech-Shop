@@ -31,6 +31,9 @@
         <a mat-list-item [routerLink]="'/user/update/' + userId" (click)="sidenav.toggle()" *ngIf="decodedToken">
           Update Profile Info
         </a>
+        <a mat-list-item [routerLink]="'/user/changepassword'" (click)="sidenav.toggle()" *ngIf="decodedToken">
+          Change Password
+        </a>
         <a mat-list-item [routerLink]="'/user/delete/' + userId" (click)="sidenav.toggle()" *ngIf="decodedToken">
           Delete Profile
         </a>
