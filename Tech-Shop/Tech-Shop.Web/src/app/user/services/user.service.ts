@@ -7,6 +7,7 @@ import { RegisterModel } from '../register/register.model';
 import { User } from '../get-all-users/user.model';
 import { UpdateUserModel } from '../update-user/update-user.model';
 import { ChangePasswordModel } from '../change-password/change-password.model';
+import { ForgottenPasswordModel } from '../forgotten-password/forgotten-password.model';
 
 @Injectable()
 export class UserService {
@@ -66,6 +67,12 @@ export class UserService {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
+      responseType: 'text'
+    });
+  }
+
+  public $forgottenPassword(forgottenPasswordModel: ForgottenPasswordModel): Observable<Object> {
+    return this.httpClient.patch(`${this.baseUrl}/api/User/ForgottenPassword`, forgottenPasswordModel, {
       responseType: 'text'
     });
   }

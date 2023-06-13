@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tech_Shop.Mappers.User;
 using Tech_Shop.Roles;
+using Tech_Shop.Services.Shared.Contracts;
 using Tech_Shop.Services.User.Contracts;
 using Tech_Shop.ViewModels.User;
 
@@ -17,14 +18,17 @@ namespace Tech_Shop.Controllers
         private readonly IBaseRepository baseRepository;
         private readonly IUserService userService;
         private IConfiguration Configuration { get; }
+        private IMailingService mailingService;
 
         public UserController(IBaseRepository baseRepository,
             IUserService userService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMailingService mailingService)
         {
             this.baseRepository = baseRepository;
             this.userService = userService;
             Configuration = configuration;
+            this.mailingService = mailingService;
         }
 
         [HttpGet]
@@ -62,6 +66,11 @@ namespace Tech_Shop.Controllers
         [Route($"{nameof(Register)}")]
         public IActionResult Register([FromBody] UserRegisterViewModel userRegisterViewModel)
         {
+            bool isEmailTaken = this.baseRepository.GetAll<User>().Where(x => x.Email == userRegisterViewModel.Email).FirstOrDefault() != null;
+            if (isEmailTaken)
+            {
+                return BadRequest("This email is taken. Please choose a unique one.");
+            }
             User user = UserModelViewModelMapper.MapUserRegisterViewModelToModel(userRegisterViewModel);
             user.Password = userService.HashPassword(user.Password);
             int ID = baseRepository.Create<User>(user);
@@ -142,6 +151,22 @@ namespace Tech_Shop.Controllers
             this.baseRepository.Update<User>(user);
 
             return Ok("User's password change was successful.");
+        }
+
+        [HttpPatch]
+        [Route($"{nameof(ForgottenPassword)}")]
+        public IActionResult ForgottenPassword(ForgottenPasswordViewModel forgottenPasswordViewModel)
+        {
+            User user = this.baseRepository.GetAll<User>().Where(x => x.Email == forgottenPasswordViewModel.Email).FirstOrDefault();
+            if (user != null)
+            {
+                string password = Guid.NewGuid().ToString();
+                this.mailingService.SendForgottenPasswordEmail(forgottenPasswordViewModel, password);
+                user.Password = userService.HashPassword(password);
+                this.baseRepository.Update<User>(user);
+            }
+
+            return Ok("Forgotten password email successfully sent to the user.");
         }
     }
 }

@@ -75,7 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.registerSnackBar.open('User was successfully registered.', 'X', {
             duration: 3000
           });
-          this.router.navigateByUrl('product/getall');
+          this.router.navigateByUrl('user/login');
         },
         error: (errorResponse) => {
           this.registerSnackBar.open(errorResponse.error, 'X');

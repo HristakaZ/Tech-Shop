@@ -10,6 +10,7 @@ using Tech_Shop.Services.Shared;
 using Tech_Shop.Services.Shared.Contracts;
 using Tech_Shop.Services.User;
 using Tech_Shop.Services.User.Contracts;
+using Tech_Shop.Settings;
 
 namespace Tech_Shop
 {
@@ -79,6 +80,8 @@ namespace Tech_Shop
             builder.Services.AddScoped<IBaseRepository, BaseRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IImageUploadService, ImageUploadService>();
+            builder.Services.AddScoped<IMailingService, MailingService>();
+            builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("SMTPConfiguration"));
 
             var app = builder.Build();
             app.UseStaticFiles();

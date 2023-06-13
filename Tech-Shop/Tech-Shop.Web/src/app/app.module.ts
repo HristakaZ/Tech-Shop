@@ -57,6 +57,7 @@ import { ApproveReturnDialogComponent } from './order/return/dialog/approve-retu
 import { PlaceOrderComponent } from './order/place-order/place-order.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ChangePasswordComponent } from './user/change-password/change-password.component';
+import { ForgottenPasswordComponent } from './user/forgotten-password/forgotten-password.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { ChangePasswordComponent } from './user/change-password/change-password.
     ReturnOrderDialogComponent,
     ApproveReturnDialogComponent,
     PlaceOrderComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ForgottenPasswordComponent
   ],
   imports: [
     BrowserModule,
