@@ -128,7 +128,10 @@ namespace Tech_Shop.Controllers
             {
                 foreach (Product productInOrder in order.Products)
                 {
-                    productInOrder.Quantity--;
+                    if (productInOrder.Quantity > 0)
+                    {
+                        productInOrder.Quantity--;
+                    }
                     baseRepository.Update<Product>(productInOrder);
                 }
                 order.Status = OrderStatus.Finished;

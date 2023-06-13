@@ -11,18 +11,19 @@
         <h2 *ngIf="product.quantity > 0">Quantity: {{product.quantity}}</h2>
         <h2 *ngIf="product.quantity == 0">Out of stock.</h2>
     </ng-container>
-    <h2>Price: {{product.price}}</h2>
+    <h2>Price: {{product.price}}$</h2>
     <div class="imageContainer"><img [src]="product.photo?.name" alt="No photo provided."></div>
     <h2>Category: {{product.category.name}}</h2>
 
     <ng-container matColumnDef="addToCartButton">
         <div>
             <div *ngIf="userRole === 'User'">
-                <button mat-raised-button (click)="addToCart(product.id)" *ngIf="product.quantity > 0" disabled="false">
+                <button mat-raised-button (click)="addToCart(product.id)"
+                    *ngIf="product.quantity > 0 && !isProductAlreadyAdded" disabled="false">
                     Add To Cart
                 </button>
-                <button mat-raised-button (click)="addToCart(product.id)" *ngIf="product.quantity === 0"
-                    disabled="true">
+                <button mat-raised-button (click)="addToCart(product.id)"
+                    *ngIf="product.quantity === 0 || isProductAlreadyAdded" disabled="true">
                     Add To Cart
                 </button>
             </div>

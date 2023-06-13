@@ -17,7 +17,8 @@ import jwt_decode from 'jwt-decode';
   styleUrls: ['./place-order.component.css']
 })
 export class PlaceOrderComponent implements OnInit, OnDestroy {
-  placeOrderForm!: FormGroup;
+  firstFormGroup!: FormGroup;
+  secondFormGroup!: FormGroup;
   subscriptions: Subscription[] = [];
   products: Product[] = [];
   user: User = new User();
@@ -25,11 +26,11 @@ export class PlaceOrderComponent implements OnInit, OnDestroy {
   public columnsToDisplay = ['name', 'quantity', 'price', 'imagePath', 'category', 'removeFromCartButton'];
 
   get address(): AbstractControl {
-    return this.placeOrderForm.get('address')!;
+    return this.firstFormGroup.get('address')!;
   }
 
   get productIDs(): AbstractControl {
-    return this.placeOrderForm.get('productIDs')!;
+    return this.secondFormGroup.get('productIDs')!;
   }
 
   constructor(private orderService: OrderService,
@@ -39,46 +40,52 @@ export class PlaceOrderComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.placeOrderForm = new FormGroup({
+    this.firstFormGroup = new FormGroup({
       address: new FormControl('', [
         Validators.required
-      ]),
+      ])
+    });
+    this.secondFormGroup = new FormGroup({
       productIDs: new FormControl('', [
         Validators.required
       ])
     });
+
     this.loadProductsAndAddress();
   }
 
   loadProductsAndAddress(): void {
     let productIDs: number[] = JSON.parse(localStorage.getItem('productIDs')!);
-    this.placeOrderForm.patchValue({
+    this.secondFormGroup.patchValue({
       productIDs: productIDs
     });
     if (productIDs && productIDs.length > 0) {
-      this.subscriptions.push(this.productService.$getByIds(this.placeOrderForm.value.productIDs).subscribe((products) => {
+      this.subscriptions.push(this.productService.$getByIds(this.secondFormGroup.value.productIDs).subscribe((products) => {
         this.products = products;
-        this.placeOrderForm.controls['productIDs'].setErrors(null);
+        this.secondFormGroup.controls['productIDs'].setErrors(null);
         console.log(this.products);
       }));
     }
     if (!this.productIDs) {
-      this.placeOrderForm.controls['productIDs'].setErrors({ 'incorrect': true });
+      this.secondFormGroup.controls['productIDs'].setErrors({ 'incorrect': true });
     }
     let decodedToken: any = jwt_decode(localStorage.getItem('token')!);
     let userId = parseInt(decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']);
     this.subscriptions.push(this.userService.$getById(userId).subscribe((user) => {
-      this.placeOrderForm.patchValue({
+      this.firstFormGroup.patchValue({
         address: user.address
       });
     }));
-    console.log(this.placeOrderForm.value.productIDs);
   }
 
   placeOrder(): void {
-    if (!this.placeOrderForm.invalid) {
-      let placeOrderModel: PlaceOrderModel = new PlaceOrderModel(this.placeOrderForm.value.address,
-        this.placeOrderForm.value.productIDs);
+    if (this.secondFormGroup.invalid) {
+      this.placeOrderSnackBar.open('Cannot place an order without products!', 'X');
+    }
+
+    if (!this.firstFormGroup.invalid) {
+      let placeOrderModel: PlaceOrderModel = new PlaceOrderModel(this.firstFormGroup.value.address,
+        this.secondFormGroup.value.productIDs);
       this.subscriptions.push(this.orderService.$place(placeOrderModel).subscribe({
         next: (response) => {
           this.placeOrderSnackBar.open('The order was successfully placed. In the meantime, you can check its status in the "My Orders" tab.', 'X', {
@@ -94,10 +101,6 @@ export class PlaceOrderComponent implements OnInit, OnDestroy {
     }
     else {
       this.placeOrderSnackBar.open('There were validation errors while placing the order!', 'X');
-
-      if (this.placeOrderForm.controls['productIDs'].invalid) {
-        this.placeOrderSnackBar.open('Cannot place an order without products!', 'X');
-      }
     }
   }
 

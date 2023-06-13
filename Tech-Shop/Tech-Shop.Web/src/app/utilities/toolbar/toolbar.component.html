@@ -11,10 +11,10 @@
     <mat-toolbar-row>
       <p *ngIf="email">Hello, {{email}}</p>
     </mat-toolbar-row>
-    <mat-toolbar-row>
-      <a mat-list-item [routerLink]="'/order/placeorder'" *ngIf="(userRole && userRole === 'User')">
+    <mat-toolbar-row *ngIf="(userRole && userRole === 'User')">
+      <a mat-list-item [routerLink]="'/order/placeorder'">
         <mat-icon id="shoppingCart">shopping_cart</mat-icon>
-        <sup *ngIf="cartProductCount">{{cartProductCount}}</sup>
+        <span class="badge badge-warning" id="lblCartCount" *ngIf="cartProductCount">{{cartProductCount}}</span>
       </a>
     </mat-toolbar-row>
   </mat-toolbar>

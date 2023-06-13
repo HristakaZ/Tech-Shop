@@ -1,129 +1,103 @@
-<form [formGroup]="placeOrderForm" (ngSubmit)="placeOrder()" style="margin-left: 1%">
+<form [formGroup]="firstFormGroup && secondFormGroup" (ngSubmit)="placeOrder()" style="margin-left: 1%">
+  <div>
+    <h1>Place An Order</h1>
+  </div>
 
-    <!-- TO DO: make the placing of the order with the material ui stepper -->
-    <!-- <button mat-raised-button (click)="isEditable = !isEditable">
-        {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
-      </button>
-      
-      <mat-stepper linear #stepper>
-        <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
-          <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Fill out your name</ng-template>
-            <mat-form-field>
-              <mat-label>Name</mat-label>
-              <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
-            </mat-form-field>
-            <div>
-              <button mat-button matStepperNext>Next</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-          <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Fill out your address</ng-template>
-            <mat-form-field>
-              <mat-label>Address</mat-label>
-              <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                     required>
-            </mat-form-field>
-            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext>Next</button>
-            </div>
-          </form>
-        </mat-step>
-        <mat-step>
-          <ng-template matStepLabel>Done</ng-template>
-          <p>You are now done.</p>
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
-          </div>
-        </mat-step>
-      </mat-stepper> -->
-
-
-    <div>
-        <h1>Place An Order</h1>
-    </div>
-
-    <div>
-        <mat-form-field appearance="fill">
-            <mat-label>Enter the order's address</mat-label>
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup" [editable]="true">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Enter the order's address</ng-template>
+        <div>
+          <br>
+          <mat-form-field appearance="fill">
             <input matInput formControlName="address">
-        </mat-form-field>
-        <span class="validationError" *ngIf="address.errors?.['required'] && (address.dirty || address.touched)">
+          </mat-form-field>
+          <span class="validationError" *ngIf="address.errors?.['required'] && (address.dirty || address.touched)">
             Address is required.
-        </span>
-    </div>
-
-    <div>
-        <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
+          </span>
+        </div>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" [editable]="true">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Review the products for the order</ng-template>
+        <div>
+          <mat-form-field appearance="fill" *ngIf="!isIdInputHidden">
             <input matInput formControlName="productIDs">
-        </mat-form-field>
-    </div>
-    <span class="validationError" *ngIf="productIDs.errors?.['required'] && (productIDs.dirty || productIDs.touched)">
-        Cannot place an order without any products.
-    </span>
+          </mat-form-field>
+        </div>
 
-    <h1>Products</h1>
-    <table mat-table [dataSource]="products" class="mat-elevation-z8">
-        <ng-container matColumnDef="name">
+        <h1>Products</h1>
+        <table mat-table [dataSource]="products" class="mat-elevation-z8">
+          <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let product">
-                <a mat-list-item [routerLink]="'/product/getById/' + product.id">{{product.name}}</a>
+              <a mat-list-item [routerLink]="'/product/getById/' + product.id">{{product.name}}</a>
             </td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="quantity">
+          <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef>Quantity</th>
             <td mat-cell *matCellDef="let product">
-                <ng-container *ngIf="product.quantity > 0">{{product.quantity}}</ng-container>
-                <ng-container *ngIf="product.quantity == 0">Out of stock.</ng-container>
+              <ng-container *ngIf="product.quantity > 0">{{product.quantity}}</ng-container>
+              <ng-container *ngIf="product.quantity == 0">Out of stock.</ng-container>
             </td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="price">
+          <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef style="margin-left: 15%">Price</th>
             <td mat-cell *matCellDef="let product">{{product.price}}</td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="imagePath">
+          <ng-container matColumnDef="imagePath">
             <th mat-header-cell *matHeaderCellDef>Image</th>
             <td mat-cell *matCellDef="let product">
-                <a mat-list-item [routerLink]="'/product/getById/' + product.id" *ngIf="product.photo"><img
-                        src={{product.photo.name}}>
-                </a>
-                <a mat-list-item [routerLink]="'/product/getById/' + product.id" *ngIf="!product.photo">No photo
-                    provided</a>
+              <a mat-list-item [routerLink]="'/product/getById/' + product.id" *ngIf="product.photo"><img
+                  src={{product.photo.name}}>
+              </a>
+              <a mat-list-item [routerLink]="'/product/getById/' + product.id" *ngIf="!product.photo">No photo
+                provided</a>
             </td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="category">
+          <ng-container matColumnDef="category">
             <th mat-header-cell *matHeaderCellDef>Category</th>
             <td mat-cell *matCellDef="let product">{{product.category.name}}</td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="removeFromCartButton">
+          <ng-container matColumnDef="removeFromCartButton">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let product">
-                <div>
-                    <button mat-raised-button (click)="removeFromCart(product.id)">Remove From Cart</button>
-                </div>
+              <div>
+                <button mat-raised-button (click)="removeFromCart(product.id)">Remove From Cart</button>
+              </div>
             </td>
-        </ng-container>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
-    </table>
-    <br>
-
-    <div>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+        </table>
+        <br>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Confirm</ng-template>
+      <div>
+        <h1>Confirm placement of order</h1>
+        <br>
+        <button mat-button matStepperPrevious>Back</button>
         <button mat-stroked-button color="accent" type="submit">Place</button>
-        <br>
-        <br>
-    </div>
-    <div>
-        <app-back-button></app-back-button>
-    </div>
-    <form>
+      </div>
+    </mat-step>
+  </mat-stepper>
+  <div>
+    <app-back-button></app-back-button>
+  </div>
+  <form>

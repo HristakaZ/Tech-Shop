@@ -71,5 +71,8 @@ export class ToolbarComponent implements OnInit, DoCheck {
       let productIds: number[] = JSON.parse(localStorage.getItem('productIDs')!);
       this.cartProductCount = productIds.length;
     }
+    else {
+      this.cartProductCount = undefined;
+    }
   }
 }

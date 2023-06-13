@@ -55,6 +55,7 @@ import { CancelOrderDialogComponent } from './order/cancel/dialog/cancel-order-d
 import { ReturnOrderDialogComponent } from './order/return/dialog/return-order-dialog/return-order-dialog.component';
 import { ApproveReturnDialogComponent } from './order/return/dialog/approve-return-dialog/approve-return-dialog.component';
 import { PlaceOrderComponent } from './order/place-order/place-order.component';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import { PlaceOrderComponent } from './order/place-order/place-order.component';
     MatTableModule,
     MatSelectModule,
     MatDialogModule,
-    NgbModule
+    NgbModule,
+    MatStepperModule
   ],
   providers: [
     UserService,

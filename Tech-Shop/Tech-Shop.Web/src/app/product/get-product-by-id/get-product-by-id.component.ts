@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
 import { Product } from '../get-all-products/product.model';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../services/product.service';
@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './get-product-by-id.component.html',
   styleUrls: ['./get-product-by-id.component.css']
 })
-export class GetProductByIdComponent implements OnInit, OnDestroy {
+export class GetProductByIdComponent implements OnInit, DoCheck, OnDestroy {
   product: Product = new Product();
   subscriptions: Subscription[] = [];
   id: number = parseInt(this.router.url.substring(this.router.url.lastIndexOf('/') + 1));
@@ -20,6 +20,7 @@ export class GetProductByIdComponent implements OnInit, OnDestroy {
   userRole!: string;
   userId!: number;
   public columnsToDisplay = ['user', 'rating', 'comment', 'updateButton', 'deleteButton'];
+  isProductAlreadyAdded!: Boolean;
   constructor(private productService: ProductService,
     private router: Router,
     private reviewService: ReviewService,
@@ -32,6 +33,13 @@ export class GetProductByIdComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.reviewService.subject.subscribe(() => {
       this.getProductById();
     }));
+  }
+
+  ngDoCheck(): void {
+    this.getProductById();
+    this.setUserRole();
+    this.setUserId();
+    this.setIsProductAlreadyAdded(this.product.id);
   }
 
   setUserRole(): void {
@@ -72,6 +80,18 @@ export class GetProductByIdComponent implements OnInit, OnDestroy {
     this.addToCartSnackBar.open('Successfully added product to cart!', 'X', {
       duration: 3000
     });
+  }
+
+  setIsProductAlreadyAdded(id: number): void {
+    if (localStorage.getItem('productIDs')) {
+      let productIDs: number[] = JSON.parse(localStorage.getItem('productIDs')!);
+      if (productIDs.find(productID => productID == id)) {
+        this.isProductAlreadyAdded = true;
+      }
+    }
+    else {
+      this.isProductAlreadyAdded = false;
+    }
   }
 
   ngOnDestroy(): void {
