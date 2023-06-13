@@ -48,10 +48,6 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
 
     this.updateUserForm = new FormGroup({
       id: new FormControl(''),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ]),
       name: new FormControl('', [
         Validators.required
       ]),
@@ -68,7 +64,6 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
       this.updateUserModel = user;
       this.updateUserForm.setValue({
         id: this.id,
-        email: this.updateUserModel.email,
         name: this.updateUserModel.name,
         address: this.updateUserModel.address,
         phoneNumber: this.updateUserModel.phoneNumber
@@ -78,7 +73,6 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
 
   updateUser(): void {
     if (!this.updateUserForm.invalid) {
-      this.updateUserModel.email = this.updateUserForm.value.email;
       this.updateUserModel.name = this.updateUserForm.value.name;
       this.updateUserModel.address = this.updateUserForm.value.address;
       this.updateUserModel.phoneNumber = this.updateUserForm.value.phoneNumber;
@@ -88,7 +82,7 @@ export class UpdateUserComponent implements OnInit, OnDestroy {
           this.updateUserSnackBar.open(response.toString(), 'X', {
             duration: 3000
           })
-          this.router.navigateByUrl('user/getall');
+          this.router.navigateByUrl('product/getall');
         },
         error: (errorResponse) => {
           this.updateUserSnackBar.open(errorResponse, 'X');

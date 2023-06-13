@@ -5,10 +5,6 @@ namespace Tech_Shop.ViewModels.User
     public class UpdateUserViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
         public string Name { get; set; }
 
         [Required]

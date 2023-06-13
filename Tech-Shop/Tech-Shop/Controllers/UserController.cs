@@ -96,7 +96,6 @@ namespace Tech_Shop.Controllers
             {
                 userFromDb.PhoneNumber = updateUserViewModel.PhoneNumber;
                 userFromDb.Address = updateUserViewModel.Address;
-                userFromDb.Email = updateUserViewModel.Email;
                 userFromDb.Name = updateUserViewModel.Name;
                 baseRepository.Update<User>(userFromDb);
                 return Ok("User's info was successfully updated.");
