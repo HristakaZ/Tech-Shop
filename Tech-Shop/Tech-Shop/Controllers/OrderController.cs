@@ -1,10 +1,13 @@
 ﻿using DataAccess.Contracts;
 using DataStructure.Enums;
 using DataStructure.Models;
+using MailKit.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Security.Claims;
+using Tech_Shop.Helpers;
 using Tech_Shop.Mappers.Order;
 using Tech_Shop.Roles;
 using Tech_Shop.ViewModels.Order;
@@ -24,9 +27,15 @@ namespace Tech_Shop.Controllers
 
         [HttpGet]
         [Authorize(Roles = RoleConstants.AdminRole)]
-        public IActionResult Get()
+        public IActionResult Get(string? search = null,
+                                int? page = null,
+                                int? pageSize = null,
+                                string? orderBy = null,
+                                string? orderByDirection = null)
         {
-            IQueryable<Order> orders = baseRepository.GetAll<Order>();
+            Expression<Func<Order, bool>>? searchExpression = OrderHelper.GetOrderSearchExpressionByKey(search);
+            IQueryable<Order> orders = this.baseRepository.GetAll<Order>(searchExpression, page, pageSize);
+            orders = OrderHelper.OrderOrders(orders, orderBy, orderByDirection);
             if (orders.Count() == 0)
             {
                 return NotFound("No orders were found.");
@@ -55,10 +64,20 @@ namespace Tech_Shop.Controllers
         [HttpGet]
         [Authorize(Roles = RoleConstants.UserRole)]
         [Route($"{nameof(GetLoggedInUserOrders)}")]
-        public IActionResult GetLoggedInUserOrders()
+        public IActionResult GetLoggedInUserOrders(string? search = null,
+                                                  int? page = null,
+                                                  int? pageSize = null,
+                                                  string? orderBy = null,
+                                                  string? orderByDirection = null)
         {
             int loggedInUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            IQueryable<Order> orders = baseRepository.GetAll<Order>(x => x.User.ID == loggedInUserId);
+            List<Expression<Func<Order, bool>>?> expressions = new List<Expression<Func<Order, bool>>?>()
+            {
+                x => x.User.ID == loggedInUserId,
+                OrderHelper.GetOrderSearchExpressionByKey(search)
+            };
+            IQueryable<Order> orders = this.baseRepository.GetAllWithMultipleFilters<Order>(expressions, page, pageSize);
+            orders = OrderHelper.OrderOrders(orders, orderBy, orderByDirection);
             if (orders.Count() == 0)
             {
                 return NotFound("No orders were found.");

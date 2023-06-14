@@ -56,7 +56,8 @@ namespace Tech_Shop.Mappers.Product
             return productViewModels;
         }
 
-        public static ProductViewModel MapProductToProductViewModel(DataStructure.Models.Product product, string basePublicUrl)
+        public static ProductViewModel MapProductToProductViewModel(DataStructure.Models.Product product,
+            IQueryable<DataStructure.Models.Review> reviews, string basePublicUrl)
         {
             return new ProductViewModel()
             {
@@ -67,7 +68,7 @@ namespace Tech_Shop.Mappers.Product
                 ImagePath = product.ImagePath,
                 Photo = ImageHelper.GetImageFromImagePath(product.ImagePath, basePublicUrl),
                 Category = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(product.Category),
-                Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(product.Reviews.AsQueryable())
+                Reviews = ReviewModelViewModelMapper.MapReviewModelToReviewViewModel(reviews)
             };
         }
     }

@@ -2,7 +2,9 @@
 using DataStructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Security.Claims;
+using Tech_Shop.Helpers;
 using Tech_Shop.Mappers.User;
 using Tech_Shop.Roles;
 using Tech_Shop.Services.Shared.Contracts;
@@ -33,15 +35,20 @@ namespace Tech_Shop.Controllers
 
         [HttpGet]
         [Authorize(Roles = RoleConstants.AdminRole)]
-        public IActionResult Get()
+        public IActionResult Get(string? search = null,
+                                int? page = null,
+                                int? pageSize = null,
+                                string? orderBy = null,
+                                string? orderByDirection = null)
         {
-            IQueryable<User> users = baseRepository.GetAll<User>();
+            Expression<Func<User, bool>>? searchExpression = UserHelper.GetUserSearchExpressionByKey(search);
+            IQueryable<User> users = baseRepository.GetAll<User>(searchExpression, page, pageSize);
+            users = UserHelper.OrderUsers(users, orderBy, orderByDirection);
             if (users.Count() == 0)
             {
                 return NotFound("No users were found.");
             }
             List<UserViewModel> userViewModels = UserModelViewModelMapper.MapUserModelToViewModel(users);
-
             return Ok(userViewModels);
         }
 

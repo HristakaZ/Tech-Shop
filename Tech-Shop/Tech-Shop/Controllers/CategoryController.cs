@@ -3,7 +3,9 @@ using DataStructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using System.Security.Claims;
+using Tech_Shop.Helpers;
 using Tech_Shop.Mappers.Category;
 using Tech_Shop.Roles;
 using Tech_Shop.ViewModels.Category;
@@ -23,9 +25,15 @@ namespace Tech_Shop.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get(string? search = null,
+                                int? page = null,
+                                int? pageSize = null,
+                                string? orderBy = null,
+                                string? orderByDirection = null)
         {
-            IQueryable<Category> categories = baseRepository.GetAll<Category>();
+            Expression<Func<Category, bool>>? searchExpression = CategoryHelper.GetCategorySearchExpressionByKey(search);
+            IQueryable<Category> categories = this.baseRepository.GetAll<Category>(searchExpression, page, pageSize);
+            categories = CategoryHelper.OrderCategories(categories, orderBy, orderByDirection);
             if (categories.Count() == 0)
             {
                 return NotFound("No categories were found.");

@@ -1,9 +1,9 @@
 ﻿using DataAccess.Contracts;
-using DataStructure.Enums;
 using DataStructure.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
+using Tech_Shop.Helpers;
 using Tech_Shop.Mappers.Product;
 using Tech_Shop.Roles;
 using Tech_Shop.Services.Shared.Contracts;
@@ -26,9 +26,15 @@ namespace Tech_Shop.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public IActionResult Get(string? search = null,
+                                int? page = null,
+                                int? pageSize = null,
+                                string? orderBy = null,
+                                string? orderByDirection = null)
         {
-            IQueryable<Product> products = this.baseRepository.GetAll<Product>();
+            Expression<Func<Product, bool>>? searchExpression = ProductHelper.GetProductSearchExpressionByKey(search);
+            IQueryable<Product> products = this.baseRepository.GetAll<Product>(searchExpression, page, pageSize);
+            products = ProductHelper.OrderProducts(products, orderBy, orderByDirection);
             if (products.Count() == 0)
             {
                 return NotFound("No products were found.");
@@ -57,15 +63,28 @@ namespace Tech_Shop.Controllers
 
         [HttpGet("{id}", Name = $"{nameof(GetProductByID)}")]
         [Authorize]
-        public IActionResult GetProductByID(int id)
+        public IActionResult GetProductByID(int id,
+                                            string? search = null,
+                                            int? page = null,
+                                            int? pageSize = null,
+                                            string? orderBy = null,
+                                            string? orderByDirection = null)
         {
             Product product = this.baseRepository.GetByID<Product>(id);
+            List<Expression<Func<Review, bool>>?> expressions = new List<Expression<Func<Review, bool>>?>()
+            {
+                x => x.Product.ID == product.ID,
+                ReviewHelper.GetReviewSearchExpressionByKey(search)
+            };
+            IQueryable<Review> reviews = this.baseRepository.GetAllWithMultipleFilters<Review>(expressions, page, pageSize);
+            reviews = ReviewHelper.OrderReviews(reviews, orderBy, orderByDirection);
             if (product == null)
             {
                 return NotFound("Product was not found.");
             }
 
             ProductViewModel productViewModel = ProductModelViewModelMapper.MapProductToProductViewModel(product,
+                reviews,
                 $"{Request.Scheme}://{Request.Host.Value}/");
             return Ok(productViewModel);
         }
