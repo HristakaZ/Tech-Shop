@@ -8,9 +8,13 @@
     <br *ngIf="userRole === 'Administrator'">
 </div>
 
+<mat-form-field appearance="fill">
+    <mat-label>Search user by name, category or price</mat-label>
+    <input type="text" #input matInput placeholder="Search" (keyup)="search(input.value)">
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
 
-<table mat-table [dataSource]="products" class="mat-elevation-z8">
-
+<table mat-table matSort [dataSource]="products" (matSortChange)="sortData($event)" class="mat-elevation-z8">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let product">
@@ -27,7 +31,7 @@
     </ng-container>
 
     <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef style="margin-left: 15%">Price</th>
+        <th mat-header-cell *matHeaderCellDef style="margin-left: 15%" mat-sort-header="price">Price</th>
         <td mat-cell *matCellDef="let product">{{product.price}}$</td>
     </ng-container>
 
@@ -45,6 +49,11 @@
     <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef>Category</th>
         <td mat-cell *matCellDef="let product">{{product.category.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="reviewCount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="reviews">Reviews</th>
+        <td mat-cell *matCellDef="let product">{{product.reviews.length}}</td>
     </ng-container>
 
     <ng-container matColumnDef="updateButton">
@@ -70,3 +79,6 @@
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
 </table>
+<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+    (page)="handlePage($event)" aria-label="Select page">
+</mat-paginator>

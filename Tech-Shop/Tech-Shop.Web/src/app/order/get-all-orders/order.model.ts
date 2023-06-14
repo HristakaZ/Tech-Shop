@@ -19,3 +19,8 @@ export class Order {
     products: ProductPhoto[] = [];
     user: User = new User();
 }
+
+export class OrderTotalCount {
+    orders: Order[] = [];
+    totalCount!: number;
+}

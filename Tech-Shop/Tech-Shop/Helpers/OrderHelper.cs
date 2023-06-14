@@ -30,6 +30,9 @@ namespace Tech_Shop.Helpers
                     case "user":
                         orders = orders.OrderByDescending(x => x.User.Name);
                         break;
+                    case "status":
+                        orders = orders.OrderByDescending(x => x.Status);
+                        break;
                     default:
                         orders.OrderByDescending(x => x.User.Name);
                         break;
@@ -41,6 +44,9 @@ namespace Tech_Shop.Helpers
                 {
                     case "user":
                         orders = orders.OrderBy(x => x.User.Name);
+                        break;
+                    case "status":
+                        orders = orders.OrderBy(x => x.Status);
                         break;
                     default:
                         orders.OrderBy(x => x.User.Name);

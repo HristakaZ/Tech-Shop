@@ -69,8 +69,8 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
       photo: new FormControl('')
     });
 
-    this.subscriptions.push(this.productService.$getById(this.id).subscribe((product) => {
-      this.product = product;
+    this.subscriptions.push(this.productService.$getById(this.id).subscribe((productByIdTotalCount) => {
+      this.product = productByIdTotalCount.product;
       this.updateProductForm.patchValue({
         id: this.id,
         name: this.product.name,
@@ -84,8 +84,8 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
       }
     }));
 
-    this.categoryService.$getAll().subscribe((categories) => {
-      this.categories = categories;
+    this.categoryService.$getAll().subscribe((categoryTotalCount) => {
+      this.categories = categoryTotalCount.categories;
     });
   }
 

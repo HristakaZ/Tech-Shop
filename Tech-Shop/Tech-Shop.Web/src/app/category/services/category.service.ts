@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Category } from '../category.model';
+import { Category, CategoryTotalCount } from '../category.model';
 
 @Injectable()
 export class CategoryService {
@@ -10,8 +10,11 @@ export class CategoryService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public $getAll(): Observable<Category[]> {
-    return this.httpClient.get<Category[]>(`${this.baseUrl}/api/Category`, {
+  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<CategoryTotalCount> {
+    search = search ?? '';
+    orderBy = orderBy ?? '';
+    orderByDirection = orderByDirection ?? '';
+    return this.httpClient.get<CategoryTotalCount>(`${this.baseUrl}/api/Category?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })

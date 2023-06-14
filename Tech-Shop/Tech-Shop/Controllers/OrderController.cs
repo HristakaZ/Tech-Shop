@@ -34,16 +34,18 @@ namespace Tech_Shop.Controllers
                                 string? orderByDirection = null)
         {
             Expression<Func<Order, bool>>? searchExpression = OrderHelper.GetOrderSearchExpressionByKey(search);
-            IQueryable<Order> orders = this.baseRepository.GetAll<Order>(searchExpression, page, pageSize);
-            orders = OrderHelper.OrderOrders(orders, orderBy, orderByDirection);
-            if (orders.Count() == 0)
+            (IQueryable<Order> Orders, int TotalCount) orders = this.baseRepository.GetAll<Order>(searchExpression, page, pageSize);
+            orders.Orders = OrderHelper.OrderOrders(orders.Orders, orderBy, orderByDirection);
+            if (orders.Orders.Count() == 0)
             {
                 return NotFound("No orders were found.");
             }
 
-            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders,
+            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders.Orders,
                 $"{Request.Scheme}://{Request.Host.Value}/");
-            return Ok(orderViewModels);
+            OrderViewModelTotalCount orderViewModelTotalCount = new OrderViewModelTotalCount(orderViewModels, orders.TotalCount);
+
+            return Ok(orderViewModelTotalCount);
         }
 
         [HttpGet("{id}", Name = $"{nameof(GetOrderByID)}")]
@@ -76,16 +78,19 @@ namespace Tech_Shop.Controllers
                 x => x.User.ID == loggedInUserId,
                 OrderHelper.GetOrderSearchExpressionByKey(search)
             };
-            IQueryable<Order> orders = this.baseRepository.GetAllWithMultipleFilters<Order>(expressions, page, pageSize);
-            orders = OrderHelper.OrderOrders(orders, orderBy, orderByDirection);
-            if (orders.Count() == 0)
+            (IQueryable<Order> Orders, int TotalCount) orders =
+                this.baseRepository.GetAllWithMultipleFilters<Order>(expressions, page, pageSize);
+            orders.Orders = OrderHelper.OrderOrders(orders.Orders, orderBy, orderByDirection);
+            if (orders.Orders.Count() == 0)
             {
                 return NotFound("No orders were found.");
             }
 
-            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders,
+            List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders.Orders,
                 $"{Request.Scheme}://{Request.Host.Value}/");
-            return Ok(orderViewModels);
+            OrderViewModelTotalCount orderViewModelTotalCount = new OrderViewModelTotalCount(orderViewModels, orders.TotalCount);
+
+            return Ok(orderViewModelTotalCount);
         }
 
         [HttpPost]
@@ -94,7 +99,7 @@ namespace Tech_Shop.Controllers
         public IActionResult Place([FromBody] PlaceOrderViewModel placeOrderViewModel)
         {
             List<Product> productsForOrder = baseRepository.GetAll<Product>(
-                x => placeOrderViewModel.ProductIDs.Any(y => x.ID == y)).ToList();
+                x => placeOrderViewModel.ProductIDs.Any(y => x.ID == y)).Models.ToList();
             List<Product> productsOutOfStock = productsForOrder.Where(x => x.Quantity == 0).ToList();
             if (productsForOrder.Count == 0 || productsOutOfStock.Count > 0)
             {

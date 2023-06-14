@@ -33,7 +33,6 @@ export class ForgottenPasswordComponent implements OnInit, OnDestroy {
   }
 
   forgottenPassword(): void {
-    debugger;
     if (!this.forgottenPasswordForm.invalid) {
       let forgottenPasswordModel: ForgottenPasswordModel = new ForgottenPasswordModel(
         this.forgottenPasswordForm.value.email

@@ -33,16 +33,19 @@ namespace Tech_Shop.Controllers
                                 string? orderByDirection = null)
         {
             Expression<Func<Product, bool>>? searchExpression = ProductHelper.GetProductSearchExpressionByKey(search);
-            IQueryable<Product> products = this.baseRepository.GetAll<Product>(searchExpression, page, pageSize);
-            products = ProductHelper.OrderProducts(products, orderBy, orderByDirection);
-            if (products.Count() == 0)
+            (IQueryable<Product> Products, int TotalCount) products =
+                this.baseRepository.GetAll<Product>(searchExpression, page, pageSize);
+            products.Products = ProductHelper.OrderProducts(products.Products, orderBy, orderByDirection);
+            if (products.Products.Count() == 0)
             {
                 return NotFound("No products were found.");
             }
 
-            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products,
+            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products.Products,
                  $"{Request.Scheme}://{Request.Host.Value}/");
-            return Ok(productViewModels);
+            ProductViewModelTotalCount productViewModelTotalCount = new ProductViewModelTotalCount(productViewModels, products.TotalCount);
+
+            return Ok(productViewModelTotalCount);
         }
 
         [HttpPost]
@@ -50,14 +53,16 @@ namespace Tech_Shop.Controllers
         [Route($"{nameof(GetProductsByIDs)}")]
         public IActionResult GetProductsByIDs(List<int> productIDs)
         {
-            IQueryable<Product> products = this.baseRepository.GetAll<Product>(x => productIDs.Any(y => x.ID == y));
-            if (products.Count() == 0)
+            (IQueryable<Product> Products, int TotalCount) products
+                = this.baseRepository.GetAll<Product>(x => productIDs.Any(y => x.ID == y));
+            if (products.Products.Count() == 0)
             {
                 return NotFound("No products were found.");
             }
 
-            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products,
+            List<ProductViewModel> productViewModels = ProductModelViewModelMapper.MapProductToProductViewModel(products.Products,
                  $"{Request.Scheme}://{Request.Host.Value}/");
+
             return Ok(productViewModels);
         }
 
@@ -76,17 +81,21 @@ namespace Tech_Shop.Controllers
                 x => x.Product.ID == product.ID,
                 ReviewHelper.GetReviewSearchExpressionByKey(search)
             };
-            IQueryable<Review> reviews = this.baseRepository.GetAllWithMultipleFilters<Review>(expressions, page, pageSize);
-            reviews = ReviewHelper.OrderReviews(reviews, orderBy, orderByDirection);
+            (IQueryable<Review> Reviews, int TotalCount) reviews =
+                this.baseRepository.GetAllWithMultipleFilters<Review>(expressions, page, pageSize);
+            reviews.Reviews = ReviewHelper.OrderReviews(reviews.Reviews, orderBy, orderByDirection);
             if (product == null)
             {
                 return NotFound("Product was not found.");
             }
 
             ProductViewModel productViewModel = ProductModelViewModelMapper.MapProductToProductViewModel(product,
-                reviews,
+                reviews.Reviews,
                 $"{Request.Scheme}://{Request.Host.Value}/");
-            return Ok(productViewModel);
+            GetProductByIdViewModelTotalCount getProductByIdViewModelTotalCount = new GetProductByIdViewModelTotalCount(
+                productViewModel, reviews.TotalCount);
+
+            return Ok(getProductByIdViewModelTotalCount);
         }
 
         [HttpPost]

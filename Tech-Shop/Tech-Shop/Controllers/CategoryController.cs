@@ -32,15 +32,18 @@ namespace Tech_Shop.Controllers
                                 string? orderByDirection = null)
         {
             Expression<Func<Category, bool>>? searchExpression = CategoryHelper.GetCategorySearchExpressionByKey(search);
-            IQueryable<Category> categories = this.baseRepository.GetAll<Category>(searchExpression, page, pageSize);
-            categories = CategoryHelper.OrderCategories(categories, orderBy, orderByDirection);
-            if (categories.Count() == 0)
+            (IQueryable<Category> Categories, int TotalCount) categories =
+                this.baseRepository.GetAll<Category>(searchExpression, page, pageSize);
+            categories.Categories = CategoryHelper.OrderCategories(categories.Categories, orderBy, orderByDirection);
+            if (categories.Categories.Count() == 0)
             {
                 return NotFound("No categories were found.");
             }
 
-            List<CategoryViewModel> categoryViewModels = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(categories);
-            return Ok(categoryViewModels);
+            List<CategoryViewModel> categoryViewModels = CategoryModelViewModelMapper.MapCategoryToCategoryViewModel(categories.Categories);
+            CategoryViewModelTotalCount categoryViewModelTotalCount = new CategoryViewModelTotalCount(categoryViewModels, categories.TotalCount);
+
+            return Ok(categoryViewModelTotalCount);
         }
 
         [HttpGet("{id}", Name = $"{nameof(GetCategoryByID)}")]

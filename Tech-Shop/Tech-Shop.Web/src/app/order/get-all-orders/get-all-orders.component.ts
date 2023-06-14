@@ -7,6 +7,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { ApproveOrderDialogComponent } from '../approve/dialog/approve-order-dialog/approve-order-dialog.component';
 import { FinishOrderDialogComponent } from '../finish/dialog/finish-order-dialog/finish-order-dialog.component';
 import { ApproveReturnDialogComponent } from '../return/dialog/approve-return-dialog/approve-return-dialog.component';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-get-all-orders',
@@ -17,20 +18,19 @@ export class GetAllOrdersComponent implements OnInit, OnDestroy {
   public orders: Order[] = [];
   public columnsToDisplay = ['address', 'status', 'products', 'user', 'actions'];
   subscriptions: Subscription[] = [];
+  public totalCount!: number;
+  public pageSize = 5;
+  public currentPage = 1;
+  private orderBy?: string;
+  private orderByDirection?: string;
+  private searchQuery?: string;
   constructor(private orderService: OrderService,
     public approveOrderDialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getAllProducts();
+    this.performAllFilters();
     this.subscriptions.push(this.orderService.subject.subscribe(() => {
-      this.getAllProducts();
-    }));
-  }
-
-  getAllProducts(): void {
-    this.subscriptions.push(this.orderService.$getAll().subscribe((orders) => {
-      this.orders = orders;
-      console.log(this.orders);
+      this.performAllFilters();
     }));
   }
 
@@ -56,6 +56,38 @@ export class GetAllOrdersComponent implements OnInit, OnDestroy {
       orderID: orderID
     };
     const dialogRef: MatDialogRef<ApproveReturnDialogComponent> = this.approveOrderDialog.open(ApproveReturnDialogComponent, dialogConfig);
+  }
+
+  public handlePage(e: any) {
+    this.currentPage = ++e.pageIndex;
+    this.pageSize = e.pageSize;
+
+    this.performAllFilters();
+  }
+
+  public sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      this.orderBy = sort.active;
+      this.orderByDirection = sort.direction;
+      return;
+    }
+    this.orderBy = sort.active;
+    this.orderByDirection = sort.direction;
+
+    this.performAllFilters();
+  }
+
+  public search(searchQuery?: string) {
+    this.searchQuery = searchQuery;
+
+    this.performAllFilters();
+  }
+
+  private performAllFilters() {
+    this.subscriptions.push(this.orderService.$getAll(this.searchQuery, this.currentPage, this.pageSize, this.orderBy, this.orderByDirection).subscribe((orderTotalCount) => {
+      this.orders = orderTotalCount.orders;
+      this.totalCount = orderTotalCount.totalCount;
+    }));
   }
 
   ngOnDestroy(): void {

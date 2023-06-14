@@ -6,3 +6,8 @@ export class User {
     phoneNumber!: string;
     role!: string;
 }
+
+export class UserTotalCount {
+    users: User[] = [];
+    totalCount!: number;
+}

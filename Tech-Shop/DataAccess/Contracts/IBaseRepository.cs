@@ -5,11 +5,11 @@ namespace DataAccess.Contracts
 {
     public interface IBaseRepository
     {
-        IQueryable<T> GetAll<T>(Expression<Func<T, bool>>? filter = null,
+        (IQueryable<T> Models, int TotalCount) GetAll<T>(Expression<Func<T, bool>>? filter = null,
                                 int? page = null,
                                 int? pageSize = null) where T : BaseEntity;
 
-        IQueryable<T> GetAllWithMultipleFilters<T>(List<Expression<Func<T, bool>>?> filters = null,
+        (IQueryable<T> Models, int TotalCount) GetAllWithMultipleFilters<T>(List<Expression<Func<T, bool>>?> filters = null,
                                 int? page = null,
                                 int? pageSize = null) where T : BaseEntity;
 

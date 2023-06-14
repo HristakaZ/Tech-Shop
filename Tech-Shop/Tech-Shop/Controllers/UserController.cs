@@ -42,14 +42,16 @@ namespace Tech_Shop.Controllers
                                 string? orderByDirection = null)
         {
             Expression<Func<User, bool>>? searchExpression = UserHelper.GetUserSearchExpressionByKey(search);
-            IQueryable<User> users = baseRepository.GetAll<User>(searchExpression, page, pageSize);
-            users = UserHelper.OrderUsers(users, orderBy, orderByDirection);
-            if (users.Count() == 0)
+            (IQueryable<User> Users, int TotalCount) users = baseRepository.GetAll<User>(searchExpression, page, pageSize);
+            users.Users = UserHelper.OrderUsers(users.Users, orderBy, orderByDirection);
+            if (users.Users.Count() == 0)
             {
                 return NotFound("No users were found.");
             }
-            List<UserViewModel> userViewModels = UserModelViewModelMapper.MapUserModelToViewModel(users);
-            return Ok(userViewModels);
+            List<UserViewModel> userViewModels = UserModelViewModelMapper.MapUserModelToViewModel(users.Users);
+            UserViewModelTotalCount userViewModelTotalCount = new UserViewModelTotalCount(userViewModels, users.TotalCount);
+
+            return Ok(userViewModelTotalCount);
         }
 
         [HttpGet("{id}", Name = $"{nameof(GetUserByID)}")]
@@ -73,7 +75,7 @@ namespace Tech_Shop.Controllers
         [Route($"{nameof(Register)}")]
         public IActionResult Register([FromBody] UserRegisterViewModel userRegisterViewModel)
         {
-            bool isEmailTaken = this.baseRepository.GetAll<User>().Where(x => x.Email == userRegisterViewModel.Email).FirstOrDefault() != null;
+            bool isEmailTaken = (this.baseRepository.GetAll<User>()).Models.Where(x => x.Email == userRegisterViewModel.Email).FirstOrDefault() != null;
             if (isEmailTaken)
             {
                 return BadRequest("This email is taken. Please choose a unique one.");
@@ -91,7 +93,7 @@ namespace Tech_Shop.Controllers
         public IActionResult Login([FromBody] UserLoginViewModel userLoginViewModel)
         {
             string hashedPassword = userService.HashPassword(userLoginViewModel.Password);
-            User userFromDb = baseRepository.GetAll<User>().FirstOrDefault(x => x.Email == userLoginViewModel.Email && x.Password == hashedPassword);
+            User userFromDb = (baseRepository.GetAll<User>()).Models.FirstOrDefault(x => x.Email == userLoginViewModel.Email && x.Password == hashedPassword);
             if (userFromDb == null)
             {
                 return NotFound("Wrong username or password.");
@@ -164,7 +166,7 @@ namespace Tech_Shop.Controllers
         [Route($"{nameof(ForgottenPassword)}")]
         public IActionResult ForgottenPassword(ForgottenPasswordViewModel forgottenPasswordViewModel)
         {
-            User user = this.baseRepository.GetAll<User>().Where(x => x.Email == forgottenPasswordViewModel.Email).FirstOrDefault();
+            User user = (this.baseRepository.GetAll<User>()).Models.Where(x => x.Email == forgottenPasswordViewModel.Email).FirstOrDefault();
             if (user != null)
             {
                 string password = Guid.NewGuid().ToString();

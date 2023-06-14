@@ -4,7 +4,7 @@ import apiConfig from '../../../apiconfig.json';
 import { LoginModel } from '../login/login.model';
 import { Observable } from 'rxjs';
 import { RegisterModel } from '../register/register.model';
-import { User } from '../get-all-users/user.model';
+import { User, UserTotalCount } from '../get-all-users/user.model';
 import { UpdateUserModel } from '../update-user/update-user.model';
 import { ChangePasswordModel } from '../change-password/change-password.model';
 import { ForgottenPasswordModel } from '../forgotten-password/forgotten-password.model';
@@ -28,8 +28,11 @@ export class UserService {
     return this.httpClient.post(`${this.baseUrl}/api/User/Register`, registerModel);
   }
 
-  public $getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.baseUrl}/api/User`, {
+  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<UserTotalCount> {
+    search = search ?? '';
+    orderBy = orderBy ?? '';
+    orderByDirection = orderByDirection ?? '';
+    return this.httpClient.get<UserTotalCount>(`${this.baseUrl}/api/User?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })

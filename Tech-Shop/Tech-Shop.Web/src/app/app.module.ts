@@ -58,6 +58,8 @@ import { PlaceOrderComponent } from './order/place-order/place-order.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ChangePasswordComponent } from './user/change-password/change-password.component';
 import { ForgottenPasswordComponent } from './user/forgotten-password/forgotten-password.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -114,7 +116,9 @@ import { ForgottenPasswordComponent } from './user/forgotten-password/forgotten-
     MatSelectModule,
     MatDialogModule,
     NgbModule,
-    MatStepperModule
+    MatStepperModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     UserService,

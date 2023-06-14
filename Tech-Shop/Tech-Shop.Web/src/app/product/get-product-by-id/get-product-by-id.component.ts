@@ -6,13 +6,14 @@ import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 import { ReviewService } from 'src/app/review/services/review.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-get-product-by-id',
   templateUrl: './get-product-by-id.component.html',
   styleUrls: ['./get-product-by-id.component.css']
 })
-export class GetProductByIdComponent implements OnInit, DoCheck, OnDestroy {
+export class GetProductByIdComponent implements OnInit, OnDestroy, DoCheck {
   product: Product = new Product();
   subscriptions: Subscription[] = [];
   id: number = parseInt(this.router.url.substring(this.router.url.lastIndexOf('/') + 1));
@@ -21,22 +22,27 @@ export class GetProductByIdComponent implements OnInit, DoCheck, OnDestroy {
   userId!: number;
   public columnsToDisplay = ['user', 'rating', 'comment', 'updateButton', 'deleteButton'];
   isProductAlreadyAdded!: Boolean;
+  public totalCount!: number;
+  public pageSize = 5;
+  public currentPage = 1;
+  private orderBy?: string;
+  private orderByDirection?: string;
+  private searchQuery?: string;
   constructor(private productService: ProductService,
     private router: Router,
     private reviewService: ReviewService,
     private addToCartSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.getProductById();
+    this.performAllFilters();
     this.setUserRole();
     this.setUserId();
     this.subscriptions.push(this.reviewService.subject.subscribe(() => {
-      this.getProductById();
+      this.performAllFilters();
     }));
   }
 
   ngDoCheck(): void {
-    this.getProductById();
     this.setUserRole();
     this.setUserId();
     this.setIsProductAlreadyAdded(this.product.id);
@@ -60,12 +66,6 @@ export class GetProductByIdComponent implements OnInit, DoCheck, OnDestroy {
     else {
       this.userId = 0;
     }
-  }
-
-  getProductById(): void {
-    this.subscriptions.push(this.productService.$getById(this.id).subscribe((product) => {
-      this.product = product;
-    }));
   }
 
   addToCart(id: number): void {
@@ -92,6 +92,38 @@ export class GetProductByIdComponent implements OnInit, DoCheck, OnDestroy {
     else {
       this.isProductAlreadyAdded = false;
     }
+  }
+
+  public handlePage(e: any) {
+    this.currentPage = ++e.pageIndex;
+    this.pageSize = e.pageSize;
+
+    this.performAllFilters();
+  }
+
+  public sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      this.orderBy = sort.active;
+      this.orderByDirection = sort.direction;
+      return;
+    }
+    this.orderBy = sort.active;
+    this.orderByDirection = sort.direction;
+
+    this.performAllFilters();
+  }
+
+  public search(searchQuery?: string) {
+    this.searchQuery = searchQuery;
+
+    this.performAllFilters();
+  }
+
+  private performAllFilters() {
+    this.subscriptions.push(this.productService.$getById(this.id, this.searchQuery, this.currentPage, this.pageSize, this.orderBy, this.orderByDirection).subscribe((productTotalCount) => {
+      this.product = productTotalCount.product;
+      this.totalCount = productTotalCount.totalCount;
+    }));
   }
 
   ngOnDestroy(): void {

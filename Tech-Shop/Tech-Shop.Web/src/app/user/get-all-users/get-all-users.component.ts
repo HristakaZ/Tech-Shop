@@ -1,8 +1,10 @@
 import jwt_decode from 'jwt-decode';
 import { Subscription } from 'rxjs';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { UserService } from '../services/user.service';
-import { User } from './user.model';
+import { User, UserTotalCount } from './user.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-get-all-users',
@@ -11,15 +13,19 @@ import { User } from './user.model';
 })
 export class GetAllUsersComponent implements OnInit, OnDestroy {
   public users: User[] = [];
-  public columnsToDisplay = ['email', 'name', 'address', 'phoneNumber', 'role', /*orders,*/'updateButton', 'deleteButton'];
+  public columnsToDisplay = ['email', 'name', 'address', 'phoneNumber', 'role', 'updateButton', 'deleteButton'];
   subscription!: Subscription;
-  constructor(private userService: UserService) { }
   public loggedInUserId: number = this.getLoggedInUserId();
+  public totalCount!: number;
+  public pageSize = 5;
+  public currentPage = 1;
+  private orderBy?: string;
+  private orderByDirection?: string;
+  private searchQuery?: string;
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.subscription = this.userService.$getAll().subscribe((users) => {
-      this.users = users;
-    });
+    this.performAllFilters();
   }
 
   ngOnDestroy(): void {
@@ -31,5 +37,37 @@ export class GetAllUsersComponent implements OnInit, OnDestroy {
   getLoggedInUserId(): number {
     let decodedToken: any = jwt_decode(localStorage.getItem('token')!);
     return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+  }
+
+  public handlePage(e: any) {
+    this.currentPage = ++e.pageIndex;
+    this.pageSize = e.pageSize;
+
+    this.performAllFilters();
+  }
+
+  public sortData(sort: Sort) {
+    if (!sort.active || sort.direction === '') {
+      this.orderBy = sort.active;
+      this.orderByDirection = sort.direction;
+      return;
+    }
+    this.orderBy = sort.active;
+    this.orderByDirection = sort.direction;
+
+    this.performAllFilters();
+  }
+
+  public search(searchQuery?: string) {
+    this.searchQuery = searchQuery;
+
+    this.performAllFilters();
+  }
+
+  private performAllFilters() {
+    this.subscription = this.userService.$getAll(this.searchQuery, this.currentPage, this.pageSize, this.orderBy, this.orderByDirection).subscribe((userTotalCount) => {
+      this.users = userTotalCount.users;
+      this.totalCount = userTotalCount.totalCount;
+    });
   }
 }

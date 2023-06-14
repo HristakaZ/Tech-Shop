@@ -48,7 +48,6 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   }
 
   changePassword(): void {
-    debugger;
     if (this.changePasswordForm.value.newPassword != this.changePasswordForm.value.confirmNewPassword) {
       this.changePasswordForm.controls['newPassword'].setErrors({ 'invalid': true })
       this.changePasswordForm.controls['confirmNewPassword'].setErrors({ 'invalid': true })

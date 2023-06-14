@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
-import { Product } from '../get-all-products/product.model';
+import { Product, ProductByIdTotalCount, ProductTotalCount } from '../get-all-products/product.model';
 import { Observable } from 'rxjs';
 import { CreateProductModel } from '../create-product/create-product.model';
 import { UpdateProductModel } from '../update-product/update-product.model';
@@ -12,16 +12,22 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public $getAll(): Observable<Product[]> {
-    return this.httpClient.get<Product[]>(`${this.baseUrl}/api/Product`, {
+  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<ProductTotalCount> {
+    search = search ?? '';
+    orderBy = orderBy ?? '';
+    orderByDirection = orderByDirection ?? '';
+    return this.httpClient.get<ProductTotalCount>(`${this.baseUrl}/api/Product?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     });
   }
 
-  public $getById(id: number): Observable<Product> {
-    return this.httpClient.get<Product>(`${this.baseUrl}/api/Product/${id}`, {
+  public $getById(id: number, search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<ProductByIdTotalCount> {
+    search = search ?? '';
+    orderBy = orderBy ?? '';
+    orderByDirection = orderByDirection ?? '';
+    return this.httpClient.get<ProductByIdTotalCount>(`${this.baseUrl}/api/Product/${id}?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })

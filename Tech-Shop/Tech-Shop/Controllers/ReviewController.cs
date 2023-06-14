@@ -24,7 +24,7 @@ namespace Tech_Shop.Controllers
         [Authorize]
         public IActionResult Get()
         {
-            IQueryable<Review> reviews = baseRepository.GetAll<Review>();
+            IQueryable<Review> reviews = (baseRepository.GetAll<Review>()).Models;
             if (reviews.Count() == 0)
             {
                 return NotFound("No reviews were found.");

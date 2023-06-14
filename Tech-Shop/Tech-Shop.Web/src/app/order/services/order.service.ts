@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Order } from '../get-all-orders/order.model';
+import { Order, OrderTotalCount } from '../get-all-orders/order.model';
 import { Observable, Subject, tap } from 'rxjs';
 import { ReturnOrderModel } from '../return/dialog/return-order-dialog/return-order.model';
 import { PlaceOrderModel } from '../place-order/place-order.model';
@@ -13,8 +13,11 @@ export class OrderService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public $getAll(): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${this.baseUrl}/api/Order`, {
+  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<OrderTotalCount> {
+    search = search ?? '';
+    orderBy = orderBy ?? '';
+    orderByDirection = orderByDirection ?? '';
+    return this.httpClient.get<OrderTotalCount>(`${this.baseUrl}/api/Order?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
@@ -29,8 +32,11 @@ export class OrderService {
     });
   }
 
-  public $getLoggedInUserOrders(): Observable<Order[]> {
-    return this.httpClient.get<Order[]>(`${this.baseUrl}/api/Order/GetLoggedInUserOrders`, {
+  public $getLoggedInUserOrders(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<OrderTotalCount> {
+    search = search ?? '';
+    orderBy = orderBy ?? '';
+    orderByDirection = orderByDirection ?? '';
+    return this.httpClient.get<OrderTotalCount>(`${this.baseUrl}/api/Order/GetLoggedInUserOrders?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })

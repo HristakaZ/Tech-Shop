@@ -28,8 +28,8 @@ export class DeleteProductComponent implements OnInit, OnDestroy {
       id: new FormControl('')
     });
 
-    this.subscriptions.push(this.productService.$getById(this.id).subscribe((product) => {
-      this.product = product;
+    this.subscriptions.push(this.productService.$getById(this.id).subscribe((productByIdTotalCount) => {
+      this.product = productByIdTotalCount.product;
       this.deleteProductForm.setValue({
         id: this.product.id
       });
@@ -51,7 +51,7 @@ export class DeleteProductComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.subscriptions.length > 0) {
+    if (this.subscriptions.length > 0) {
       this.subscriptions.forEach((subscription) => {
         subscription.unsubscribe();
       });

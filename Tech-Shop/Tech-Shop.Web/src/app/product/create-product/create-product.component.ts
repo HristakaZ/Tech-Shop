@@ -65,8 +65,8 @@ export class CreateProductComponent implements OnInit, OnDestroy {
       photo: new FormControl('')
     });
 
-    this.categoryService.$getAll().subscribe((categories) => {
-      this.categories = categories;
+    this.categoryService.$getAll().subscribe((categoryTotalCount) => {
+      this.categories = categoryTotalCount.categories;
     });
   }
 

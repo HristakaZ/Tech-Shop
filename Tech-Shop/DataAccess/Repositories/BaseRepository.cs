@@ -13,7 +13,7 @@ namespace DataAccess.Repositories
             this.applicationDbContext = applicationDbContext;
         }
 
-        public IQueryable<T> GetAll<T>(Expression<Func<T, bool>>? filter = null,
+        public (IQueryable<T> Models, int TotalCount) GetAll<T>(Expression<Func<T, bool>>? filter = null,
                                 int? page = null,
                                 int? pageSize = null) where T : BaseEntity
         {
@@ -23,15 +23,17 @@ namespace DataAccess.Repositories
                 set = set.Where(filter);
             }
 
+            int totalCount = set.Count();
+
             if (page.HasValue && pageSize.HasValue)
             {
                 set = set.Skip(pageSize.Value * (page.Value - 1)).Take(pageSize.Value);
             }
 
-            return set;
+            return (set, totalCount);
         }
 
-        public IQueryable<T> GetAllWithMultipleFilters<T>(List<Expression<Func<T, bool>>?> filters = null,
+        public (IQueryable<T> Models, int TotalCount) GetAllWithMultipleFilters<T>(List<Expression<Func<T, bool>>?> filters = null,
                                 int? page = null,
                                 int? pageSize = null) where T : BaseEntity
         {
@@ -47,12 +49,14 @@ namespace DataAccess.Repositories
                 }
             }
 
+            int totalCount = set.Count();
+
             if (page.HasValue && pageSize.HasValue)
             {
                 set = set.Skip(pageSize.Value * (page.Value - 1)).Take(pageSize.Value);
             }
 
-            return set;
+            return (set, totalCount);
         }
 
         public T GetByID<T>(int id) where T : BaseEntity

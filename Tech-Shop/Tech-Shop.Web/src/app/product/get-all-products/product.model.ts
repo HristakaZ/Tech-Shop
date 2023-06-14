@@ -11,3 +11,13 @@ export class Product {
     category: Category = new Category();
     reviews: Review[] = [];
 }
+
+export class ProductTotalCount {
+    products: Product[] = [];
+    totalCount!: number;
+}
+
+export class ProductByIdTotalCount {
+    product!: Product;
+    totalCount!: number;
+}
