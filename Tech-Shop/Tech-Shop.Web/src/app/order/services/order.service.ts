@@ -13,10 +13,12 @@ export class OrderService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<OrderTotalCount> {
+  public $getAll(search?: string | null, page?: any, pageSize?: any, orderBy?: string | null, orderByDirection?: string | null): Observable<OrderTotalCount> {
     search = search ?? '';
     orderBy = orderBy ?? '';
     orderByDirection = orderByDirection ?? '';
+    page = page ?? '';
+    pageSize = pageSize ?? '';
     return this.httpClient.get<OrderTotalCount>(`${this.baseUrl}/api/Order?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -32,10 +34,12 @@ export class OrderService {
     });
   }
 
-  public $getLoggedInUserOrders(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<OrderTotalCount> {
+  public $getLoggedInUserOrders(search?: string | null, page?: any, pageSize?: any, orderBy?: string | null, orderByDirection?: string | null): Observable<OrderTotalCount> {
     search = search ?? '';
     orderBy = orderBy ?? '';
     orderByDirection = orderByDirection ?? '';
+    page = page ?? '';
+    pageSize = pageSize ?? '';
     return this.httpClient.get<OrderTotalCount>(`${this.baseUrl}/api/Order/GetLoggedInUserOrders?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`

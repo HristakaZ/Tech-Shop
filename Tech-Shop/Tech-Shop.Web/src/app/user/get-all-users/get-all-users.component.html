@@ -48,7 +48,7 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let user">
             <div>
-                <button mat-raised-button [routerLink]="'/user/delete/' + user.id">Delete User</button>
+                <button mat-button><app-delete-user [id]="user.id"></app-delete-user></button>
             </div>
         </td>
     </ng-container>

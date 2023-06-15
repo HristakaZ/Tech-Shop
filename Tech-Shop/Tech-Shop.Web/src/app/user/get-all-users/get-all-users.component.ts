@@ -1,6 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import { Subscription } from 'rxjs';
-import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User, UserTotalCount } from './user.model';
 import { MatPaginator } from '@angular/material/paginator';
@@ -22,10 +22,17 @@ export class GetAllUsersComponent implements OnInit, OnDestroy {
   private orderBy?: string;
   private orderByDirection?: string;
   private searchQuery?: string;
+  @ViewChild('input') searchInput!: ElementRef;
+
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.performAllFilters();
+    this.subscription = this.userService.subject.subscribe(() => {
+      this.searchQuery = '';
+      this.searchInput.nativeElement.value = '';
+      this.performAllFilters();
+    });
   }
 
   ngOnDestroy(): void {

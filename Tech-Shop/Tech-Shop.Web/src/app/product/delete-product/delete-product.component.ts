@@ -1,60 +1,33 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Product } from '../get-all-products/product.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../services/product.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeleteProductDialogComponent } from './dialog/delete-product-dialog/delete-product-dialog.component';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-product',
   templateUrl: './delete-product.component.html',
   styleUrls: ['./delete-product.component.css']
 })
-export class DeleteProductComponent implements OnInit, OnDestroy {
-  id: number = parseInt(this.router.url.substring(this.router.url.lastIndexOf('/') + 1));
-  public product: Product = new Product();
-  deleteProductForm!: FormGroup;
-  subscriptions: Subscription[] = [];
-  isIdInputHidden: boolean = true;
+export class DeleteProductComponent {
+  @Input()
+  id!: number;
+  productID!: number;
+  constructor(public deleteProductDialog: MatDialog) { }
 
-  constructor(private productService: ProductService,
-    private router: Router,
-    private deleteProductSnackBar: MatSnackBar) { }
+  openDeleteProductDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      id: this.id
+    };
+    const dialogRef: MatDialogRef<DeleteProductDialogComponent> = this.deleteProductDialog.open(DeleteProductDialogComponent, dialogConfig);
 
-  ngOnInit(): void {
-
-    this.deleteProductForm = new FormGroup({
-      id: new FormControl('')
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
     });
-
-    this.subscriptions.push(this.productService.$getById(this.id).subscribe((productByIdTotalCount) => {
-      this.product = productByIdTotalCount.product;
-      this.deleteProductForm.setValue({
-        id: this.product.id
-      });
-    }));
-  }
-
-  deleteProduct(): void {
-    this.subscriptions.push(this.productService.$delete(this.deleteProductForm.value.id).subscribe({
-      next: (response) => {
-        this.deleteProductSnackBar.open(response.toString(), 'X', {
-          duration: 3000
-        });
-        this.router.navigateByUrl('product/getall');
-      },
-      error: (errorResponse) => {
-        this.deleteProductSnackBar.open(errorResponse.error, 'X');
-      }
-    }));
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscriptions.length > 0) {
-      this.subscriptions.forEach((subscription) => {
-        subscription.unsubscribe();
-      });
-    }
   }
 }

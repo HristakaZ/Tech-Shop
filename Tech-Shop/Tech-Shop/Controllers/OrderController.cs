@@ -81,10 +81,6 @@ namespace Tech_Shop.Controllers
             (IQueryable<Order> Orders, int TotalCount) orders =
                 this.baseRepository.GetAllWithMultipleFilters<Order>(expressions, page, pageSize);
             orders.Orders = OrderHelper.OrderOrders(orders.Orders, orderBy, orderByDirection);
-            if (orders.Orders.Count() == 0)
-            {
-                return NotFound("No orders were found.");
-            }
 
             List<OrderViewModel> orderViewModels = OrderModelViewModelMapper.MapOrderModelToViewModel(orders.Orders,
                 $"{Request.Scheme}://{Request.Host.Value}/");

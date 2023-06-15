@@ -60,6 +60,9 @@ import { ChangePasswordComponent } from './user/change-password/change-password.
 import { ForgottenPasswordComponent } from './user/forgotten-password/forgotten-password.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { DeleteUserDialogComponent } from './user/delete-user/dialog/delete-user-dialog/delete-user-dialog.component';
+import { DeleteProductDialogComponent } from './product/delete-product/dialog/delete-product-dialog/delete-product-dialog.component';
+import { DeleteCategoryDialogComponent } from './category/delete-category/dialog/delete-category-dialog/delete-category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +99,10 @@ import { MatSortModule } from '@angular/material/sort';
     ApproveReturnDialogComponent,
     PlaceOrderComponent,
     ChangePasswordComponent,
-    ForgottenPasswordComponent
+    ForgottenPasswordComponent,
+    DeleteUserDialogComponent,
+    DeleteProductDialogComponent,
+    DeleteCategoryDialogComponent
   ],
   imports: [
     BrowserModule,

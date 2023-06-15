@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Product } from './product.model';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../services/product.service';
@@ -22,10 +22,16 @@ export class GetAllProductsComponent implements OnInit, OnDestroy {
   private orderBy?: string;
   private orderByDirection?: string;
   private searchQuery?: string;
+  @ViewChild('input') searchInput!: ElementRef;
   constructor(private productService: ProductService) { }
 
   ngOnInit(): void {
     this.performAllFilters();
+    this.subscription = this.productService.subject.subscribe(() => {
+      this.searchQuery = '';
+      this.searchInput.nativeElement.value = '';
+      this.performAllFilters();
+    });
     this.setUserRole();
   }
 

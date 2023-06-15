@@ -37,15 +37,14 @@
 <div>
     <h1 style="text-align: center;" *ngIf="product.reviews.length > 0">Reviews</h1>
     <h4 style="text-align: center;" *ngIf="product.reviews.length == 0">There are no reviews for this product.</h4>
-    <mat-form-field appearance="fill" *ngIf="product.reviews.length > 0">
+    <mat-form-field appearance="fill">
         <mat-label>Search review by comment or user</mat-label>
         <input type="text" #input matInput placeholder="Search" (keyup)="search(input.value)">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
     <br>
     <app-create-review [productID]="product.id" *ngIf="userRole === 'User'"></app-create-review>
-    <table mat-table matSort [dataSource]="product.reviews" class="mat-elevation-z8" (matSortChange)="sortData($event)"
-        *ngIf="product.reviews.length > 0">
+    <table mat-table matSort [dataSource]="product.reviews" class="mat-elevation-z8" (matSortChange)="sortData($event)">
         <ng-container matColumnDef="user">
             <th mat-header-cell *matHeaderCellDef>User</th>
             <td mat-cell *matCellDef="let review">

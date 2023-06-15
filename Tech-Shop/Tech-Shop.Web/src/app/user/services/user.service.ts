@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { LoginModel } from '../login/login.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { RegisterModel } from '../register/register.model';
 import { User, UserTotalCount } from '../get-all-users/user.model';
 import { UpdateUserModel } from '../update-user/update-user.model';
@@ -12,6 +12,7 @@ import { ForgottenPasswordModel } from '../forgotten-password/forgotten-password
 @Injectable()
 export class UserService {
   baseUrl = apiConfig.baseUrl;
+  subject: Subject<void> = new Subject<void>();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -28,10 +29,12 @@ export class UserService {
     return this.httpClient.post(`${this.baseUrl}/api/User/Register`, registerModel);
   }
 
-  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<UserTotalCount> {
+  public $getAll(search?: string | null, page?: any, pageSize?: any, orderBy?: string | null, orderByDirection?: string | null): Observable<UserTotalCount> {
     search = search ?? '';
     orderBy = orderBy ?? '';
     orderByDirection = orderByDirection ?? '';
+    page = page ?? '';
+    pageSize = pageSize ?? '';
     return this.httpClient.get<UserTotalCount>(`${this.baseUrl}/api/User?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -62,7 +65,9 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
       responseType: 'text'
-    });
+    }).pipe(tap(() => {
+      this.subject.next();
+    }));
   }
 
   public $changePassword(changePasswordModel: ChangePasswordModel): Observable<Object> {

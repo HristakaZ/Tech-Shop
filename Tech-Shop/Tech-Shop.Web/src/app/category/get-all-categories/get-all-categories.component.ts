@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Category } from '../category.model';
 import { CategoryService } from '../services/category.service';
 import jwt_decode from 'jwt-decode';
@@ -21,10 +21,16 @@ export class GetAllCategoriesComponent implements OnInit, OnDestroy {
   private orderBy?: string;
   private orderByDirection?: string;
   private searchQuery?: string;
+  @ViewChild('input') searchInput!: ElementRef;
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
     this.performAllFilters();
+    this.subscription = this.categoryService.subject.subscribe(() => {
+      this.searchQuery = '';
+      this.searchInput.nativeElement.value = '';
+      this.performAllFilters();
+    });
     this.setUserRole();
   }
 

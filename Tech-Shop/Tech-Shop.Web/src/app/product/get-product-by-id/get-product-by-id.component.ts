@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
+import { Component, OnDestroy, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
 import { Product } from '../get-all-products/product.model';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../services/product.service';
@@ -28,6 +28,7 @@ export class GetProductByIdComponent implements OnInit, OnDestroy, DoCheck {
   private orderBy?: string;
   private orderByDirection?: string;
   private searchQuery?: string;
+  @ViewChild('input') searchInput!: ElementRef;
   constructor(private productService: ProductService,
     private router: Router,
     private reviewService: ReviewService,
@@ -38,6 +39,8 @@ export class GetProductByIdComponent implements OnInit, OnDestroy, DoCheck {
     this.setUserRole();
     this.setUserId();
     this.subscriptions.push(this.reviewService.subject.subscribe(() => {
+      this.searchQuery = '';
+      this.searchInput.nativeElement.value = '';
       this.performAllFilters();
     }));
   }

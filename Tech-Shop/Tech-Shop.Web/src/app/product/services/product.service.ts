@@ -2,20 +2,23 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import apiConfig from '../../../apiconfig.json';
 import { Product, ProductByIdTotalCount, ProductTotalCount } from '../get-all-products/product.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { CreateProductModel } from '../create-product/create-product.model';
 import { UpdateProductModel } from '../update-product/update-product.model';
 
 @Injectable()
 export class ProductService {
   baseUrl = apiConfig.baseUrl;
+  subject: Subject<void> = new Subject<void>();
 
   constructor(private httpClient: HttpClient) { }
 
-  public $getAll(search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<ProductTotalCount> {
+  public $getAll(search?: string | null, page?: any, pageSize?: any, orderBy?: string | null, orderByDirection?: string | null): Observable<ProductTotalCount> {
     search = search ?? '';
     orderBy = orderBy ?? '';
     orderByDirection = orderByDirection ?? '';
+    page = page ?? '';
+    pageSize = pageSize ?? '';
     return this.httpClient.get<ProductTotalCount>(`${this.baseUrl}/api/Product?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -23,10 +26,12 @@ export class ProductService {
     });
   }
 
-  public $getById(id: number, search?: string | null, page?: number | null, pageSize?: number | null, orderBy?: string | null, orderByDirection?: string | null): Observable<ProductByIdTotalCount> {
+  public $getById(id: number, search?: string | null, page?: any, pageSize?: any, orderBy?: string | null, orderByDirection?: string | null): Observable<ProductByIdTotalCount> {
     search = search ?? '';
     orderBy = orderBy ?? '';
     orderByDirection = orderByDirection ?? '';
+    page = page ?? '';
+    pageSize = pageSize ?? '';
     return this.httpClient.get<ProductByIdTotalCount>(`${this.baseUrl}/api/Product/${id}?search=${search}&page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&orderByDirection=${orderByDirection}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -78,6 +83,8 @@ export class ProductService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
       responseType: 'text'
-    });
+    }).pipe(tap(() => {
+      this.subject.next();
+    }));
   }
 }

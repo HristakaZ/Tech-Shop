@@ -70,8 +70,7 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let product">
             <div>
-                <button mat-raised-button [routerLink]="'/product/delete/' + product.id"
-                    *ngIf="userRole === 'Administrator'">Delete Product</button>
+                <app-delete-product [id]="product.id" *ngIf="userRole === 'Administrator'"></app-delete-product>
             </div>
         </td>
     </ng-container>
